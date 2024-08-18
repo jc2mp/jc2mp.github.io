@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Just Cause Multiplayer</title>
+		<link href="/style/main.css" rel="stylesheet" type="text/css" media="all"/>
+		<script src="/js/glider.min.js"></script>
+		<script>
+			window.addEventListener('load', function() {
+				const gliderEl =
+					document.querySelector('.glider')
+
+				const glider =
+					new Glider(document.querySelector('.glider'), {
+						dots: '#glider-dots',
+					})
+
+				const GLIDER_DELAY_MS = 5000
+
+				let gliderTimeoutId = -1
+				let isGliderHovered = false
+
+				function startTimeout() {
+					clearTimeout(gliderTimeoutId)
+
+					gliderTimeoutId = setTimeout(
+						() => {
+							if (!isGliderHovered) {
+								glider.scrollItem((glider.slide + 1) % glider.slides.length)
+							}
+						},
+						GLIDER_DELAY_MS
+					)
+				}
+
+				let animID = 0
+				const isAnimating = () => (glider.animate_id !== animID)
+				gliderEl.addEventListener("glider-animated", () => {
+					animID = glider.animate_id
+
+					if (!isGliderHovered) {
+						startTimeout()
+					}
+				});
+
+				gliderEl.addEventListener("mouseover", () => {
+					isGliderHovered = true
+					clearTimeout(gliderTimeoutId)
+				});
+
+				gliderEl.addEventListener("mouseout", () => {
+					isGliderHovered = false
+					if (!isAnimating()) {
+						startTimeout()
+					}
+				});
+
+				startTimeout()
+			})
+		</script>
+	</head>
+
+	<body id="body">
+		<div id="cycler">
+			<div id="fader">
+				<img src="/img/backgrounds/bg7.jpg" alt="A view at the Mile High Club from the snowy mountains of Panau" style="position: absolute; top: 0px; left: 50%; display: inline; margin-left: -1000px;">
+			</div>
+
+			<nav id="menu" class="default">
+				<ul class="nav">
+					<li><a class="active" href="/"><span class="icon news"></span>Home</a></li>
+					<li><a href="https://github.com/jc2mp/wiki" target="_blank"><span class="icon help"></span>Documentation</a></li>
+					<li><a href="https://discord.gg/jc2mp" target="_blank"><span class="icon irc"></span>Discord</a></li>
+				</ul>
+				<a class="signin" href="https://store.steampowered.com/app/259080/Just_Cause_2_Multiplayer_Mod/" target="_blank">Play now via Steam</a>
+			</nav>
+
+			<div class="main">
+				<header class="header">
+					<a class="logo" href="/">Just Cause Multiplayer</a>
+
+					<div class="toot">
+						<p>It sure been a while, hasn't it? There's still people in our community willing to relive a classic and make new memories, and we'd love to have you be part of them :&gt;</p>
+						<span>17 August, 2024</span>
+					</div>
+				</header>
+			</div>
+
+			<div class="wrapper2">
+				<div class="intro">
+					<h1>Welcome to Just Cause Multiplayer!</h1>
+					<p>A community-built multiplayer mod for your favorite open world game.</p>
+
+					<p>Immense gamemode possibilities with Lua scripting – ragdoll golf, thrilling survival, ruthless racing, in-depth roleplay, building sandbox and more.</p>
+
+					<div class="box">
+						<div class="right">
+							<div class="buttons">
+								<a class="btnRed" href="https://store.steampowered.com/app/259080/Just_Cause_2_Multiplayer_Mod/" target="_blank"><span class="icon steam"></span> Play on Steam</a>
+								<a class="btnGray" href="https://github.com/jc2mp/wiki/tree/main/Server/Getting_started" target="_blank"><span class="icon server"></span> Host a Server</a>
+							</div>
+
+							<span class="end">Latest version: <strong>0.3.0</strong> / <strong>28 May, 2017</strong></span>
+						</div>
+					</div>
+				</div>
+
+				<div id="slider">
+					<div class="glider-contain">
+						<ul class="glider">
+							<li class="glider-slide">
+								<img src="/img/slides/slide1.jpg" alt="Three Si-47 Leopard fighter jets partaking in a dogfight." title="Shoot, or be shot down!">
+								<div class="glider-caption">Shoot, or be shot down!</div>
+							</li>
+							<li class="glider-slide">
+								<img src="/img/slides/slide2.jpg" alt="Two boats moving side by side at a high speed. An armed ninja is standing on top of one of them, ready to fire." title="Battle over the seas with your enemies!">
+								<div class="glider-caption">Battle over the seas with your enemies!</div>
+							</li>
+							<li class="glider-slide">
+								<img src="/img/slides/slide3.jpg" alt="A mesmerizing view at the Panau International Port at dawn. A lighthouse is captured in the frame, with a player standing on top of it." title="Admire Panau with your friends!">
+								<div class="glider-caption">Admire Panau with your friends!</div>
+							</li>
+							<li class="glider-slide">
+								<img src="/img/slides/slide4.jpg" alt="Two players causing havoc with rocket launchers." title="Mindlessly destroy things!">
+								<div class="glider-caption">Mindlessly destroy things!</div>
+							</li>
+						</ul>
+
+						<div role="tablist" class="dots" id="glider-dots"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+			<div class="spacer"></div>
+
+			<footer>
+				Just Cause 2 &copy; 2010 Square Enix Ltd. JUST CAUSE and the JUST CAUSE 2 logo are registered trademarks or trademarks of Square Enix Ltd and are used with permission. Graphical representations of the Game reproduced with the permission of the copyright owner. This website is not operated by Square Enix Ltd and Square Enix Ltd accepts no responsibility or liability for the content available or views expressed hereon, which are the sole responsibility of the website operator.
+			</footer>
+
+		</div>
+	</body>
+</html>
