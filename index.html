@@ -11,9 +11,13 @@
 				const gliderEl =
 					document.querySelector('.glider')
 
+				const prefersReducedMotion =
+					( window.matchMedia('(prefers-reduced-motion: no-preference)').matches === false )
+
 				const glider =
-					new Glider(document.querySelector('.glider'), {
+					new Glider(gliderEl, {
 						dots: '#glider-dots',
+						duration: ( (prefersReducedMotion === true) ? 0 : 0.5 ),
 					})
 
 				const GLIDER_DELAY_MS = 5000
@@ -22,6 +26,10 @@
 				let isGliderHovered = false
 
 				function startTimeout() {
+					if (prefersReducedMotion === true) {
+						return
+					}
+
 					clearTimeout(gliderTimeoutId)
 
 					gliderTimeoutId = setTimeout(
@@ -140,7 +148,6 @@
 			<footer>
 				Just Cause 2 &copy; 2010 Square Enix Ltd. JUST CAUSE and the JUST CAUSE 2 logo are registered trademarks or trademarks of Square Enix Ltd and are used with permission. Graphical representations of the Game reproduced with the permission of the copyright owner. This website is not operated by Square Enix Ltd and Square Enix Ltd accepts no responsibility or liability for the content available or views expressed hereon, which are the sole responsibility of the website operator.
 			</footer>
-
 		</div>
 	</body>
 </html>
