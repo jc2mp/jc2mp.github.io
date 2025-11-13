@@ -1,0 +1,8 @@
+output
+
+# Added by cargo
+
+/target
+
+# Tailwind binary (cross-platform)
+tailwind*

@@ -1,0 +1,78 @@
+@import "tailwindcss" source("../");
+
+/* Main page styling */
+#hauptseite h2 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+#hauptseite-willkommen h2 {
+  font-size: 2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.hauptseite-links h2,
+.hauptseite-rechts h2 {
+  font-size: 1.25rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.mw-headline {
+  display: block;
+}
+
+/* Heading hierarchy within main page sections */
+#hauptseite h1,
+.hauptseite-oben h1,
+.hauptseite-links h1,
+.hauptseite-rechts h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+#hauptseite h3,
+.hauptseite-oben h3,
+.hauptseite-links h3,
+.hauptseite-rechts h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+#hauptseite h4,
+.hauptseite-oben h4,
+.hauptseite-links h4,
+.hauptseite-rechts h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+#hauptseite h5,
+.hauptseite-oben h5,
+.hauptseite-links h5,
+.hauptseite-rechts h5 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+#hauptseite h6,
+.hauptseite-oben h6,
+.hauptseite-links h6,
+.hauptseite-rechts h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}

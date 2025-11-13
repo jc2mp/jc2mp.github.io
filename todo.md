@@ -1,0 +1,3 @@
+- Need a way to serve output directly
+- Need a way to regenerate pages on edit, including everything downstream
+- Run conversions in parallel, maybe... I suspect running in release is sufficient
