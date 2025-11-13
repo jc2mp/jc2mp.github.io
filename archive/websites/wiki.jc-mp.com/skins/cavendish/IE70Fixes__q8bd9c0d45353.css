@@ -1,0 +1,64 @@
+/* 7.0 - only fixes */
+/* content area */ 
+/* workaround for various ie float bugs */
+
+/* This bit is needed to make links clickable... WTF */
+
+/*
+#column-content #content {
+	margin-left: 12.2em; 
+	margin-top: 3em;
+	height: 1%;
+}
+*/
+.rtl #column-one {
+	/* For some reason it tries to inherit the padding-top into every div,
+	 * and I can't figure out how to get it back off.
+	 */
+	padding-top: 0;
+}
+.rtl #column-one #p-navigation {
+	margin-top: 160px;
+}
+
+#portal-personaltools {
+	padding-bottom: 0.1em;
+}
+textarea {
+	width: 96%;
+}
+
+/*
+div.editsection,
+#catlinks,
+div.tright,
+div.tleft {
+	position: relative;
+}
+*/
+
+
+#footer li {
+	/* Work around bug with inline <li> tags with right margins and nowrap */
+	margin-right: 0;
+}
+
+body #globalWrapper #p-personal .top-nav .top-nav-element .top-nav-mid {
+	padding-top: 3px !important;
+	padding-bottom: 11px !important;
+}
+
+body #globalWrapper #p-personal .top-nav .top-nav-element .top-nav-left {
+	padding-top: 3px !important;
+	padding-bottom: 11px !important;
+}
+
+body #globalWrapper #p-personal .top-nav .top-nav-element .top-nav-right {
+	padding-top: 3px !important;
+	padding-bottom: 11px !important;
+}
+
+.inputbox-element {
+	white-space:nowrap;
+	display:inline !important;
+}

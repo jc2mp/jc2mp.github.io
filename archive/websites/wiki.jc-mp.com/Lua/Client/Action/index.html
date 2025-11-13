@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8"/>
+<title>Lua/Client/Action - JC2-MP Documentation</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+<meta name="generator" content="MediaWiki 1.23.2"/>
+<script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dokv=88e434a982/"},atok:"80360eda8b544c354787952f58946c93",petok:"b56f3c9f24e4e9acc62771b7bf4894e74b3a6c9e-1408665553-1800",zone:"jc-mp.com",rocket:"0",apps:{"abetterbrowser":{"ie":"8"}}}];!function(a,b){a=document.createElement("script"),b=document.getElementsByTagName("script")[0],a.async=!0,a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dokv=97fb4d042e/cloudflare.min.js",b.parentNode.insertBefore(a,b)}()}}catch(e){};
+//]]>
+</script>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="JC2-MP Documentation (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.jc-mp.com/api.php?action=rsd"/>
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html"/>
+<link rel="alternate" type="application/atom+xml" title="JC2-MP Documentation Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom"/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.ui.button&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<link rel="stylesheet" href="/skins/cavendish/print.css?303" media="print"/>
+<link rel="stylesheet" href="/skins/cavendish/cavendish.css?303" media="screen"/>
+<!--[if IE 6]><link rel="stylesheet" href="/skins/cavendish/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/cavendish/IE70Fixes.css?303" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/skins/cavendish/colors/jcmp.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/extensions.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/style.php?303" media="screen"/><meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}</style>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Lua/Client/Action","wgTitle":"Lua/Client/Action","wgCurRevisionId":26623,"wgRevisionId":26623,"wgArticleId":3636,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Lua/Client/Action","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"cavendish","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,
+"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});},{},{});
+/* cache key: wiki:resourceloader:filter:minify-js:7:7f77fa4f43bf4c4bcff833b005ee38c1 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Lua_Client_Action skin-cavendish action-view">
+<div id="internal"></div>
+ 
+<div id="globalWrapper" class="view">
+<div id="p-personal" class="portlet">
+<h5>Personal tools</h5>
+<div class="pBody">
+<ul>
+<li id="pt-login" class="top-nav-element">
+<span class="top-nav-left">&nbsp;</span>
+<a class="top-nav-mid " href="/index.php?title=Special:UserLogin&amp;returnto=Lua%2FClient%2FAction">
+Click here to login with your JC2-MP account</a>
+<span class="top-nav-right">&nbsp;</span></li>
+</ul>
+</div>
+</div>
+<div id="header">
+<a name="top" id="contentTop"></a>
+<h6>
+<a href="/Main_Page" title="Main Page">Lua/Client/Action - JC2-MP Documentation</a></h6>
+<div id="p-cactions" class="portlet"><ul>
+<li id="ca-nstab-main" class="selected"><a href="/Lua/Client/Action" title="View the content page">Page</a></li>
+<li id="ca-talk" class="new"><a href="/index.php?title=Talk:Lua/Client/Action&amp;action=edit&amp;redlink=1" title="Discussion about the content page">Discussion</a></li>
+<li id="ca-viewsource"><a href="/index.php?title=Lua/Client/Action&amp;action=edit" title="This page is protected.&#10;You can view its source">View source</a></li>
+<li id="ca-history"><a href="/index.php?title=Lua/Client/Action&amp;action=history" title="Past revisions of this page">History</a></li> </ul></div>
+<div id="p-search" class="portlet" role="search">
+<h3><label for="searchInput">Search</label></h3>
+<div id="searchBody" class="pBody">
+<form action="/index.php" id="searchform">
+<input type='hidden' name="title" value="Special:Search"/>
+<input type="search" name="search" placeholder="Search" title="Search JC2-MP Documentation [f]" accesskey="f" id="searchInput"/>
+<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton"/>&#160;
+<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton"/>
+</form>
+</div>
+</div>
+</div>
+<div id="mBody">
+<div id="side">
+<div id="nav">
+<div class="generated-sidebar portlet" id="p-Main" role="navigation">
+<h3>Main</h3>
+<div class='pBody'>
+<ul>
+<li id="n-mainpage-description"><a href="/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+<li id="n-Web-site"><a href="http://www.jc-mp.com" rel="nofollow">Web site</a></li>
+<li id="n-Recent-changes"><a href="/Special:RecentChanges">Recent changes</a></li>
+</ul>
+</div>
+</div>
+<div class="generated-sidebar portlet" id="p-Lua" role="navigation">
+<h3>Lua</h3>
+<div class='pBody'>
+<ul>
+<li id="n-Tutorials"><a href="/Lua/Tutorials">Tutorials</a></li>
+<li id="n-Server"><a href="/Lua/Server">Server</a></li>
+<li id="n-Client"><a href="/Lua/Client">Client</a></li>
+<li id="n-Shared"><a href="/Lua/Shared">Shared</a></li>
+</ul>
+</div>
+</div>
+<div class="portlet" id="p-tb" role="navigation">
+<h3>Tools</h3>
+<div class="pBody">
+<ul>
+<li id="t-whatlinkshere"><a href="/Special:WhatLinksHere/Lua/Client/Action" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+<li id="t-recentchangeslinked"><a href="/Special:RecentChangesLinked/Lua/Client/Action" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+<li id="t-print"><a href="/index.php?title=Lua/Client/Action&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+<li id="t-permalink"><a href="/index.php?title=Lua/Client/Action&amp;oldid=26623" title="Permanent link to this revision of the page">Permanent link</a></li>
+<li id="t-info"><a href="/index.php?title=Lua/Client/Action&amp;action=info">Page information</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div> 
+<div id="column-content">
+<div id="content">
+<a id="top"></a>
+<h1 id="firstHeading" class="firstHeading">Lua/Client/Action</h1>
+<div id="bodyContent">
+<h3 id="siteSub">From JC2-MP Documentation</h3>
+<div id="contentSub"><span class="subpages">&lt; <a href="/Lua" title="Lua">Lua</a>&lrm; | <a href="/Lua/Client" title="Lua/Client">Client</a></span></div>
+<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>  
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><h2><span class="mw-headline" id="Statics">Statics</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable sortable">
+<tr>
+<th width="200"> Name
+</th>
+<th width="40"> Value
+</th></tr>
+<tr>
+<td align="left"> Accelerate
+</td>
+<td align="left"> 39
+</td></tr>
+<tr>
+<td align="left"> ActivateBlackMarketBeacon
+</td>
+<td align="left"> 150
+</td></tr>
+<tr>
+<td align="left"> ActivateExtractionBeacon
+</td>
+<td align="left"> 151
+</td></tr>
+<tr>
+<td align="left"> ActivateParachuteThrusters
+</td>
+<td align="left"> 152
+</td></tr>
+<tr>
+<td align="left"> BikeTiltBackward
+</td>
+<td align="left"> 48
+</td></tr>
+<tr>
+<td align="left"> BikeTiltForward
+</td>
+<td align="left"> 47
+</td></tr>
+<tr>
+<td align="left"> BoatBackward
+</td>
+<td align="left"> 67
+</td></tr>
+<tr>
+<td align="left"> BoatForward
+</td>
+<td align="left"> 66
+</td></tr>
+<tr>
+<td align="left"> BoatTurnLeft
+</td>
+<td align="left"> 68
+</td></tr>
+<tr>
+<td align="left"> BoatTurnRight
+</td>
+<td align="left"> 69
+</td></tr>
+<tr>
+<td align="left"> Crouch
+</td>
+<td align="left"> 36
+</td></tr>
+<tr>
+<td align="left"> Dash
+</td>
+<td align="left"> 118
+</td></tr>
+<tr>
+<td align="left"> DebugDecree
+</td>
+<td align="left"> 143
+</td></tr>
+<tr>
+<td align="left"> DebugIncree
+</td>
+<td align="left"> 142
+</td></tr>
+<tr>
+<td align="left"> DebugModeCombo1
+</td>
+<td align="left"> 103
+</td></tr>
+<tr>
+<td align="left"> DebugModeCombo2
+</td>
+<td align="left"> 104
+</td></tr>
+<tr>
+<td align="left"> DecGrappleDistance
+</td>
+<td align="left"> 79
+</td></tr>
+<tr>
+<td align="left"> DeployParachuteWhileReelingAction
+</td>
+<td align="left"> 146
+</td></tr>
+<tr>
+<td align="left"> DetachGrapple
+</td>
+<td align="left"> 80
+</td></tr>
+<tr>
+<td align="left"> Dive
+</td>
+<td align="left"> 76
+</td></tr>
+<tr>
+<td align="left"> DropWeapon
+</td>
+<td align="left"> 19
+</td></tr>
+<tr>
+<td align="left"> EndMovie
+</td>
+<td align="left"> 106
+</td></tr>
+<tr>
+<td align="left"> EnterVehicle
+</td>
+<td align="left"> 37
+</td></tr>
+<tr>
+<td align="left"> EquipBlackMarketBeacon
+</td>
+<td align="left"> 149
+</td></tr>
+<tr>
+<td align="left"> EquipDual
+</td>
+<td align="left"> 116
+</td></tr>
+<tr>
+<td align="left"> EquipExplosive
+</td>
+<td align="left"> 113
+</td></tr>
+<tr>
+<td align="left"> EquipLeftSlot
+</td>
+<td align="left"> 115
+</td></tr>
+<tr>
+<td align="left"> EquipRightSlot
+</td>
+<td align="left"> 114
+</td></tr>
+<tr>
+<td align="left"> EquipTwohanded
+</td>
+<td align="left"> 117
+</td></tr>
+<tr>
+<td align="left"> Evade
+</td>
+<td align="left"> 129
+</td></tr>
+<tr>
+<td align="left"> ExitToStuntposParachute
+</td>
+<td align="left"> 46
+</td></tr>
+<tr>
+<td align="left"> ExitVehicle
+</td>
+<td align="left"> 45
+</td></tr>
+<tr>
+<td align="left"> Fire
+</td>
+<td align="left"> 11
+</td></tr>
+<tr>
+<td align="left"> FireGrapple
+</td>
+<td align="left"> 81
+</td></tr>
+<tr>
+<td align="left"> FireLeft
+</td>
+<td align="left"> 12
+</td></tr>
+<tr>
+<td align="left"> FireRight
+</td>
+<td align="left"> 13
+</td></tr>
+<tr>
+<td align="left"> FireVehicleWeapon
+</td>
+<td align="left"> 14
+</td></tr>
+<tr>
+<td align="left"> GrapplingAction
+</td>
+<td align="left"> 82
+</td></tr>
+<tr>
+<td align="left"> GuiAnalogDown
+</td>
+<td align="left"> 154
+</td></tr>
+<tr>
+<td align="left"> GuiAnalogLeft
+</td>
+<td align="left"> 155
+</td></tr>
+<tr>
+<td align="left"> GuiAnalogRight
+</td>
+<td align="left"> 156
+</td></tr>
+<tr>
+<td align="left"> GuiAnalogUp
+</td>
+<td align="left"> 153
+</td></tr>
+<tr>
+<td align="left"> GuiBack
+</td>
+<td align="left"> 92
+</td></tr>
+<tr>
+<td align="left"> GuiCancel
+</td>
+<td align="left"> 86
+</td></tr>
+<tr>
+<td align="left"> GuiCreate
+</td>
+<td align="left"> 109
+</td></tr>
+<tr>
+<td align="left"> GuiDatabase
+</td>
+<td align="left"> 131
+</td></tr>
+<tr>
+<td align="left"> GuiDefault
+</td>
+<td align="left"> 111
+</td></tr>
+<tr>
+<td align="left"> GuiDelete
+</td>
+<td align="left"> 110
+</td></tr>
+<tr>
+<td align="left"> GuiDown
+</td>
+<td align="left"> 88
+</td></tr>
+<tr>
+<td align="left"> GuiIconLegend
+</td>
+<td align="left"> 130
+</td></tr>
+<tr>
+<td align="left"> GuiLeft
+</td>
+<td align="left"> 89
+</td></tr>
+<tr>
+<td align="left"> GuiLoad
+</td>
+<td align="left"> 107
+</td></tr>
+<tr>
+<td align="left"> GuiNext
+</td>
+<td align="left"> 91
+</td></tr>
+<tr>
+<td align="left"> GuiOk
+</td>
+<td align="left"> 85
+</td></tr>
+<tr>
+<td align="left"> GuiPDA
+</td>
+<td align="left"> 120
+</td></tr>
+<tr>
+<td align="left"> GuiPDAExtraction
+</td>
+<td align="left"> 123
+</td></tr>
+<tr>
+<td align="left"> GuiPDAToggleAOI
+</td>
+<td align="left"> 121
+</td></tr>
+<tr>
+<td align="left"> GuiPDAZoomIn
+</td>
+<td align="left"> 122
+</td></tr>
+<tr>
+<td align="left"> GuiPause
+</td>
+<td align="left"> 94
+</td></tr>
+<tr>
+<td align="left"> GuiPDAZoomOut
+</td>
+<td align="left"> 93
+</td></tr>
+<tr>
+<td align="left"> GuiRight
+</td>
+<td align="left"> 90
+</td></tr>
+<tr>
+<td align="left"> GuiSave
+</td>
+<td align="left"> 108
+</td></tr>
+<tr>
+<td align="left"> GuiUp
+</td>
+<td align="left"> 87
+</td></tr>
+<tr>
+<td align="left"> Handbrake
+</td>
+<td align="left"> 43
+</td></tr>
+<tr>
+<td align="left"> HeliAITargetAltitude
+</td>
+<td align="left"> 57
+</td></tr>
+<tr>
+<td align="left"> HeliAIAutoRoll
+</td>
+<td align="left"> 132
+</td></tr>
+<tr>
+<td align="left"> HeliBackward
+</td>
+<td align="left"> 50
+</td></tr>
+<tr>
+<td align="left"> HeliDecAltitude
+</td>
+<td align="left"> 56
+</td></tr>
+<tr>
+<td align="left"> HeliForward
+</td>
+<td align="left"> 49
+</td></tr>
+<tr>
+<td align="left"> HeliIncAltitude
+</td>
+<td align="left"> 55
+</td></tr>
+<tr>
+<td align="left"> HeliRollLeft
+</td>
+<td align="left"> 53
+</td></tr>
+<tr>
+<td align="left"> HeliRollRight
+</td>
+<td align="left"> 54
+</td></tr>
+<tr>
+<td align="left"> HeliTurnLeft
+</td>
+<td align="left"> 51
+</td></tr>
+<tr>
+<td align="left"> HeliTurnRight
+</td>
+<td align="left"> 52
+</td></tr>
+<tr>
+<td align="left"> IncGrappleDistance
+</td>
+<td align="left"> 78
+</td></tr>
+<tr>
+<td align="left"> Jump
+</td>
+<td align="left"> 35
+</td></tr>
+<tr>
+<td align="left"> Kick
+</td>
+<td align="left"> 124
+</td></tr>
+<tr>
+<td align="left"> LookDown
+</td>
+<td align="left"> 4
+</td></tr>
+<tr>
+<td align="left"> LookLeft
+</td>
+<td align="left"> 5
+</td></tr>
+<tr>
+<td align="left"> LookRight
+</td>
+<td align="left"> 6
+</td></tr>
+<tr>
+<td align="left"> LookUp
+</td>
+<td align="left"> 3
+</td></tr>
+<tr>
+<td align="left"> Map
+</td>
+<td align="left"> 1
+</td></tr>
+<tr>
+<td align="left"> MapScrollDown
+</td>
+<td align="left"> 98
+</td></tr>
+<tr>
+<td align="left"> MapScrollLeft
+</td>
+<td align="left"> 99
+</td></tr>
+<tr>
+<td align="left"> MapScrollRight
+</td>
+<td align="left"> 100
+</td></tr>
+<tr>
+<td align="left"> MapScrollUp
+</td>
+<td align="left"> 97
+</td></tr>
+<tr>
+<td align="left"> MapZoomIn
+</td>
+<td align="left"> 101
+</td></tr>
+<tr>
+<td align="left"> MapZoomOut
+</td>
+<td align="left"> 102
+</td></tr>
+<tr>
+<td align="left"> McFire
+</td>
+<td align="left"> 137
+</td></tr>
+<tr>
+<td align="left"> MoveBackward
+</td>
+<td align="left"> 31
+</td></tr>
+<tr>
+<td align="left"> MoveForward
+</td>
+<td align="left"> 30
+</td></tr>
+<tr>
+<td align="left"> MoveLeft
+</td>
+<td align="left"> 32
+</td></tr>
+<tr>
+<td align="left"> MoveRight
+</td>
+<td align="left"> 33
+</td></tr>
+<tr>
+<td align="left"> MoveToDriversSeat
+</td>
+<td align="left"> 70
+</td></tr>
+<tr>
+<td align="left"> NextWeapon
+</td>
+<td align="left"> 17
+</td></tr>
+<tr>
+<td align="left"> Objectives
+</td>
+<td align="left"> 2
+</td></tr>
+<tr>
+<td align="left"> ParachuteLandOnVehicle
+</td>
+<td align="left"> 72
+</td></tr>
+<tr>
+<td align="left"> ParachuteOpenClose
+</td>
+<td align="left"> 71
+</td></tr>
+<tr>
+<td align="left"> Pause
+</td>
+<td align="left"> 0
+</td></tr>
+<tr>
+<td align="left"> PickupWithLeftHand
+</td>
+<td align="left"> 147
+</td></tr>
+<tr>
+<td align="left"> PickupWithRightHand
+</td>
+<td align="left"> 148
+</td></tr>
+<tr>
+<td align="left"> PlaneDecTrust
+</td>
+<td align="left"> 65
+</td></tr>
+<tr>
+<td align="left"> PlaneIncTrust
+</td>
+<td align="left"> 64
+</td></tr>
+<tr>
+<td align="left"> PlanePitchDown
+</td>
+<td align="left"> 59
+</td></tr>
+<tr>
+<td align="left"> PlanePitchUp
+</td>
+<td align="left"> 58
+</td></tr>
+<tr>
+<td align="left"> PlaneRollLeft
+</td>
+<td align="left"> 62
+</td></tr>
+<tr>
+<td align="left"> PlaneRollRight
+</td>
+<td align="left"> 63
+</td></tr>
+<tr>
+<td align="left"> PlaneTurnLeft
+</td>
+<td align="left"> 60
+</td></tr>
+<tr>
+<td align="left"> PlaneTurnRight
+</td>
+<td align="left"> 61
+</td></tr>
+<tr>
+<td align="left"> PrevWeapon
+</td>
+<td align="left"> 18
+</td></tr>
+<tr>
+<td align="left"> QuickLoad
+</td>
+<td align="left"> 141
+</td></tr>
+<tr>
+<td align="left"> QuickSave
+</td>
+<td align="left"> 140
+</td></tr>
+<tr>
+<td align="left"> ReeledInJumpAction
+</td>
+<td align="left"> 144
+</td></tr>
+<tr>
+<td align="left"> ReeledInReleaseAction
+</td>
+<td align="left"> 145
+</td></tr>
+<tr>
+<td align="left"> Reload
+</td>
+<td align="left"> 16
+</td></tr>
+<tr>
+<td align="left"> ResetCamera
+</td>
+<td align="left"> 7
+</td></tr>
+<tr>
+<td align="left"> Reverse
+</td>
+<td align="left"> 40
+</td></tr>
+<tr>
+<td align="left"> SequenceButton1
+</td>
+<td align="left"> 133
+</td></tr>
+<tr>
+<td align="left"> SequenceButton2
+</td>
+<td align="left"> 134
+</td></tr>
+<tr>
+<td align="left"> SequenceButton3
+</td>
+<td align="left"> 135
+</td></tr>
+<tr>
+<td align="left"> SequenceButton4
+</td>
+<td align="left"> 136
+</td></tr>
+<tr>
+<td align="left"> ShoulderCam
+</td>
+<td align="left"> 9
+</td></tr>
+<tr>
+<td align="left"> SidestepLeftBreakLof
+</td>
+<td align="left"> 126
+</td></tr>
+<tr>
+<td align="left"> SidestepLeftGainLof
+</td>
+<td align="left"> 125
+</td></tr>
+<tr>
+<td align="left"> SidestepRightBreakLof
+</td>
+<td align="left"> 128
+</td></tr>
+<tr>
+<td align="left"> SidestepRightGainLof
+</td>
+<td align="left"> 127
+</td></tr>
+<tr>
+<td align="left"> SkipTutorial
+</td>
+<td align="left"> 112
+</td></tr>
+<tr>
+<td align="left"> SoundHornSiren
+</td>
+<td align="left"> 44
+</td></tr>
+<tr>
+<td align="left"> StuntJump
+</td>
+<td align="left"> 119
+</td></tr>
+<tr>
+<td align="left"> StuntposEnterVehicle
+</td>
+<td align="left"> 75
+</td></tr>
+<tr>
+<td align="left"> StuntposJumpOff
+</td>
+<td align="left"> 73
+</td></tr>
+<tr>
+<td align="left"> StuntposToParachute
+</td>
+<td align="left"> 74
+</td></tr>
+<tr>
+<td align="left"> Swim
+</td>
+<td align="left"> 77
+</td></tr>
+<tr>
+<td align="left"> SwitchTarget
+</td>
+<td align="left"> 10
+</td></tr>
+<tr>
+<td align="left"> SwitchWeapon
+</td>
+<td align="left"> 105
+</td></tr>
+<tr>
+<td align="left"> ThrowGrenade
+</td>
+<td align="left"> 15
+</td></tr>
+<tr>
+<td align="left"> TurnLeft
+</td>
+<td align="left"> 41
+</td></tr>
+<tr>
+<td align="left"> TurnRight
+</td>
+<td align="left"> 42
+</td></tr>
+<tr>
+<td align="left"> UseItem
+</td>
+<td align="left"> 38
+</td></tr>
+<tr>
+<td align="left"> VehicleCam
+</td>
+<td align="left"> 8
+</td></tr>
+<tr>
+<td align="left"> VehicleFireLeft
+</td>
+<td align="left"> 138
+</td></tr>
+<tr>
+<td align="left"> VehicleFireRight
+</td>
+<td align="left"> 139
+</td></tr>
+<tr>
+<td align="left"> Walk
+</td>
+<td align="left"> 34
+</td></tr>
+<tr>
+<td align="left"> Weapon0
+</td>
+<td align="left"> 29
+</td></tr>
+<tr>
+<td align="left"> Weapon1
+</td>
+<td align="left"> 20
+</td></tr>
+<tr>
+<td align="left"> Weapon2
+</td>
+<td align="left"> 21
+</td></tr>
+<tr>
+<td align="left"> Weapon3
+</td>
+<td align="left"> 22
+</td></tr>
+<tr>
+<td align="left"> Weapon4
+</td>
+<td align="left"> 23
+</td></tr>
+<tr>
+<td align="left"> Weapon5
+</td>
+<td align="left"> 24
+</td></tr>
+<tr>
+<td align="left"> Weapon6
+</td>
+<td align="left"> 25
+</td></tr>
+<tr>
+<td align="left"> Weapon7
+</td>
+<td align="left"> 26
+</td></tr>
+<tr>
+<td align="left"> Weapon8
+</td>
+<td align="left"> 27
+</td></tr>
+<tr>
+<td align="left"> Weapon9
+</td>
+<td align="left"> 28
+</td></tr>
+<tr>
+<td align="left"> XliveAponline
+</td>
+<td align="left"> 96
+</td></tr>
+<tr>
+<td align="left"> XliveLogout
+</td>
+<td align="left"> 95
+</td></tr>
+<tr>
+<td align="left"> ZoomIn
+</td>
+<td align="left"> 83
+</td></tr>
+<tr>
+<td align="left"> ZoomOut
+</td>
+<td align="left"> 84
+</td></tr></table> </font>
+ 
+ 
+</div><div class="printfooter">
+Retrieved from "<a href="http://wiki.jc-mp.com/index.php?title=Lua/Client/Action&amp;oldid=26623">http://wiki.jc-mp.com/index.php?title=Lua/Client/Action&amp;oldid=26623</a>"</div>
+<div id='catlinks' class='catlinks catlinks-allhidden'></div>  
+</div>
+</div> 
+</div>
+</div> 
+<div class="visualClear"></div>
+<div id="footer">
+<table>
+<tr>
+<td rowspan="2" class="f-iconsection">
+<div id="f-copyrightico"><a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.3 or later" width="88" height="31"/></a></div> </td>
+<td align="center">
+<ul id="f-list">
+<li id="f-lastmod"> This page was last modified on 21 June 2014, at 16:19.</li>
+<li id="f-viewcount">This page has been accessed 2,118 times.</li>
+<li id="f-copyright">Content is available under <a class="external" rel="nofollow" href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+<li id="f-privacy"><a href="/Project:Privacy_policy" title="Project:Privacy policy">Privacy policy</a></li>
+<li id="f-about"><a href="/Project:About" title="Project:About">About JC2-MP Documentation</a></li>
+<li id="f-disclaimer"><a href="/Project:General_disclaimer" title="Project:General disclaimer">Disclaimers</a></li>
+</ul></td>
+<td rowspan="2" class="f-iconsection">
+<div id="f-poweredbyico"><a href="//www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"/></a></div>
+</td>
+</tr>
+<tr>
+<td><div id="skin-info">
+Mozilla Cavendish Theme based on Cavendish style by Gabriel Wicke modified by <a href="http://www.dasch-tour.de" title="DaSch-Tour Blog" target="_blank">DaSch</a> for the <a href="http://www.wecowi.de/" title="Web Community Wiki">Web Community Wiki</a><br/>
+<a href="https://github.com/DaSchTour/Cavendish" title="github projectpage">github Projectpage</a> &ndash; <a href="https://github.com/DaSchTour/Cavendish/issues" title="Bug reporting at github">Report Bug</a> &ndash; Skin-Version: 2.3.2 </div></td>
+</tr>
+</table>
+</div> 
+</div> 
+ 
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":353});
+}</script></body></html>

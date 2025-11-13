@@ -1,0 +1,1 @@
+var tree=$('#wikitext-sidebar');$('#p-logo').after(tree.html());tree.html('');mw.loader.state({"site":"ready"});

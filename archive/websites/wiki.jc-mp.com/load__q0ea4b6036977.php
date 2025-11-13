@@ -1,0 +1,2 @@
+var tree=$('#wikitext-sidebar');$('#p-logo').after(tree.html());tree.html('');mw.loader.state({"site":"ready"});
+/* cache key: wiki:resourceloader:filter:minify-js:7:7911c2952473dcdecb53bc7fe0a38cbe */

@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8"/>
+<title>Lua/Shared/Color - JC2-MP Documentation</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE"/>
+<meta name="generator" content="MediaWiki 1.23.7"/>
+<script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok3v=1613a3a185/"},atok:"3d4685a8242fc8ea9ad5ff8147ae6aeb",petok:"09543a241d582ef8d66dfb3b52f9992abb4499a8-1426562015-1800",zone:"jc-mp.com",rocket:"0",apps:{"abetterbrowser":{"ie":"8"}}}];!function(a,b){a=document.createElement("script"),b=document.getElementsByTagName("script")[0],a.async=!0,a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok3v=919620257c/cloudflare.min.js",b.parentNode.insertBefore(a,b)}()}}catch(e){};
+//]]>
+</script>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="JC2-MP Documentation (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.jc-mp.com/api.php?action=rsd"/>
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html"/>
+<link rel="alternate" type="application/atom+xml" title="JC2-MP Documentation Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom"/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cmediawiki.ui.button&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<link rel="stylesheet" href="/skins/cavendish/print.css?303" media="print"/>
+<link rel="stylesheet" href="/skins/cavendish/cavendish.css?303" media="screen"/>
+<!--[if IE 6]><link rel="stylesheet" href="/skins/cavendish/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/cavendish/IE70Fixes.css?303" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/skins/cavendish/colors/jcmp.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/extensions.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/style.php?303" media="screen"/><meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<style>a:lang(ar),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}</style>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Lua/Shared/Color","wgTitle":"Lua/Shared/Color","wgCurRevisionId":26622,"wgRevisionId":26622,"wgArticleId":3714,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Lua/Shared/Color","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function($,jQuery){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"editfont":"default","editondblclick":0,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":1,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nickname":"","norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rows":25,"showhiddencats":0,"shownumberswatching":1,"showtoolbar":1,"skin":"cavendish","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":1,"watchdefault":1,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,
+"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function($,jQuery){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});},{},{});
+/* cache key: wiki:resourceloader:filter:minify-js:7:7f77fa4f43bf4c4bcff833b005ee38c1 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Lua_Shared_Color skin-cavendish action-view"><script type="text/javascript">
+//<![CDATA[
+try{(function(a){var b="http://",c="wiki.jc-mp.com",d="/cdn-cgi/cl/",e="img.gif",f=new a;f.src=[b,c,d,e].join("")})(Image)}catch(e){}
+//]]>
+</script>
+<div id="internal"></div>
+ 
+<div id="globalWrapper" class="view">
+<div id="p-personal" class="portlet">
+<h5>Personal tools</h5>
+<div class="pBody">
+<ul>
+<li id="pt-login" class="top-nav-element">
+<span class="top-nav-left">&nbsp;</span>
+<a class="top-nav-mid " href="/index.php?title=Special:UserLogin&amp;returnto=Lua%2FShared%2FColor">
+Click here to login with your JC2-MP account</a>
+<span class="top-nav-right">&nbsp;</span></li>
+</ul>
+</div>
+</div>
+<div id="header">
+<a name="top" id="contentTop"></a>
+<h6>
+<a href="/Main_Page" title="Main Page">Lua/Shared/Color - JC2-MP Documentation</a></h6>
+<div id="p-cactions" class="portlet"><ul>
+<li id="ca-nstab-main" class="selected"><a href="/Lua/Shared/Color" title="View the content page">Page</a></li>
+<li id="ca-talk" class="new"><a href="/index.php?title=Talk:Lua/Shared/Color&amp;action=edit&amp;redlink=1" title="Discussion about the content page">Discussion</a></li>
+<li id="ca-viewsource"><a href="/index.php?title=Lua/Shared/Color&amp;action=edit" title="This page is protected.&#10;You can view its source">View source</a></li>
+<li id="ca-history"><a href="/index.php?title=Lua/Shared/Color&amp;action=history" title="Past revisions of this page">History</a></li> </ul></div>
+<div id="p-search" class="portlet" role="search">
+<h3><label for="searchInput">Search</label></h3>
+<div id="searchBody" class="pBody">
+<form action="/index.php" id="searchform">
+<input type='hidden' name="title" value="Special:Search"/>
+<input type="search" name="search" placeholder="Search" title="Search JC2-MP Documentation [f]" accesskey="f" id="searchInput"/>
+<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton"/>&#160;
+<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton"/>
+</form>
+</div>
+</div>
+</div>
+<div id="mBody">
+<div id="side">
+<div id="nav">
+<div class="generated-sidebar portlet" id="p-Main" role="navigation">
+<h3>Main</h3>
+<div class='pBody'>
+<ul>
+<li id="n-mainpage-description"><a href="/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+<li id="n-Web-site"><a href="http://www.jc-mp.com" rel="nofollow">Web site</a></li>
+<li id="n-Recent-changes"><a href="/Special:RecentChanges">Recent changes</a></li>
+</ul>
+</div>
+</div>
+<div class="generated-sidebar portlet" id="p-Lua" role="navigation">
+<h3>Lua</h3>
+<div class='pBody'>
+<ul>
+<li id="n-Tutorials"><a href="/Lua/Tutorials">Tutorials</a></li>
+<li id="n-Server"><a href="/Lua/Server">Server</a></li>
+<li id="n-Client"><a href="/Lua/Client">Client</a></li>
+<li id="n-Shared"><a href="/Lua/Shared">Shared</a></li>
+</ul>
+</div>
+</div>
+<div class="portlet" id="p-tb" role="navigation">
+<h3>Tools</h3>
+<div class="pBody">
+<ul>
+<li id="t-whatlinkshere"><a href="/Special:WhatLinksHere/Lua/Shared/Color" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+<li id="t-recentchangeslinked"><a href="/Special:RecentChangesLinked/Lua/Shared/Color" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+<li id="t-print"><a href="/index.php?title=Lua/Shared/Color&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+<li id="t-permalink"><a href="/index.php?title=Lua/Shared/Color&amp;oldid=26622" title="Permanent link to this revision of the page">Permanent link</a></li>
+<li id="t-info"><a href="/index.php?title=Lua/Shared/Color&amp;action=info">Page information</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div> 
+<div id="column-content">
+<div id="content">
+<a id="top"></a>
+<h1 id="firstHeading" class="firstHeading">Lua/Shared/Color</h1>
+<div id="bodyContent">
+<h3 id="siteSub">From JC2-MP Documentation</h3>
+<div id="contentSub"><span class="subpages">&lt; <a href="/Lua" title="Lua">Lua</a>&lrm; | <a href="/Lua/Shared" title="Lua/Shared">Shared</a></span></div>
+<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>  
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><div id="toc" class="toc"><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Static_functions"><span class="tocnumber">1</span> <span class="toctext">Static functions</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Constructors"><span class="tocnumber">2</span> <span class="toctext">Constructors</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#Operators"><span class="tocnumber">3</span> <span class="toctext">Operators</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#Properties"><span class="tocnumber">4</span> <span class="toctext">Properties</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#Statics"><span class="tocnumber">5</span> <span class="toctext">Statics</span></a></li>
+</ul>
+</div>
+<h2><span class="mw-headline" id="Static_functions">Static functions</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable sortable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr>
+<tr>
+<td align="right"> Color
+</td>
+<td align="left"> <a href="/Lua/Shared/Color/Static_Functions/FromHSV" title="Lua/Shared/Color/Static Functions/FromHSV">FromHSV</a>(number, number, number)
+</td></tr></table> </font>
+<h2><span class="mw-headline" id="Constructors">Constructors</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable sortable">
+<tr>
+<th width="450"> Constructor
+</th></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Constructor" title="Lua/Shared/Color/Constructor">Color</a>(number, number, number, number)
+</td></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Constructor" title="Lua/Shared/Color/Constructor">Color</a>(number, number, number)
+</td></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Constructor" title="Lua/Shared/Color/Constructor">Color</a>()
+</td></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Constructor" title="Lua/Shared/Color/Constructor">Color</a>(number)
+</td></tr></table> </font>
+<h2><span class="mw-headline" id="Operators">Operators</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable sortable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> Color + Color
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> Color / number
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> Color * number
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> Color - Color
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> Color == Color
+</td></tr>
+<tr>
+<td align="right"> string
+</td>
+<td align="left"> tostring(Color)
+</td></tr></table> </font>
+<h2><span class="mw-headline" id="Properties">Properties</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable sortable">
+<tr>
+<th width="160"> Name
+</th>
+<th width="130"> Type
+</th></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Properties/a" title="Lua/Shared/Color/Properties/a">a</a>
+</td>
+<td align="left"> number
+</td></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Properties/b" title="Lua/Shared/Color/Properties/b">b</a>
+</td>
+<td align="left"> number
+</td></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Properties/g" title="Lua/Shared/Color/Properties/g">g</a>
+</td>
+<td align="left"> number
+</td></tr>
+<tr>
+<td align="left"> <a href="/Lua/Shared/Color/Properties/r" title="Lua/Shared/Color/Properties/r">r</a>
+</td>
+<td align="left"> number
+</td></tr></table> </font>
+<h2><span class="mw-headline" id="Statics">Statics</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable sortable">
+<tr>
+<th width="180"> Name
+</th>
+<th width="160"> Value
+</th>
+<th width="90"> Color
+</th></tr>
+<tr>
+<td>AliceBlue
+</td>
+<td>Color(240, 248, 255)
+</td>
+<td style="background-color:rgb(240, 248, 255);color:rgb(240, 248, 255);">169
+</td></tr>
+<tr>
+<td>AntiqueWhite
+</td>
+<td>Color(250, 235, 215)
+</td>
+<td style="background-color:rgb(250, 235, 215);color:rgb(250, 235, 215);">1
+</td></tr>
+<tr>
+<td>Aqua
+</td>
+<td>Color(0, 255, 255)
+</td>
+<td style="background-color:rgb(0, 255, 255);color:rgb(0, 255, 255);">86
+</td></tr>
+<tr>
+<td>Aquamarine
+</td>
+<td>Color(127, 255, 212)
+</td>
+<td style="background-color:rgb(127, 255, 212);color:rgb(127, 255, 212);">86
+</td></tr>
+<tr>
+<td>Azure
+</td>
+<td>Color(240, 255, 255)
+</td>
+<td style="background-color:rgb(240, 255, 255);color:rgb(240, 255, 255);">86
+</td></tr>
+<tr>
+<td>Beige
+</td>
+<td>Color(245, 245, 220)
+</td>
+<td style="background-color:rgb(245, 245, 220);color:rgb(245, 245, 220);">1
+</td></tr>
+<tr>
+<td>Bisque
+</td>
+<td>Color(255, 228, 196)
+</td>
+<td style="background-color:rgb(255, 228, 196);color:rgb(255, 228, 196);">1
+</td></tr>
+<tr>
+<td>Black
+</td>
+<td>Color(0, 0, 0)
+</td>
+<td style="background-color:rgb(0, 0, 0);color:rgb(0, 0, 0);">-1
+</td></tr>
+<tr>
+<td>BlanchedAlmond
+</td>
+<td>Color(255, 235, 205)
+</td>
+<td style="background-color:rgb(255, 235, 205);color:rgb(255, 235, 205);">1
+</td></tr>
+<tr>
+<td>Blue
+</td>
+<td>Color(0, 0, 255)
+</td>
+<td style="background-color:rgb(0, 0, 255);color:rgb(0, 0, 255);">170
+</td></tr>
+<tr>
+<td>BlueViolet
+</td>
+<td>Color(138, 43, 226)
+</td>
+<td style="background-color:rgb(138, 43, 226);color:rgb(138, 43, 226);">171
+</td></tr>
+<tr>
+<td>Brown
+</td>
+<td>Color(165, 42, 42)
+</td>
+<td style="background-color:rgb(165, 42, 42);color:rgb(165, 42, 42);">0
+</td></tr>
+<tr>
+<td>BurlyWood
+</td>
+<td>Color(222, 184, 135)
+</td>
+<td style="background-color:rgb(222, 184, 135);color:rgb(222, 184, 135);">1
+</td></tr>
+<tr>
+<td>CadetBlue
+</td>
+<td>Color(95, 158, 160)
+</td>
+<td style="background-color:rgb(95, 158, 160);color:rgb(95, 158, 160);">169
+</td></tr>
+<tr>
+<td>Chartreuse
+</td>
+<td>Color(127, 255, 0)
+</td>
+<td style="background-color:rgb(127, 255, 0);color:rgb(127, 255, 0);">85
+</td></tr>
+<tr>
+<td>Chocolate
+</td>
+<td>Color(210, 105, 30)
+</td>
+<td style="background-color:rgb(210, 105, 30);color:rgb(210, 105, 30);">0
+</td></tr>
+<tr>
+<td>Coral
+</td>
+<td>Color(255, 127, 80)
+</td>
+<td style="background-color:rgb(255, 127, 80);color:rgb(255, 127, 80);">0
+</td></tr>
+<tr>
+<td>CornflowerBlue
+</td>
+<td>Color(100, 149, 237)
+</td>
+<td style="background-color:rgb(100, 149, 237);color:rgb(100, 149, 237);">170
+</td></tr>
+<tr>
+<td>Cornsilk
+</td>
+<td>Color(255, 248, 220)
+</td>
+<td style="background-color:rgb(255, 248, 220);color:rgb(255, 248, 220);">1
+</td></tr>
+<tr>
+<td>Crimson
+</td>
+<td>Color(220, 20, 60)
+</td>
+<td style="background-color:rgb(220, 20, 60);color:rgb(220, 20, 60);">255
+</td></tr>
+<tr>
+<td>Cyan
+</td>
+<td>Color(0, 255, 255)
+</td>
+<td style="background-color:rgb(0, 255, 255);color:rgb(0, 255, 255);">86
+</td></tr>
+<tr>
+<td>DarkBlue
+</td>
+<td>Color(0, 0, 139)
+</td>
+<td style="background-color:rgb(0, 0, 139);color:rgb(0, 0, 139);">170
+</td></tr>
+<tr>
+<td>DarkCyan
+</td>
+<td>Color(0, 139, 139)
+</td>
+<td style="background-color:rgb(0, 139, 139);color:rgb(0, 139, 139);">86
+</td></tr>
+<tr>
+<td>DarkGoldenRod
+</td>
+<td>Color(184, 134, 11)
+</td>
+<td style="background-color:rgb(184, 134, 11);color:rgb(184, 134, 11);">1
+</td></tr>
+<tr>
+<td>DarkGray
+</td>
+<td>Color(169, 169, 169)
+</td>
+<td style="background-color:rgb(169, 169, 169);color:rgb(169, 169, 169);">-1
+</td></tr>
+<tr>
+<td>DarkGreen
+</td>
+<td>Color(0, 100, 0)
+</td>
+<td style="background-color:rgb(0, 100, 0);color:rgb(0, 100, 0);">85
+</td></tr>
+<tr>
+<td>DarkKhaki
+</td>
+<td>Color(189, 183, 107)
+</td>
+<td style="background-color:rgb(189, 183, 107);color:rgb(189, 183, 107);">1
+</td></tr>
+<tr>
+<td>DarkMagenta
+</td>
+<td>Color(139, 0, 139)
+</td>
+<td style="background-color:rgb(139, 0, 139);color:rgb(139, 0, 139);">254
+</td></tr>
+<tr>
+<td>DarkOliveGreen
+</td>
+<td>Color(85, 107, 47)
+</td>
+<td style="background-color:rgb(85, 107, 47);color:rgb(85, 107, 47);">84
+</td></tr>
+<tr>
+<td>DarkOrange
+</td>
+<td>Color(255, 140, 0)
+</td>
+<td style="background-color:rgb(255, 140, 0);color:rgb(255, 140, 0);">1
+</td></tr>
+<tr>
+<td>DarkOrchid
+</td>
+<td>Color(153, 50, 204)
+</td>
+<td style="background-color:rgb(153, 50, 204);color:rgb(153, 50, 204);">171
+</td></tr>
+<tr>
+<td>DarkRed
+</td>
+<td>Color(139, 0, 0)
+</td>
+<td style="background-color:rgb(139, 0, 0);color:rgb(139, 0, 0);">0
+</td></tr>
+<tr>
+<td>DarkSalmon
+</td>
+<td>Color(233, 150, 122)
+</td>
+<td style="background-color:rgb(233, 150, 122);color:rgb(233, 150, 122);">0
+</td></tr>
+<tr>
+<td>DarkSeaGreen
+</td>
+<td>Color(143, 188, 143)
+</td>
+<td style="background-color:rgb(143, 188, 143);color:rgb(143, 188, 143);">85
+</td></tr>
+<tr>
+<td>DarkSlateBlue
+</td>
+<td>Color(72, 61, 139)
+</td>
+<td style="background-color:rgb(72, 61, 139);color:rgb(72, 61, 139);">170
+</td></tr>
+<tr>
+<td>DarkSlateGray
+</td>
+<td>Color(47, 79, 79)
+</td>
+<td style="background-color:rgb(47, 79, 79);color:rgb(47, 79, 79);">86
+</td></tr>
+<tr>
+<td>DarkTurquoise
+</td>
+<td>Color(0, 206, 209)
+</td>
+<td style="background-color:rgb(0, 206, 209);color:rgb(0, 206, 209);">169
+</td></tr>
+<tr>
+<td>DarkViolet
+</td>
+<td>Color(148, 0, 211)
+</td>
+<td style="background-color:rgb(148, 0, 211);color:rgb(148, 0, 211);">171
+</td></tr>
+<tr>
+<td>DeepPink
+</td>
+<td>Color(255, 20, 147)
+</td>
+<td style="background-color:rgb(255, 20, 147);color:rgb(255, 20, 147);">254
+</td></tr>
+<tr>
+<td>DeepSkyBlue
+</td>
+<td>Color(0, 191, 255)
+</td>
+<td style="background-color:rgb(0, 191, 255);color:rgb(0, 191, 255);">169
+</td></tr>
+<tr>
+<td>DimGray
+</td>
+<td>Color(105, 105, 105)
+</td>
+<td style="background-color:rgb(105, 105, 105);color:rgb(105, 105, 105);">-1
+</td></tr>
+<tr>
+<td>DodgerBlue
+</td>
+<td>Color(30, 144, 255)
+</td>
+<td style="background-color:rgb(30, 144, 255);color:rgb(30, 144, 255);">169
+</td></tr>
+<tr>
+<td>FireBrick
+</td>
+<td>Color(178, 34, 34)
+</td>
+<td style="background-color:rgb(178, 34, 34);color:rgb(178, 34, 34);">0
+</td></tr>
+<tr>
+<td>FloralWhite
+</td>
+<td>Color(255, 250, 240)
+</td>
+<td style="background-color:rgb(255, 250, 240);color:rgb(255, 250, 240);">1
+</td></tr>
+<tr>
+<td>ForestGreen
+</td>
+<td>Color(34, 139, 34)
+</td>
+<td style="background-color:rgb(34, 139, 34);color:rgb(34, 139, 34);">85
+</td></tr>
+<tr>
+<td>Fuchsia
+</td>
+<td>Color(255, 0, 255)
+</td>
+<td style="background-color:rgb(255, 0, 255);color:rgb(255, 0, 255);">254
+</td></tr>
+<tr>
+<td>Gainsboro
+</td>
+<td>Color(220, 220, 220)
+</td>
+<td style="background-color:rgb(220, 220, 220);color:rgb(220, 220, 220);">-1
+</td></tr>
+<tr>
+<td>GhostWhite
+</td>
+<td>Color(248, 248, 255)
+</td>
+<td style="background-color:rgb(248, 248, 255);color:rgb(248, 248, 255);">170
+</td></tr>
+<tr>
+<td>Gold
+</td>
+<td>Color(255, 215, 0)
+</td>
+<td style="background-color:rgb(255, 215, 0);color:rgb(255, 215, 0);">1
+</td></tr>
+<tr>
+<td>GoldenRod
+</td>
+<td>Color(218, 165, 32)
+</td>
+<td style="background-color:rgb(218, 165, 32);color:rgb(218, 165, 32);">1
+</td></tr>
+<tr>
+<td>Gray
+</td>
+<td>Color(128, 128, 128)
+</td>
+<td style="background-color:rgb(128, 128, 128);color:rgb(128, 128, 128);">-1
+</td></tr>
+<tr>
+<td>Green
+</td>
+<td>Color(0, 128, 0)
+</td>
+<td style="background-color:rgb(0, 128, 0);color:rgb(0, 128, 0);">85
+</td></tr>
+<tr>
+<td>GreenYellow
+</td>
+<td>Color(173, 255, 47)
+</td>
+<td style="background-color:rgb(173, 255, 47);color:rgb(173, 255, 47);">84
+</td></tr>
+<tr>
+<td>HoneyDew
+</td>
+<td>Color(240, 255, 240)
+</td>
+<td style="background-color:rgb(240, 255, 240);color:rgb(240, 255, 240);">85
+</td></tr>
+<tr>
+<td>HotPink
+</td>
+<td>Color(255, 105, 180)
+</td>
+<td style="background-color:rgb(255, 105, 180);color:rgb(255, 105, 180);">255
+</td></tr>
+<tr>
+<td>IndianRed
+</td>
+<td>Color(205, 92, 92)
+</td>
+<td style="background-color:rgb(205, 92, 92);color:rgb(205, 92, 92);">0
+</td></tr>
+<tr>
+<td>Indigo
+</td>
+<td>Color(75, 0, 130)
+</td>
+<td style="background-color:rgb(75, 0, 130);color:rgb(75, 0, 130);">171
+</td></tr>
+<tr>
+<td>Ivory
+</td>
+<td>Color(255, 255, 240)
+</td>
+<td style="background-color:rgb(255, 255, 240);color:rgb(255, 255, 240);">1
+</td></tr>
+<tr>
+<td>Khaki
+</td>
+<td>Color(240, 230, 140)
+</td>
+<td style="background-color:rgb(240, 230, 140);color:rgb(240, 230, 140);">1
+</td></tr>
+<tr>
+<td>Lavender
+</td>
+<td>Color(230, 230, 250)
+</td>
+<td style="background-color:rgb(230, 230, 250);color:rgb(230, 230, 250);">170
+</td></tr>
+<tr>
+<td>LavenderBlush
+</td>
+<td>Color(255, 240, 245)
+</td>
+<td style="background-color:rgb(255, 240, 245);color:rgb(255, 240, 245);">255
+</td></tr>
+<tr>
+<td>LawnGreen
+</td>
+<td>Color(124, 252, 0)
+</td>
+<td style="background-color:rgb(124, 252, 0);color:rgb(124, 252, 0);">85
+</td></tr>
+<tr>
+<td>LemonChiffon
+</td>
+<td>Color(255, 250, 205)
+</td>
+<td style="background-color:rgb(255, 250, 205);color:rgb(255, 250, 205);">1
+</td></tr>
+<tr>
+<td>LightBlue
+</td>
+<td>Color(173, 216, 230)
+</td>
+<td style="background-color:rgb(173, 216, 230);color:rgb(173, 216, 230);">169
+</td></tr>
+<tr>
+<td>LightCoral
+</td>
+<td>Color(240, 128, 128)
+</td>
+<td style="background-color:rgb(240, 128, 128);color:rgb(240, 128, 128);">0
+</td></tr>
+<tr>
+<td>LightCyan
+</td>
+<td>Color(224, 255, 255)
+</td>
+<td style="background-color:rgb(224, 255, 255);color:rgb(224, 255, 255);">86
+</td></tr>
+<tr>
+<td>LightGoldenRodYellow
+</td>
+<td>Color(250, 250, 210)
+</td>
+<td style="background-color:rgb(250, 250, 210);color:rgb(250, 250, 210);">1
+</td></tr>
+<tr>
+<td>LightGray
+</td>
+<td>Color(211, 211, 211)
+</td>
+<td style="background-color:rgb(211, 211, 211);color:rgb(211, 211, 211);">-1
+</td></tr>
+<tr>
+<td>LightGreen
+</td>
+<td>Color(144, 238, 144)
+</td>
+<td style="background-color:rgb(144, 238, 144);color:rgb(144, 238, 144);">85
+</td></tr>
+<tr>
+<td>LightPink
+</td>
+<td>Color(255, 182, 193)
+</td>
+<td style="background-color:rgb(255, 182, 193);color:rgb(255, 182, 193);">255
+</td></tr>
+<tr>
+<td>LightSalmon
+</td>
+<td>Color(255, 160, 122)
+</td>
+<td style="background-color:rgb(255, 160, 122);color:rgb(255, 160, 122);">0
+</td></tr>
+<tr>
+<td>LightSeaGreen
+</td>
+<td>Color(32, 178, 170)
+</td>
+<td style="background-color:rgb(32, 178, 170);color:rgb(32, 178, 170);">86
+</td></tr>
+<tr>
+<td>LightSkyBlue
+</td>
+<td>Color(135, 206, 250)
+</td>
+<td style="background-color:rgb(135, 206, 250);color:rgb(135, 206, 250);">169
+</td></tr>
+<tr>
+<td>LightSlateGray
+</td>
+<td>Color(119, 136, 153)
+</td>
+<td style="background-color:rgb(119, 136, 153);color:rgb(119, 136, 153);">170
+</td></tr>
+<tr>
+<td>LightSteelBlue
+</td>
+<td>Color(176, 196, 222)
+</td>
+<td style="background-color:rgb(176, 196, 222);color:rgb(176, 196, 222);">170
+</td></tr>
+<tr>
+<td>LightYellow
+</td>
+<td>Color(255, 255, 224)
+</td>
+<td style="background-color:rgb(255, 255, 224);color:rgb(255, 255, 224);">1
+</td></tr>
+<tr>
+<td>Lime
+</td>
+<td>Color(0, 255, 0)
+</td>
+<td style="background-color:rgb(0, 255, 0);color:rgb(0, 255, 0);">85
+</td></tr>
+<tr>
+<td>LimeGreen
+</td>
+<td>Color(50, 205, 50)
+</td>
+<td style="background-color:rgb(50, 205, 50);color:rgb(50, 205, 50);">85
+</td></tr>
+<tr>
+<td>Linen
+</td>
+<td>Color(250, 240, 230)
+</td>
+<td style="background-color:rgb(250, 240, 230);color:rgb(250, 240, 230);">1
+</td></tr>
+<tr>
+<td>Magenta
+</td>
+<td>Color(255, 0, 255)
+</td>
+<td style="background-color:rgb(255, 0, 255);color:rgb(255, 0, 255);">254
+</td></tr>
+<tr>
+<td>Maroon
+</td>
+<td>Color(128, 0, 0)
+</td>
+<td style="background-color:rgb(128, 0, 0);color:rgb(128, 0, 0);">0
+</td></tr>
+<tr>
+<td>MediumAquaMarine
+</td>
+<td>Color(102, 205, 170)
+</td>
+<td style="background-color:rgb(102, 205, 170);color:rgb(102, 205, 170);">86
+</td></tr>
+<tr>
+<td>MediumBlue
+</td>
+<td>Color(0, 0, 205)
+</td>
+<td style="background-color:rgb(0, 0, 205);color:rgb(0, 0, 205);">170
+</td></tr>
+<tr>
+<td>MediumOrchid
+</td>
+<td>Color(186, 85, 211)
+</td>
+<td style="background-color:rgb(186, 85, 211);color:rgb(186, 85, 211);">171
+</td></tr>
+<tr>
+<td>MediumPurple
+</td>
+<td>Color(147, 112, 219)
+</td>
+<td style="background-color:rgb(147, 112, 219);color:rgb(147, 112, 219);">170
+</td></tr>
+<tr>
+<td>MediumSeaGreen
+</td>
+<td>Color(60, 179, 113)
+</td>
+<td style="background-color:rgb(60, 179, 113);color:rgb(60, 179, 113);">85
+</td></tr>
+<tr>
+<td>MediumSlateBlue
+</td>
+<td>Color(123, 104, 238)
+</td>
+<td style="background-color:rgb(123, 104, 238);color:rgb(123, 104, 238);">170
+</td></tr>
+<tr>
+<td>MediumSpringGreen
+</td>
+<td>Color(0, 250, 154)
+</td>
+<td style="background-color:rgb(0, 250, 154);color:rgb(0, 250, 154);">86
+</td></tr>
+<tr>
+<td>MediumTurquoise
+</td>
+<td>Color(72, 209, 204)
+</td>
+<td style="background-color:rgb(72, 209, 204);color:rgb(72, 209, 204);">86
+</td></tr>
+<tr>
+<td>MediumVioletRed
+</td>
+<td>Color(199, 21, 133)
+</td>
+<td style="background-color:rgb(199, 21, 133);color:rgb(199, 21, 133);">254
+</td></tr>
+<tr>
+<td>MidnightBlue
+</td>
+<td>Color(25, 25, 112)
+</td>
+<td style="background-color:rgb(25, 25, 112);color:rgb(25, 25, 112);">170
+</td></tr>
+<tr>
+<td>MintCream
+</td>
+<td>Color(245, 255, 250)
+</td>
+<td style="background-color:rgb(245, 255, 250);color:rgb(245, 255, 250);">86
+</td></tr>
+<tr>
+<td>MistyRose
+</td>
+<td>Color(255, 228, 225)
+</td>
+<td style="background-color:rgb(255, 228, 225);color:rgb(255, 228, 225);">0
+</td></tr>
+<tr>
+<td>Moccasin
+</td>
+<td>Color(255, 228, 181)
+</td>
+<td style="background-color:rgb(255, 228, 181);color:rgb(255, 228, 181);">1
+</td></tr>
+<tr>
+<td>NavajoWhite
+</td>
+<td>Color(255, 222, 173)
+</td>
+<td style="background-color:rgb(255, 222, 173);color:rgb(255, 222, 173);">1
+</td></tr>
+<tr>
+<td>Navy
+</td>
+<td>Color(0, 0, 128)
+</td>
+<td style="background-color:rgb(0, 0, 128);color:rgb(0, 0, 128);">170
+</td></tr>
+<tr>
+<td>OldLace
+</td>
+<td>Color(253, 245, 230)
+</td>
+<td style="background-color:rgb(253, 245, 230);color:rgb(253, 245, 230);">1
+</td></tr>
+<tr>
+<td>Olive
+</td>
+<td>Color(128, 128, 0)
+</td>
+<td style="background-color:rgb(128, 128, 0);color:rgb(128, 128, 0);">1
+</td></tr>
+<tr>
+<td>OliveDrab
+</td>
+<td>Color(107, 142, 35)
+</td>
+<td style="background-color:rgb(107, 142, 35);color:rgb(107, 142, 35);">84
+</td></tr>
+<tr>
+<td>Orange
+</td>
+<td>Color(255, 165, 0)
+</td>
+<td style="background-color:rgb(255, 165, 0);color:rgb(255, 165, 0);">1
+</td></tr>
+<tr>
+<td>OrangeRed
+</td>
+<td>Color(255, 69, 0)
+</td>
+<td style="background-color:rgb(255, 69, 0);color:rgb(255, 69, 0);">0
+</td></tr>
+<tr>
+<td>Orchid
+</td>
+<td>Color(218, 112, 214)
+</td>
+<td style="background-color:rgb(218, 112, 214);color:rgb(218, 112, 214);">254
+</td></tr>
+<tr>
+<td>PaleGoldenRod
+</td>
+<td>Color(238, 232, 170)
+</td>
+<td style="background-color:rgb(238, 232, 170);color:rgb(238, 232, 170);">1
+</td></tr>
+<tr>
+<td>PaleGreen
+</td>
+<td>Color(152, 251, 152)
+</td>
+<td style="background-color:rgb(152, 251, 152);color:rgb(152, 251, 152);">85
+</td></tr>
+<tr>
+<td>PaleTurquoise
+</td>
+<td>Color(175, 238, 238)
+</td>
+<td style="background-color:rgb(175, 238, 238);color:rgb(175, 238, 238);">86
+</td></tr>
+<tr>
+<td>PaleVioletRed
+</td>
+<td>Color(219, 112, 147)
+</td>
+<td style="background-color:rgb(219, 112, 147);color:rgb(219, 112, 147);">255
+</td></tr>
+<tr>
+<td>PapayaWhip
+</td>
+<td>Color(255, 239, 213)
+</td>
+<td style="background-color:rgb(255, 239, 213);color:rgb(255, 239, 213);">1
+</td></tr>
+<tr>
+<td>PeachPuff
+</td>
+<td>Color(255, 218, 185)
+</td>
+<td style="background-color:rgb(255, 218, 185);color:rgb(255, 218, 185);">0
+</td></tr>
+<tr>
+<td>Peru
+</td>
+<td>Color(205, 133, 63)
+</td>
+<td style="background-color:rgb(205, 133, 63);color:rgb(205, 133, 63);">0
+</td></tr>
+<tr>
+<td>Pink
+</td>
+<td>Color(255, 192, 203)
+</td>
+<td style="background-color:rgb(255, 192, 203);color:rgb(255, 192, 203);">255
+</td></tr>
+<tr>
+<td>Plum
+</td>
+<td>Color(221, 160, 221)
+</td>
+<td style="background-color:rgb(221, 160, 221);color:rgb(221, 160, 221);">254
+</td></tr>
+<tr>
+<td>PowderBlue
+</td>
+<td>Color(176, 224, 230)
+</td>
+<td style="background-color:rgb(176, 224, 230);color:rgb(176, 224, 230);">169
+</td></tr>
+<tr>
+<td>Purple
+</td>
+<td>Color(128, 0, 128)
+</td>
+<td style="background-color:rgb(128, 0, 128);color:rgb(128, 0, 128);">254
+</td></tr>
+<tr>
+<td>Red
+</td>
+<td>Color(255, 0, 0)
+</td>
+<td style="background-color:rgb(255, 0, 0);color:rgb(255, 0, 0);">0
+</td></tr>
+<tr>
+<td>RosyBrown
+</td>
+<td>Color(188, 143, 143)
+</td>
+<td style="background-color:rgb(188, 143, 143);color:rgb(188, 143, 143);">0
+</td></tr>
+<tr>
+<td>RoyalBlue
+</td>
+<td>Color(65, 105, 225)
+</td>
+<td style="background-color:rgb(65, 105, 225);color:rgb(65, 105, 225);">170
+</td></tr>
+<tr>
+<td>SaddleBrown
+</td>
+<td>Color(139, 69, 19)
+</td>
+<td style="background-color:rgb(139, 69, 19);color:rgb(139, 69, 19);">0
+</td></tr>
+<tr>
+<td>Salmon
+</td>
+<td>Color(250, 128, 114)
+</td>
+<td style="background-color:rgb(250, 128, 114);color:rgb(250, 128, 114);">0
+</td></tr>
+<tr>
+<td>SandyBrown
+</td>
+<td>Color(244, 164, 96)
+</td>
+<td style="background-color:rgb(244, 164, 96);color:rgb(244, 164, 96);">0
+</td></tr>
+<tr>
+<td>SeaGreen
+</td>
+<td>Color(46, 139, 87)
+</td>
+<td style="background-color:rgb(46, 139, 87);color:rgb(46, 139, 87);">85
+</td></tr>
+<tr>
+<td>SeaShell
+</td>
+<td>Color(255, 245, 238)
+</td>
+<td style="background-color:rgb(255, 245, 238);color:rgb(255, 245, 238);">0
+</td></tr>
+<tr>
+<td>Sienna
+</td>
+<td>Color(160, 82, 45)
+</td>
+<td style="background-color:rgb(160, 82, 45);color:rgb(160, 82, 45);">0
+</td></tr>
+<tr>
+<td>Silver
+</td>
+<td>Color(192, 192, 192)
+</td>
+<td style="background-color:rgb(192, 192, 192);color:rgb(192, 192, 192);">-1
+</td></tr>
+<tr>
+<td>SkyBlue
+</td>
+<td>Color(135, 206, 235)
+</td>
+<td style="background-color:rgb(135, 206, 235);color:rgb(135, 206, 235);">169
+</td></tr>
+<tr>
+<td>SlateBlue
+</td>
+<td>Color(106, 90, 205)
+</td>
+<td style="background-color:rgb(106, 90, 205);color:rgb(106, 90, 205);">170
+</td></tr>
+<tr>
+<td>SlateGray
+</td>
+<td>Color(112, 128, 144)
+</td>
+<td style="background-color:rgb(112, 128, 144);color:rgb(112, 128, 144);">170
+</td></tr>
+<tr>
+<td>Snow
+</td>
+<td>Color(255, 250, 250)
+</td>
+<td style="background-color:rgb(255, 250, 250);color:rgb(255, 250, 250);">0
+</td></tr>
+<tr>
+<td>SpringGreen
+</td>
+<td>Color(0, 255, 127)
+</td>
+<td style="background-color:rgb(0, 255, 127);color:rgb(0, 255, 127);">85
+</td></tr>
+<tr>
+<td>SteelBlue
+</td>
+<td>Color(70, 130, 180)
+</td>
+<td style="background-color:rgb(70, 130, 180);color:rgb(70, 130, 180);">169
+</td></tr>
+<tr>
+<td>Tan
+</td>
+<td>Color(210, 180, 140)
+</td>
+<td style="background-color:rgb(210, 180, 140);color:rgb(210, 180, 140);">1
+</td></tr>
+<tr>
+<td>Teal
+</td>
+<td>Color(0, 128, 128)
+</td>
+<td style="background-color:rgb(0, 128, 128);color:rgb(0, 128, 128);">86
+</td></tr>
+<tr>
+<td>Thistle
+</td>
+<td>Color(216, 191, 216)
+</td>
+<td style="background-color:rgb(216, 191, 216);color:rgb(216, 191, 216);">254
+</td></tr>
+<tr>
+<td>Tomato
+</td>
+<td>Color(255, 99, 71)
+</td>
+<td style="background-color:rgb(255, 99, 71);color:rgb(255, 99, 71);">0
+</td></tr>
+<tr>
+<td>Turquoise
+</td>
+<td>Color(64, 224, 208)
+</td>
+<td style="background-color:rgb(64, 224, 208);color:rgb(64, 224, 208);">86
+</td></tr>
+<tr>
+<td>Violet
+</td>
+<td>Color(238, 130, 238)
+</td>
+<td style="background-color:rgb(238, 130, 238);color:rgb(238, 130, 238);">254
+</td></tr>
+<tr>
+<td>Wheat
+</td>
+<td>Color(245, 222, 179)
+</td>
+<td style="background-color:rgb(245, 222, 179);color:rgb(245, 222, 179);">1
+</td></tr>
+<tr>
+<td>White
+</td>
+<td>Color(255, 255, 255)
+</td>
+<td style="background-color:rgb(255, 255, 255);color:rgb(255, 255, 255);">-1
+</td></tr>
+<tr>
+<td>WhiteSmoke
+</td>
+<td>Color(245, 245, 245)
+</td>
+<td style="background-color:rgb(245, 245, 245);color:rgb(245, 245, 245);">-1
+</td></tr>
+<tr>
+<td>Yellow
+</td>
+<td>Color(255, 255, 0)
+</td>
+<td style="background-color:rgb(255, 255, 0);color:rgb(255, 255, 0);">1
+</td></tr>
+<tr>
+<td>YellowGreen
+</td>
+<td>Color(154, 205, 50)
+</td>
+<td style="background-color:rgb(154, 205, 50);color:rgb(154, 205, 50);">84
+</td></tr></table> </font>
+ 
+ 
+</div><div class="printfooter">
+Retrieved from "<a href="http://wiki.jc-mp.com/index.php?title=Lua/Shared/Color&amp;oldid=26622">http://wiki.jc-mp.com/index.php?title=Lua/Shared/Color&amp;oldid=26622</a>"</div>
+<div id='catlinks' class='catlinks catlinks-allhidden'></div>  
+</div>
+</div> 
+</div>
+</div> 
+<div class="visualClear"></div>
+<div id="footer">
+<table>
+<tr>
+<td rowspan="2" class="f-iconsection">
+<div id="f-copyrightico"><a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.3 or later" width="88" height="31"/></a></div> </td>
+<td align="center">
+<ul id="f-list">
+<li id="f-lastmod"> This page was last modified on 21 June 2014, at 15:19.</li>
+<li id="f-viewcount">This page has been accessed 2,073 times.</li>
+<li id="f-copyright">Content is available under <a class="external" rel="nofollow" href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+<li id="f-privacy"><a href="/Project:Privacy_policy" title="Project:Privacy policy">Privacy policy</a></li>
+<li id="f-about"><a href="/Project:About" title="Project:About">About JC2-MP Documentation</a></li>
+<li id="f-disclaimer"><a href="/Project:General_disclaimer" title="Project:General disclaimer">Disclaimers</a></li>
+</ul></td>
+<td rowspan="2" class="f-iconsection">
+<div id="f-poweredbyico"><a href="//www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"/></a></div>
+</td>
+</tr>
+<tr>
+<td><div id="skin-info">
+Mozilla Cavendish Theme based on Cavendish style by Gabriel Wicke modified by <a href="http://www.dasch-tour.de" title="DaSch-Tour Blog" target="_blank">DaSch</a> for the <a href="http://www.wecowi.de/" title="Web Community Wiki">Web Community Wiki</a><br/>
+<a href="https://github.com/DaSchTour/Cavendish" title="github projectpage">github Projectpage</a> &ndash; <a href="https://github.com/DaSchTour/Cavendish/issues" title="Bug reporting at github">Report Bug</a> &ndash; Skin-Version: 2.3.2 </div></td>
+</tr>
+</table>
+</div> 
+</div> 
+ 
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgBackendResponseTime":306});
+}</script></body></html>
