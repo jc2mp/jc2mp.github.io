@@ -32,20 +32,10 @@ struct GeneratedPages {
 
 #[derive(Debug, Default, Serialize, Deserialize)]
 struct SearchIndex {
-    /// List of all pages
-    pages: Vec<PageMetadata>,
-    /// Inverted index: word -> list of page indices
-    words: BTreeMap<String, Vec<usize>>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-struct PageMetadata {
-    /// Display title of the page
-    title: String,
-    /// URL path to the page
-    url: String,
-    /// Section headings in the page
-    headings: Vec<String>,
+    /// List of page titles (index = page ID)
+    pages: Vec<String>,
+    /// Inverted index: word -> list of (page_index, weight) tuples
+    words: BTreeMap<String, Vec<(usize, u8)>>,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -363,32 +353,47 @@ fn generate_wiki_folder(
             let search_text_path = output_html.with_extension("txt");
             fs::write(&search_text_path, all_text.trim())?;
 
-            // Add to search index
+            // Add page title to search index
             let page_idx = generated.search_index.pages.len();
-            generated.search_index.pages.push(PageMetadata {
-                title: page_context.title.clone(),
-                url: format!("/{}{}", WIKI_DIRECTORY, route_path.url_path()),
-                headings: all_headings,
-            });
+            generated
+                .search_index
+                .pages
+                .push(page_context.title.clone());
 
-            // Tokenize and index words
-            let words = tokenize_text(&all_text);
-            for word in words {
+            // Build word weight map for this page
+            let mut word_weights: BTreeMap<String, u8> = BTreeMap::new();
+
+            // Index words from content (weight 1)
+            for word in tokenize_text(&all_text) {
+                word_weights.entry(word).or_insert(1);
+            }
+
+            // Index words from headings (weight 3, higher priority)
+            for heading in &all_headings {
+                for word in tokenize_text(heading) {
+                    word_weights
+                        .entry(word)
+                        .and_modify(|w| *w = (*w).max(3))
+                        .or_insert(3);
+                }
+            }
+
+            // Index words from title (weight 5, highest priority)
+            for word in tokenize_text(&page_context.title) {
+                word_weights
+                    .entry(word)
+                    .and_modify(|w| *w = (*w).max(5))
+                    .or_insert(5);
+            }
+
+            // Add to inverted index with weights
+            for (word, weight) in word_weights {
                 generated
                     .search_index
                     .words
                     .entry(word)
                     .or_default()
-                    .push(page_idx);
-            }
-
-            // Also index words from title and headings (with higher weight by duplicating)
-            for word in tokenize_text(&page_context.title) {
-                let entry = generated.search_index.words.entry(word).or_default();
-                // Add title words multiple times for higher ranking
-                for _ in 0..3 {
-                    entry.push(page_idx);
-                }
+                    .push((page_idx, weight));
             }
 
             layout(

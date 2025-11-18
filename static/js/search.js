@@ -1,6 +1,6 @@
 /**
  * JC2-MP Wiki Search Implementation
- * Efficient inverted index-based search with on-demand text loading
+ * Ultra-compact inverted index with on-demand text loading
  */
 
 class WikiSearch {
@@ -29,16 +29,24 @@ class WikiSearch {
             this.isLoaded = true;
         } catch (error) {
             console.error('Error loading search index:', error);
-            this.searchIndex = { pages: [] };
+            this.searchIndex = { pages: [], words: {} };
         } finally {
             this.isLoading = false;
         }
     }
 
     /**
+     * Derive URL from page title
+     */
+    titleToUrl(title) {
+        return '/wiki/' + title.replace(/ /g, '_') + '.html';
+    }
+
+    /**
      * Load text content for a specific page (with caching)
      */
-    async loadPageText(url) {
+    async loadPageText(title) {
+        const url = this.titleToUrl(title);
         if (this.textCache.has(url)) {
             return this.textCache.get(url);
         }
@@ -53,7 +61,7 @@ class WikiSearch {
             this.textCache.set(url, text);
             return text;
         } catch (error) {
-            console.error(`Error loading text for ${url}:`, error);
+            console.error(`Error loading text for ${title}:`, error);
             return '';
         }
     }
@@ -119,35 +127,32 @@ class WikiSearch {
             return [];
         }
 
-        // Map to track page index -> occurrence count
+        // Map to track page index -> total score
         const pageScores = new Map();
 
         // For each query word, look up pages in the inverted index
         for (const word of queryWords) {
-            const pageIndices = this.searchIndex.words[word];
-            if (!pageIndices) {
+            const pageWeights = this.searchIndex.words[word];
+            if (!pageWeights) {
                 continue; // Word not found in index
             }
 
-            // Count occurrences (multiple entries = higher weight)
-            for (const pageIdx of pageIndices) {
-                pageScores.set(pageIdx, (pageScores.get(pageIdx) || 0) + 1);
+            // Add weighted scores for each page
+            for (const [pageIdx, weight] of pageWeights) {
+                pageScores.set(pageIdx, (pageScores.get(pageIdx) || 0) + weight);
             }
         }
 
-        // Convert to array and filter pages that don't have all query words
+        // Convert to array with page titles
         const results = [];
         for (const [pageIdx, score] of pageScores.entries()) {
-            // For multi-word queries, we want pages that contain all words
-            // Single word queries just need a match
-            if (queryWords.length === 1 || score >= queryWords.length) {
-                const page = this.searchIndex.pages[pageIdx];
-                if (page) {
-                    results.push({
-                        ...page,
-                        score: score,
-                    });
-                }
+            const title = this.searchIndex.pages[pageIdx];
+            if (title) {
+                results.push({
+                    title: title,
+                    url: this.titleToUrl(title),
+                    score: score,
+                });
             }
         }
 
@@ -267,7 +272,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Load text content for top results to show snippets
         const topResults = results.slice(0, 5); // Only load text for top 5 results
         const snippetPromises = topResults.map(async (result) => {
-            const text = await wikiSearch.loadPageText(result.url);
+            const text = await wikiSearch.loadPageText(result.title);
             return {
                 ...result,
                 snippet: text ? wikiSearch.extractSnippet(text, query) : null
@@ -285,17 +290,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsHTML = allResults.map(result => {
             const highlightedTitle = wikiSearch.highlightTerms(result.title, query);
 
-            // Show snippet if available, otherwise show headings
+            // Show snippet if available
             let detailsHTML = '';
             if (result.snippet) {
                 const highlightedSnippet = wikiSearch.highlightTerms(result.snippet, query);
                 detailsHTML = `<div class="text-sm text-gray-700 mt-1">${highlightedSnippet}</div>`;
-            } else if (result.headings && result.headings.length > 0) {
-                const highlightedHeadings = result.headings
-                    .slice(0, 3) // Show max 3 headings
-                    .map(h => wikiSearch.highlightTerms(h, query))
-                    .join(' · ');
-                detailsHTML = `<div class="text-xs text-gray-500 mt-1">${highlightedHeadings}</div>`;
             }
 
             return `
