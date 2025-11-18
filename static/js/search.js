@@ -269,9 +269,9 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Load text content for top results to show snippets
-        const topResults = results.slice(0, 5); // Only load text for top 5 results
-        const snippetPromises = topResults.map(async (result) => {
+        // Load text content for all results to show snippets
+        // Average text file is ~300 bytes, so 20 results = ~6KB total
+        const snippetPromises = results.map(async (result) => {
             const text = await wikiSearch.loadPageText(result.title);
             return {
                 ...result,
@@ -281,13 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resultsWithSnippets = await Promise.all(snippetPromises);
 
-        // Merge back with remaining results (without snippets)
-        const allResults = [
-            ...resultsWithSnippets,
-            ...results.slice(5)
-        ];
-
-        const resultsHTML = allResults.map(result => {
+        const resultsHTML = resultsWithSnippets.map(result => {
             const highlightedTitle = wikiSearch.highlightTerms(result.title, query);
 
             // Show snippet if available
