@@ -356,7 +356,7 @@ fn generate_wiki_folder(
             // Add to search index
             generated.search_entries.push(SearchEntry {
                 title: page_context.title.clone(),
-                url: route_path.url_path(),
+                url: format!("/{}{}", WIKI_DIRECTORY, route_path.url_path()),
                 content: all_text.trim().to_string(),
                 headings: all_headings,
             });
