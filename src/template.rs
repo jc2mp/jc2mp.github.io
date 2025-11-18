@@ -3,9 +3,17 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use wikitext_simplified::{TemplateParameter, WikitextSimplifiedNode, parse_wiki_text_2};
+use wikitext_simplified::{TemplateParameter, WikitextSimplifiedNode, Spanned, Span, parse_wiki_text_2};
 
 use crate::page_context::PageContext;
+
+/// Helper to create a Spanned node with a default (empty) span
+fn spanned<T>(value: T) -> Spanned<T> {
+    Spanned {
+        value,
+        span: Span { start: 0, end: 0 },
+    }
+}
 
 /// Trait for loading wikitext template files
 pub trait TemplateLoader {
@@ -137,7 +145,7 @@ impl<'a> Templates<'a> {
                                     cell.content = children;
                                 }
                                 other => {
-                                    cell.content = vec![other];
+                                    cell.content = vec![spanned(other)];
                                 }
                             }
                         }
@@ -146,7 +154,7 @@ impl<'a> Templates<'a> {
             }
             WSN::Fragment { children } => {
                 for child in children {
-                    self.reparse_table_cells(child, pwt_configuration, page_context);
+                    self.reparse_table_cells(&mut child.value, pwt_configuration, page_context);
                 }
             }
             _ => {}
@@ -228,7 +236,7 @@ impl<'a> Templates<'a> {
                     // Flatten single-child fragments to avoid nested structures
                     match result {
                         WSN::Fragment { children } if children.len() == 1 => {
-                            children.into_iter().next().unwrap()
+                            children.into_iter().next().unwrap().value
                         }
                         _ => result,
                     }
@@ -400,10 +408,11 @@ mod tests {
         // Verify the result is a table (possibly wrapped in a Fragment)
         let table_node = match &result {
             WikitextSimplifiedNode::Table { .. } => &result,
-            WikitextSimplifiedNode::Fragment { children } => children
+            WikitextSimplifiedNode::Fragment { children } => &children
                 .iter()
-                .find(|node| matches!(node, WikitextSimplifiedNode::Table { .. }))
-                .expect("Fragment should contain a Table node"),
+                .find(|node| matches!(node.value, WikitextSimplifiedNode::Table { .. }))
+                .expect("Fragment should contain a Table node")
+                .value,
             _ => panic!(
                 "Expected Table or Fragment with Table node, got {:?}",
                 result
@@ -496,7 +505,7 @@ mod tests {
                 assert!(
                     children
                         .iter()
-                        .any(|node| matches!(node, WikitextSimplifiedNode::Bold { .. })),
+                        .any(|node| matches!(node.value, WikitextSimplifiedNode::Bold { .. })),
                     "Template should be reparsed into Bold node through wikitext roundtrip"
                 );
             }

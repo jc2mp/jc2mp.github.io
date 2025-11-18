@@ -472,7 +472,7 @@ dependencies = [
 [[package]]
 name = "wikitext_simplified"
 version = "0.1.0"
-source = "git+https://github.com/philpax/wikitext_simplified.git#1272ffc45b073467afbed9fb4ec0e9c8cf1ad2e7"
+source = "git+https://github.com/philpax/wikitext_simplified.git#e637ff1bf6559c8ed01ea980c15041b42cea5ce5"
 dependencies = [
  "parse-wiki-text-2",
  "serde",
@@ -482,7 +482,7 @@ dependencies = [
 [[package]]
 name = "wikitext_util"
 version = "0.1.0"
-source = "git+https://github.com/philpax/wikitext_simplified.git#1272ffc45b073467afbed9fb4ec0e9c8cf1ad2e7"
+source = "git+https://github.com/philpax/wikitext_simplified.git#e637ff1bf6559c8ed01ea980c15041b42cea5ce5"
 dependencies = [
  "parse-wiki-text-2",
 ]

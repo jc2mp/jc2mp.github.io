@@ -6,7 +6,15 @@ use std::{
 };
 
 use template::{TemplateToInstantiate, Templates};
-use wikitext_simplified::{WikitextSimplifiedNode, wikitext_util::parse_wiki_text_2};
+use wikitext_simplified::{WikitextSimplifiedNode, Spanned, Span, wikitext_util::parse_wiki_text_2};
+
+/// Helper to create a Spanned node with a default (empty) span
+fn spanned<T>(value: T) -> Spanned<T> {
+    Spanned {
+        value,
+        span: Span { start: 0, end: 0 },
+    }
+}
 
 mod page_context;
 use page_context::PageContext;
@@ -296,7 +304,8 @@ fn generate_wiki_folder(
                 .map(|s| s.to_string()),
         );
 
-        let document = if let [WikitextSimplifiedNode::Redirect { target }] = simplified.as_slice()
+        let document = if let [node] = simplified.as_slice()
+            && let WikitextSimplifiedNode::Redirect { target } = &node.value
         {
             redirect(&page_title_to_route_path(target).url_path())
         } else {
@@ -323,7 +332,7 @@ fn generate_wiki_folder(
             layout(
                 &page_context.title,
                 paxhtml::Element::from_iter(simplified.iter().map(|node| {
-                    convert_wikitext_to_html(templates, pwt_configuration, node, &page_context)
+                    convert_wikitext_to_html(templates, pwt_configuration, &node.value, &page_context)
                 })),
             )
         };
@@ -437,7 +446,7 @@ fn convert_wikitext_to_html(
         let attributes = templates.instantiate(
             pwt_configuration,
             TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                children: attributes.to_vec(),
+                children: attributes.iter().map(|n| spanned(n.clone())).collect(),
             }),
             &[],
             page_context,
@@ -455,7 +464,7 @@ fn convert_wikitext_to_html(
         let merged_text = attributes
             .iter()
             .filter_map(|node| {
-                if let WSN::Text { text } = node {
+                if let WSN::Text { text } = &node.value {
                     Some(text.as_str())
                 } else {
                     None
@@ -478,29 +487,30 @@ fn convert_wikitext_to_html(
         pwt_configuration: &parse_wiki_text_2::Configuration,
         page_context: &PageContext,
         attributes_context: &str,
-        attributes: &Option<Vec<WSN>>,
+        attributes: &Option<Vec<Spanned<WSN>>>,
     ) -> Vec<paxhtml::Attribute> {
         attributes
-            .as_deref()
+            .as_ref()
             .map(|attributes| {
+                let unwrapped: Vec<WSN> = attributes.iter().map(|s| s.value.clone()).collect();
                 parse_attributes_from_wsn(
                     templates,
                     pwt_configuration,
                     page_context,
                     attributes_context,
-                    attributes,
+                    &unwrapped,
                 )
             })
             .unwrap_or_default()
     }
 
-    let convert_children = |templates: &mut Templates, children: &[WikitextSimplifiedNode]| {
+    let convert_children = |templates: &mut Templates, children: &[Spanned<WikitextSimplifiedNode>]| {
         paxhtml::Element::from_iter(
             children
                 .iter()
-                .skip_while(|node| matches!(node, WSN::ParagraphBreak | WSN::Newline))
+                .skip_while(|node| matches!(node.value, WSN::ParagraphBreak | WSN::Newline))
                 .map(|node| {
-                    convert_wikitext_to_html(templates, pwt_configuration, node, page_context)
+                    convert_wikitext_to_html(templates, pwt_configuration, &node.value, page_context)
                 }),
         )
     };
@@ -591,7 +601,9 @@ fn convert_wikitext_to_html(
                 };
 
                 // Get the code text
-                let code = if let [WSN::Text { text }] = children.as_slice() {
+                let code = if let [node] = children.as_slice()
+                    && let WSN::Text { text } = &node.value
+                {
                     text.trim()
                 } else {
                     // If not simple text, fall back to plain rendering
@@ -642,13 +654,15 @@ fn convert_wikitext_to_html(
                 let instantiated = templates.instantiate(
                     pwt_configuration,
                     TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                        children: attributes.to_vec(),
+                        children: attributes.iter().map(|n| spanned(n.value.clone())).collect(),
                     }),
                     &[],
                     page_context,
                 );
                 if let WSN::Fragment { children } = instantiated {
-                    if let Some(WSN::Text { text }) = children.first() {
+                    if let Some(node) = children.first()
+                        && let WSN::Text { text } = &node.value
+                    {
                         text.contains("class=")
                     } else {
                         false
@@ -662,18 +676,19 @@ fn convert_wikitext_to_html(
 
             if !has_class_attr {
                 // Add Tailwind table classes
-                modified_attributes.push(WSN::Text {
+                modified_attributes.push(spanned(WSN::Text {
                     text: " class=\"min-w-full divide-y divide-gray-200 border border-gray-300\""
                         .to_string(),
-                });
+                }));
             }
 
+            let unwrapped_attributes: Vec<WSN> = modified_attributes.iter().map(|s| s.value.clone()).collect();
             let attributes = parse_attributes_from_wsn(
                 templates,
                 pwt_configuration,
                 page_context,
                 "main",
-                &modified_attributes,
+                &unwrapped_attributes,
             );
             html! {
                 <table {attributes}>
@@ -703,12 +718,13 @@ fn convert_wikitext_to_html(
                             .iter()
                             .enumerate()
                             .map(|(idx, row)| {
+                                let unwrapped_row_attrs: Vec<WSN> = row.attributes.iter().map(|s| s.value.clone()).collect();
                                 let attributes = parse_attributes_from_wsn(
                                     templates,
                                     pwt_configuration,
                                     page_context,
                                     "row",
-                                    &row.attributes,
+                                    &unwrapped_row_attrs,
                                 );
                                 let row_class = if idx % 2 == 0 { "bg-white" } else { "bg-gray-50" };
                                 html! {
