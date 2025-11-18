@@ -26,18 +26,24 @@ static SYNTAX_HIGHLIGHTER: OnceLock<syntax::SyntaxHighlighter> = OnceLock::new()
 struct GeneratedPages {
     // Maps directory path (relative to wiki root) to set of page names (without .html)
     pages_by_directory: BTreeMap<String, BTreeSet<String>>,
-    // Search index entries
-    search_entries: Vec<SearchEntry>,
+    // Search index
+    search_index: SearchIndex,
+}
+
+#[derive(Debug, Default, Serialize, Deserialize)]
+struct SearchIndex {
+    /// List of all pages
+    pages: Vec<PageMetadata>,
+    /// Inverted index: word -> list of page indices
+    words: BTreeMap<String, Vec<usize>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct SearchEntry {
+struct PageMetadata {
     /// Display title of the page
     title: String,
     /// URL path to the page
     url: String,
-    /// Extracted text content for searching
-    content: String,
     /// Section headings in the page
     headings: Vec<String>,
 }
@@ -245,7 +251,7 @@ fn generate_wiki(src: &Path, dst: &Path) -> anyhow::Result<()> {
     generate_missing_index_pages(output_dir, &generated)?;
 
     // Write search index
-    let search_index_json = serde_json::to_string(&generated.search_entries)?;
+    let search_index_json = serde_json::to_string(&generated.search_index)?;
     fs::write(output_dir.join("search-index.json"), search_index_json)?;
 
     redirect(&page_title_to_route_path("Main_Page").url_path())
@@ -354,12 +360,32 @@ fn generate_wiki_folder(
             }
 
             // Add to search index
-            generated.search_entries.push(SearchEntry {
+            let page_idx = generated.search_index.pages.len();
+            generated.search_index.pages.push(PageMetadata {
                 title: page_context.title.clone(),
                 url: format!("/{}{}", WIKI_DIRECTORY, route_path.url_path()),
-                content: all_text.trim().to_string(),
                 headings: all_headings,
             });
+
+            // Tokenize and index words
+            let words = tokenize_text(&all_text);
+            for word in words {
+                generated
+                    .search_index
+                    .words
+                    .entry(word)
+                    .or_default()
+                    .push(page_idx);
+            }
+
+            // Also index words from title and headings (with higher weight by duplicating)
+            for word in tokenize_text(&page_context.title) {
+                let entry = generated.search_index.words.entry(word).or_default();
+                // Add title words multiple times for higher ranking
+                for _ in 0..3 {
+                    entry.push(page_idx);
+                }
+            }
 
             layout(
                 &page_context.title,
@@ -903,6 +929,15 @@ fn redirect(to_url: &str) -> paxhtml::Document {
             </html>
         },
     ])
+}
+
+/// Tokenize text into searchable words
+fn tokenize_text(text: &str) -> Vec<String> {
+    text.to_lowercase()
+        .split(|c: char| !c.is_alphanumeric())
+        .filter(|word| word.len() >= 2) // Skip single characters
+        .map(|word| word.to_string())
+        .collect()
 }
 
 /// Extract plain text and headings from wikitext AST for search indexing

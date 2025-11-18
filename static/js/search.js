@@ -1,11 +1,11 @@
 /**
  * JC2-MP Wiki Search Implementation
- * MediaWiki-style search with prefix matching and result highlighting
+ * Efficient inverted index-based search
  */
 
 class WikiSearch {
     constructor() {
-        this.searchIndex = [];
+        this.searchIndex = null;
         this.isLoading = false;
         this.isLoaded = false;
     }
@@ -28,113 +28,70 @@ class WikiSearch {
             this.isLoaded = true;
         } catch (error) {
             console.error('Error loading search index:', error);
-            this.searchIndex = [];
+            this.searchIndex = { pages: [] };
         } finally {
             this.isLoading = false;
         }
     }
 
     /**
-     * Normalize text for searching (lowercase, trim)
+     * Tokenize text into searchable words (matches Rust implementation)
      */
-    normalizeText(text) {
-        return text.toLowerCase().trim();
+    tokenize(text) {
+        return text
+            .toLowerCase()
+            .split(/[^a-z0-9]+/)
+            .filter(word => word.length >= 2);
     }
 
     /**
-     * Check if text matches search query (prefix or substring match)
+     * Search the index and return ranked results
      */
-    matchesQuery(text, query) {
-        const normalizedText = this.normalizeText(text);
-        const normalizedQuery = this.normalizeText(query);
-
-        if (!normalizedQuery) {
-            return false;
+    search(query, limit = 20) {
+        if (!query || !this.isLoaded || !this.searchIndex) {
+            return [];
         }
 
-        // Split query into words for multi-word search
-        const queryWords = normalizedQuery.split(/\s+/);
-
-        // All query words must appear in the text
-        return queryWords.every(word => normalizedText.includes(word));
-    }
-
-    /**
-     * Calculate relevance score for a search result
-     */
-    calculateScore(entry, query) {
-        const normalizedQuery = this.normalizeText(query);
-        const normalizedTitle = this.normalizeText(entry.title);
-        const normalizedContent = this.normalizeText(entry.content);
-
-        let score = 0;
-
-        // Exact title match gets highest score
-        if (normalizedTitle === normalizedQuery) {
-            score += 1000;
-        }
-        // Title starts with query gets high score
-        else if (normalizedTitle.startsWith(normalizedQuery)) {
-            score += 500;
-        }
-        // Title contains query gets medium score
-        else if (normalizedTitle.includes(normalizedQuery)) {
-            score += 250;
+        const queryWords = this.tokenize(query);
+        if (queryWords.length === 0) {
+            return [];
         }
 
-        // Heading matches
-        for (const heading of entry.headings) {
-            const normalizedHeading = this.normalizeText(heading);
-            if (normalizedHeading === normalizedQuery) {
-                score += 100;
-            } else if (normalizedHeading.includes(normalizedQuery)) {
-                score += 50;
+        // Map to track page index -> occurrence count
+        const pageScores = new Map();
+
+        // For each query word, look up pages in the inverted index
+        for (const word of queryWords) {
+            const pageIndices = this.searchIndex.words[word];
+            if (!pageIndices) {
+                continue; // Word not found in index
+            }
+
+            // Count occurrences (multiple entries = higher weight)
+            for (const pageIdx of pageIndices) {
+                pageScores.set(pageIdx, (pageScores.get(pageIdx) || 0) + 1);
             }
         }
 
-        // Content match gets base score
-        if (normalizedContent.includes(normalizedQuery)) {
-            score += 10;
-
-            // Boost score based on frequency
-            const matches = normalizedContent.match(new RegExp(normalizedQuery, 'g'));
-            if (matches) {
-                score += matches.length;
+        // Convert to array and filter pages that don't have all query words
+        const results = [];
+        for (const [pageIdx, score] of pageScores.entries()) {
+            // For multi-word queries, we want pages that contain all words
+            // Single word queries just need a match
+            if (queryWords.length === 1 || score >= queryWords.length) {
+                const page = this.searchIndex.pages[pageIdx];
+                if (page) {
+                    results.push({
+                        ...page,
+                        score: score,
+                    });
+                }
             }
         }
 
-        return score;
-    }
-
-    /**
-     * Extract snippet from content showing where the query appears
-     */
-    extractSnippet(content, query, maxLength = 150) {
-        const normalizedContent = this.normalizeText(content);
-        const normalizedQuery = this.normalizeText(query);
-
-        const index = normalizedContent.indexOf(normalizedQuery);
-
-        if (index === -1) {
-            // Query not found in content, return start of content
-            return content.substring(0, maxLength) + (content.length > maxLength ? '...' : '');
-        }
-
-        // Calculate snippet bounds to center the query
-        const snippetStart = Math.max(0, index - Math.floor(maxLength / 2));
-        const snippetEnd = Math.min(content.length, snippetStart + maxLength);
-
-        let snippet = content.substring(snippetStart, snippetEnd);
-
-        // Add ellipsis if needed
-        if (snippetStart > 0) {
-            snippet = '...' + snippet;
-        }
-        if (snippetEnd < content.length) {
-            snippet = snippet + '...';
-        }
-
-        return snippet;
+        // Sort by score (descending) and limit results
+        results.sort((a, b) => b.score - a.score);
+        return results.slice(0, limit);
     }
 
     /**
@@ -145,7 +102,7 @@ class WikiSearch {
             return text;
         }
 
-        const queryWords = this.normalizeText(query).split(/\s+/);
+        const queryWords = this.tokenize(query);
         let highlightedText = text;
 
         // Sort query words by length (longest first) to avoid partial replacements
@@ -154,8 +111,8 @@ class WikiSearch {
         for (const word of queryWords) {
             if (!word) continue;
 
-            // Create regex to match word case-insensitively
-            const regex = new RegExp(`(${this.escapeRegex(word)})`, 'gi');
+            // Create regex to match word case-insensitively (word boundaries)
+            const regex = new RegExp(`\\b(${this.escapeRegex(word)})\\b`, 'gi');
             highlightedText = highlightedText.replace(regex, '<mark class="bg-yellow-200 font-semibold">$1</mark>');
         }
 
@@ -167,38 +124,6 @@ class WikiSearch {
      */
     escapeRegex(str) {
         return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-
-    /**
-     * Search the index and return ranked results
-     */
-    search(query, limit = 20) {
-        if (!query || !this.isLoaded) {
-            return [];
-        }
-
-        const results = [];
-
-        for (const entry of this.searchIndex) {
-            // Check if entry matches query
-            if (this.matchesQuery(entry.title, query) ||
-                this.matchesQuery(entry.content, query) ||
-                entry.headings.some(h => this.matchesQuery(h, query))) {
-
-                const score = this.calculateScore(entry, query);
-                const snippet = this.extractSnippet(entry.content, query);
-
-                results.push({
-                    ...entry,
-                    score,
-                    snippet,
-                });
-            }
-        }
-
-        // Sort by score (descending) and limit results
-        results.sort((a, b) => b.score - a.score);
-        return results.slice(0, limit);
     }
 }
 
@@ -279,12 +204,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const resultsHTML = results.map(result => {
             const highlightedTitle = wikiSearch.highlightTerms(result.title, query);
-            const highlightedSnippet = wikiSearch.highlightTerms(result.snippet, query);
+
+            // Show headings if available
+            let headingsHTML = '';
+            if (result.headings && result.headings.length > 0) {
+                const highlightedHeadings = result.headings
+                    .slice(0, 3) // Show max 3 headings
+                    .map(h => wikiSearch.highlightTerms(h, query))
+                    .join(' · ');
+                headingsHTML = `<div class="text-xs text-gray-500 mt-1">${highlightedHeadings}</div>`;
+            }
 
             return `
                 <a href="${result.url}" class="block p-3 hover:bg-gray-100 border-b border-gray-200 last:border-b-0">
-                    <div class="font-semibold text-blue-600 mb-1">${highlightedTitle}</div>
-                    <div class="text-sm text-gray-700 line-clamp-2">${highlightedSnippet}</div>
+                    <div class="font-semibold text-blue-600">${highlightedTitle}</div>
+                    ${headingsHTML}
                 </a>
             `;
         }).join('');
