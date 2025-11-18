@@ -3,17 +3,10 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use wikitext_simplified::{TemplateParameter, WikitextSimplifiedNode, Spanned, Span, parse_wiki_text_2};
+use wikitext_simplified::{TemplateParameter, WikitextSimplifiedNode, parse_wiki_text_2};
 
 use crate::page_context::PageContext;
-
-/// Helper to create a Spanned node with a default (empty) span
-fn spanned<T>(value: T) -> Spanned<T> {
-    Spanned {
-        value,
-        span: Span { start: 0, end: 0 },
-    }
-}
+use crate::util::empty_spanned;
 
 /// Trait for loading wikitext template files
 pub trait TemplateLoader {
@@ -145,7 +138,7 @@ impl<'a> Templates<'a> {
                                     cell.content = children;
                                 }
                                 other => {
-                                    cell.content = vec![spanned(other)];
+                                    cell.content = vec![empty_spanned(other)];
                                 }
                             }
                         }

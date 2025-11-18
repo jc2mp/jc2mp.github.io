@@ -6,21 +6,16 @@ use std::{
 };
 
 use template::{TemplateToInstantiate, Templates};
-use wikitext_simplified::{WikitextSimplifiedNode, Spanned, Span, wikitext_util::parse_wiki_text_2};
-
-/// Helper to create a Spanned node with a default (empty) span
-fn spanned<T>(value: T) -> Spanned<T> {
-    Spanned {
-        value,
-        span: Span { start: 0, end: 0 },
-    }
-}
+use wikitext_simplified::{WikitextSimplifiedNode, Spanned, wikitext_util::parse_wiki_text_2};
 
 mod page_context;
 use page_context::PageContext;
 
 mod syntax;
 mod template;
+mod util;
+
+use util::empty_spanned;
 
 const WIKI_DIRECTORY: &str = "wiki";
 
@@ -446,7 +441,7 @@ fn convert_wikitext_to_html(
         let attributes = templates.instantiate(
             pwt_configuration,
             TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                children: attributes.iter().map(|n| spanned(n.clone())).collect(),
+                children: attributes.iter().map(|n| empty_spanned(n.clone())).collect(),
             }),
             &[],
             page_context,
@@ -654,7 +649,7 @@ fn convert_wikitext_to_html(
                 let instantiated = templates.instantiate(
                     pwt_configuration,
                     TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                        children: attributes.iter().map(|n| spanned(n.value.clone())).collect(),
+                        children: attributes.iter().map(|n| empty_spanned(n.value.clone())).collect(),
                     }),
                     &[],
                     page_context,
@@ -676,7 +671,7 @@ fn convert_wikitext_to_html(
 
             if !has_class_attr {
                 // Add Tailwind table classes
-                modified_attributes.push(spanned(WSN::Text {
+                modified_attributes.push(empty_spanned(WSN::Text {
                     text: " class=\"min-w-full divide-y divide-gray-200 border border-gray-300\""
                         .to_string(),
                 }));
