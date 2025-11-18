@@ -359,6 +359,10 @@ fn generate_wiki_folder(
                 all_headings.extend(headings);
             }
 
+            // Write search text to file
+            let search_text_path = output_html.with_extension("txt");
+            fs::write(&search_text_path, all_text.trim())?;
+
             // Add to search index
             let page_idx = generated.search_index.pages.len();
             generated.search_index.pages.push(PageMetadata {

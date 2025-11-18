@@ -1,6 +1,6 @@
 /**
  * JC2-MP Wiki Search Implementation
- * Efficient inverted index-based search
+ * Efficient inverted index-based search with on-demand text loading
  */
 
 class WikiSearch {
@@ -8,6 +8,7 @@ class WikiSearch {
         this.searchIndex = null;
         this.isLoading = false;
         this.isLoaded = false;
+        this.textCache = new Map(); // Cache loaded text files
     }
 
     /**
@@ -35,6 +36,29 @@ class WikiSearch {
     }
 
     /**
+     * Load text content for a specific page (with caching)
+     */
+    async loadPageText(url) {
+        if (this.textCache.has(url)) {
+            return this.textCache.get(url);
+        }
+
+        try {
+            const textUrl = url.replace('.html', '.txt');
+            const response = await fetch(textUrl);
+            if (!response.ok) {
+                return '';
+            }
+            const text = await response.text();
+            this.textCache.set(url, text);
+            return text;
+        } catch (error) {
+            console.error(`Error loading text for ${url}:`, error);
+            return '';
+        }
+    }
+
+    /**
      * Tokenize text into searchable words (matches Rust implementation)
      */
     tokenize(text) {
@@ -42,6 +66,44 @@ class WikiSearch {
             .toLowerCase()
             .split(/[^a-z0-9]+/)
             .filter(word => word.length >= 2);
+    }
+
+    /**
+     * Extract snippet from content showing where the query appears
+     */
+    extractSnippet(content, query, maxLength = 150) {
+        const normalizedContent = content.toLowerCase();
+        const queryWords = this.tokenize(query);
+
+        // Find the first occurrence of any query word
+        let bestIndex = -1;
+        for (const word of queryWords) {
+            const index = normalizedContent.indexOf(word);
+            if (index !== -1 && (bestIndex === -1 || index < bestIndex)) {
+                bestIndex = index;
+            }
+        }
+
+        if (bestIndex === -1) {
+            // No query words found, return start of content
+            return content.substring(0, maxLength) + (content.length > maxLength ? '...' : '');
+        }
+
+        // Calculate snippet bounds to center the query
+        const snippetStart = Math.max(0, bestIndex - Math.floor(maxLength / 2));
+        const snippetEnd = Math.min(content.length, snippetStart + maxLength);
+
+        let snippet = content.substring(snippetStart, snippetEnd);
+
+        // Add ellipsis if needed
+        if (snippetStart > 0) {
+            snippet = '...' + snippet;
+        }
+        if (snippetEnd < content.length) {
+            snippet = snippet + '...';
+        }
+
+        return snippet;
     }
 
     /**
@@ -191,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Display search results in the UI
      */
-    function displaySearchResults(results, query) {
+    async function displaySearchResults(results, query) {
         if (results.length === 0) {
             searchResults.innerHTML = `
                 <div class="p-4 text-gray-500 text-sm">
@@ -202,23 +264,44 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const resultsHTML = results.map(result => {
+        // Load text content for top results to show snippets
+        const topResults = results.slice(0, 5); // Only load text for top 5 results
+        const snippetPromises = topResults.map(async (result) => {
+            const text = await wikiSearch.loadPageText(result.url);
+            return {
+                ...result,
+                snippet: text ? wikiSearch.extractSnippet(text, query) : null
+            };
+        });
+
+        const resultsWithSnippets = await Promise.all(snippetPromises);
+
+        // Merge back with remaining results (without snippets)
+        const allResults = [
+            ...resultsWithSnippets,
+            ...results.slice(5)
+        ];
+
+        const resultsHTML = allResults.map(result => {
             const highlightedTitle = wikiSearch.highlightTerms(result.title, query);
 
-            // Show headings if available
-            let headingsHTML = '';
-            if (result.headings && result.headings.length > 0) {
+            // Show snippet if available, otherwise show headings
+            let detailsHTML = '';
+            if (result.snippet) {
+                const highlightedSnippet = wikiSearch.highlightTerms(result.snippet, query);
+                detailsHTML = `<div class="text-sm text-gray-700 mt-1">${highlightedSnippet}</div>`;
+            } else if (result.headings && result.headings.length > 0) {
                 const highlightedHeadings = result.headings
                     .slice(0, 3) // Show max 3 headings
                     .map(h => wikiSearch.highlightTerms(h, query))
                     .join(' · ');
-                headingsHTML = `<div class="text-xs text-gray-500 mt-1">${highlightedHeadings}</div>`;
+                detailsHTML = `<div class="text-xs text-gray-500 mt-1">${highlightedHeadings}</div>`;
             }
 
             return `
                 <a href="${result.url}" class="block p-3 hover:bg-gray-100 border-b border-gray-200 last:border-b-0">
                     <div class="font-semibold text-blue-600">${highlightedTitle}</div>
-                    ${headingsHTML}
+                    ${detailsHTML}
                 </a>
             `;
         }).join('');
