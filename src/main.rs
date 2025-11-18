@@ -5,9 +5,9 @@ use std::{
     sync::OnceLock,
 };
 
+use serde::{Deserialize, Serialize};
 use template::{TemplateToInstantiate, Templates};
-use wikitext_simplified::{WikitextSimplifiedNode, Spanned, wikitext_util::parse_wiki_text_2};
-use serde::{Serialize, Deserialize};
+use wikitext_simplified::{Spanned, WikitextSimplifiedNode, wikitext_util::parse_wiki_text_2};
 
 mod page_context;
 use page_context::PageContext;
@@ -364,7 +364,12 @@ fn generate_wiki_folder(
             layout(
                 &page_context.title,
                 paxhtml::Element::from_iter(simplified.iter().map(|node| {
-                    convert_wikitext_to_html(templates, pwt_configuration, &node.value, &page_context)
+                    convert_wikitext_to_html(
+                        templates,
+                        pwt_configuration,
+                        &node.value,
+                        &page_context,
+                    )
                 })),
             )
         };
@@ -491,7 +496,10 @@ fn convert_wikitext_to_html(
         let attributes = templates.instantiate(
             pwt_configuration,
             TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                children: attributes.iter().map(|n| empty_spanned(n.clone())).collect(),
+                children: attributes
+                    .iter()
+                    .map(|n| empty_spanned(n.clone()))
+                    .collect(),
             }),
             &[],
             page_context,
@@ -549,16 +557,22 @@ fn convert_wikitext_to_html(
             .unwrap_or_default()
     }
 
-    let convert_children = |templates: &mut Templates, children: &[Spanned<WikitextSimplifiedNode>]| {
-        paxhtml::Element::from_iter(
-            children
-                .iter()
-                .skip_while(|node| matches!(node.value, WSN::ParagraphBreak | WSN::Newline))
-                .map(|node| {
-                    convert_wikitext_to_html(templates, pwt_configuration, &node.value, page_context)
-                }),
-        )
-    };
+    let convert_children =
+        |templates: &mut Templates, children: &[Spanned<WikitextSimplifiedNode>]| {
+            paxhtml::Element::from_iter(
+                children
+                    .iter()
+                    .skip_while(|node| matches!(node.value, WSN::ParagraphBreak | WSN::Newline))
+                    .map(|node| {
+                        convert_wikitext_to_html(
+                            templates,
+                            pwt_configuration,
+                            &node.value,
+                            page_context,
+                        )
+                    }),
+            )
+        };
 
     match node {
         WSN::Fragment { children } => convert_children(templates, children),
@@ -699,7 +713,10 @@ fn convert_wikitext_to_html(
                 let instantiated = templates.instantiate(
                     pwt_configuration,
                     TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                        children: attributes.iter().map(|n| empty_spanned(n.value.clone())).collect(),
+                        children: attributes
+                            .iter()
+                            .map(|n| empty_spanned(n.value.clone()))
+                            .collect(),
                     }),
                     &[],
                     page_context,
@@ -727,7 +744,10 @@ fn convert_wikitext_to_html(
                 }));
             }
 
-            let unwrapped_attributes: Vec<WSN> = modified_attributes.iter().map(|s| s.value.clone()).collect();
+            let unwrapped_attributes: Vec<WSN> = modified_attributes
+                .iter()
+                .map(|s| s.value.clone())
+                .collect();
             let attributes = parse_attributes_from_wsn(
                 templates,
                 pwt_configuration,
@@ -894,14 +914,14 @@ fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
 
     fn extract_recursive(node: &WSN, text: &mut String, headings: &mut Vec<String>) {
         match node {
-            WSN::Fragment { children } |
-            WSN::Bold { children } |
-            WSN::Italic { children } |
-            WSN::Blockquote { children } |
-            WSN::Superscript { children } |
-            WSN::Subscript { children } |
-            WSN::Small { children } |
-            WSN::Preformatted { children } => {
+            WSN::Fragment { children }
+            | WSN::Bold { children }
+            | WSN::Italic { children }
+            | WSN::Blockquote { children }
+            | WSN::Superscript { children }
+            | WSN::Subscript { children }
+            | WSN::Small { children }
+            | WSN::Preformatted { children } => {
                 for child in children {
                     extract_recursive(&child.value, text, headings);
                 }
@@ -918,11 +938,17 @@ fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
                     text.push(' ');
                 }
             }
-            WSN::Link { text: link_text, title: _ } => {
+            WSN::Link {
+                text: link_text,
+                title: _,
+            } => {
                 text.push_str(link_text);
                 text.push(' ');
             }
-            WSN::ExtLink { link: _, text: link_text } => {
+            WSN::ExtLink {
+                link: _,
+                text: link_text,
+            } => {
                 if let Some(t) = link_text {
                     text.push_str(t);
                     text.push(' ');
@@ -932,16 +958,9 @@ fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
                 text.push_str(t);
                 text.push(' ');
             }
-            WSN::Tag { name, children, .. } => {
-                // For code blocks, include the content
-                if name == "syntaxhighlight" || name == "code" || name == "pre" {
-                    for child in children {
-                        extract_recursive(&child.value, text, headings);
-                    }
-                } else {
-                    for child in children {
-                        extract_recursive(&child.value, text, headings);
-                    }
+            WSN::Tag { children, .. } => {
+                for child in children {
+                    extract_recursive(&child.value, text, headings);
                 }
             }
             WSN::Table { captions, rows, .. } => {
@@ -974,12 +993,12 @@ fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
                     }
                 }
             }
-            WSN::Template { .. } |
-            WSN::TemplateParameterUse { .. } |
-            WSN::Redirect { .. } |
-            WSN::HorizontalDivider |
-            WSN::ParagraphBreak |
-            WSN::Newline => {
+            WSN::Template { .. }
+            | WSN::TemplateParameterUse { .. }
+            | WSN::Redirect { .. }
+            | WSN::HorizontalDivider
+            | WSN::ParagraphBreak
+            | WSN::Newline => {
                 // Skip templates, parameters, and formatting elements
             }
         }
@@ -990,10 +1009,10 @@ fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
             WSN::Text { text: t } => {
                 text.push_str(t);
             }
-            WSN::Fragment { children } |
-            WSN::Bold { children } |
-            WSN::Italic { children } |
-            WSN::Heading { children, .. } => {
+            WSN::Fragment { children }
+            | WSN::Bold { children }
+            | WSN::Italic { children }
+            | WSN::Heading { children, .. } => {
                 for child in children {
                     extract_text_only(&child.value, text);
                 }
@@ -1005,10 +1024,7 @@ fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
     extract_recursive(node, &mut text, &mut headings);
 
     // Normalize whitespace
-    let normalized = text
-        .split_whitespace()
-        .collect::<Vec<_>>()
-        .join(" ");
+    let normalized = text.split_whitespace().collect::<Vec<_>>().join(" ");
 
     (normalized, headings)
 }
