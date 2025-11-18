@@ -401,11 +401,13 @@ mod tests {
         // Verify the result is a table (possibly wrapped in a Fragment)
         let table_node = match &result {
             WikitextSimplifiedNode::Table { .. } => &result,
-            WikitextSimplifiedNode::Fragment { children } => &children
-                .iter()
-                .find(|node| matches!(node.value, WikitextSimplifiedNode::Table { .. }))
-                .expect("Fragment should contain a Table node")
-                .value,
+            WikitextSimplifiedNode::Fragment { children } => {
+                &children
+                    .iter()
+                    .find(|node| matches!(node.value, WikitextSimplifiedNode::Table { .. }))
+                    .expect("Fragment should contain a Table node")
+                    .value
+            }
             _ => panic!(
                 "Expected Table or Fragment with Table node, got {:?}",
                 result

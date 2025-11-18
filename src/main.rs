@@ -5,8 +5,9 @@ use std::{
     sync::OnceLock,
 };
 
+use serde::{Deserialize, Serialize};
 use template::{TemplateToInstantiate, Templates};
-use wikitext_simplified::{WikitextSimplifiedNode, Spanned, wikitext_util::parse_wiki_text_2};
+use wikitext_simplified::{Spanned, WikitextSimplifiedNode, wikitext_util::parse_wiki_text_2};
 
 mod page_context;
 use page_context::PageContext;
@@ -25,6 +26,16 @@ static SYNTAX_HIGHLIGHTER: OnceLock<syntax::SyntaxHighlighter> = OnceLock::new()
 struct GeneratedPages {
     // Maps directory path (relative to wiki root) to set of page names (without .html)
     pages_by_directory: BTreeMap<String, BTreeSet<String>>,
+    // Search index
+    search_index: SearchIndex,
+}
+
+#[derive(Debug, Default, Serialize, Deserialize)]
+struct SearchIndex {
+    /// List of page titles (index = page ID)
+    pages: Vec<String>,
+    /// Inverted index: word -> list of (page_index, weight) tuples
+    words: BTreeMap<String, Vec<(usize, u8)>>,
 }
 
 fn main() -> anyhow::Result<()> {
@@ -229,6 +240,10 @@ fn generate_wiki(src: &Path, dst: &Path) -> anyhow::Result<()> {
     // Generate missing index pages
     generate_missing_index_pages(output_dir, &generated)?;
 
+    // Write search index
+    let search_index_json = serde_json::to_string(&generated.search_index)?;
+    fs::write(output_dir.join("search-index.json"), search_index_json)?;
+
     redirect(&page_title_to_route_path("Main_Page").url_path())
         .write_to_route(dst, paxhtml::RoutePath::new([], "index.html".to_string()))?;
 
@@ -324,10 +339,72 @@ fn generate_wiki_folder(
                 sub_page_name,
             };
 
+            // Extract search data from the page
+            let mut all_text = String::new();
+            let mut all_headings = Vec::new();
+            for node in &simplified {
+                let (text, headings) = extract_search_data(&node.value);
+                all_text.push_str(&text);
+                all_text.push(' ');
+                all_headings.extend(headings);
+            }
+
+            // Write search text to file
+            let search_text_path = output_html.with_extension("txt");
+            fs::write(&search_text_path, all_text.trim())?;
+
+            // Add page title to search index
+            let page_idx = generated.search_index.pages.len();
+            generated
+                .search_index
+                .pages
+                .push(page_context.title.clone());
+
+            // Build word weight map for this page
+            let mut word_weights: BTreeMap<String, u8> = BTreeMap::new();
+
+            // Index words from content (weight 1)
+            for word in tokenize_text(&all_text) {
+                word_weights.entry(word).or_insert(1);
+            }
+
+            // Index words from headings (weight 3, higher priority)
+            for heading in &all_headings {
+                for word in tokenize_text(heading) {
+                    word_weights
+                        .entry(word)
+                        .and_modify(|w| *w = (*w).max(3))
+                        .or_insert(3);
+                }
+            }
+
+            // Index words from title (weight 5, highest priority)
+            for word in tokenize_text(&page_context.title) {
+                word_weights
+                    .entry(word)
+                    .and_modify(|w| *w = (*w).max(5))
+                    .or_insert(5);
+            }
+
+            // Add to inverted index with weights
+            for (word, weight) in word_weights {
+                generated
+                    .search_index
+                    .words
+                    .entry(word)
+                    .or_default()
+                    .push((page_idx, weight));
+            }
+
             layout(
                 &page_context.title,
                 paxhtml::Element::from_iter(simplified.iter().map(|node| {
-                    convert_wikitext_to_html(templates, pwt_configuration, &node.value, &page_context)
+                    convert_wikitext_to_html(
+                        templates,
+                        pwt_configuration,
+                        &node.value,
+                        &page_context,
+                    )
                 })),
             )
         };
@@ -398,7 +475,19 @@ fn layout(title: &str, inner: paxhtml::Element) -> paxhtml::Document {
                             <div class="flex items-center">
                                 <a class="text-xl font-semibold" href="/wiki">"Just Cause 2: Multiplayer"</a>
                             </div>
-                            <div class="flex items-center">
+                            <div class="flex items-center gap-4">
+                                <div class="relative">
+                                    <input
+                                        r#type="text"
+                                        id="wiki-search-input"
+                                        placeholder="Search documentation..."
+                                        class="w-64 px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                    <div
+                                        id="wiki-search-results"
+                                        class="hidden absolute top-full mt-2 w-96 bg-white text-gray-900 rounded-lg shadow-xl max-h-96 overflow-y-auto z-50"
+                                    ></div>
+                                </div>
                                 <a class="text-gray-300 hover:text-white px-3 py-2" href="/">"Website"</a>
                             </div>
                         </div>
@@ -412,6 +501,7 @@ fn layout(title: &str, inner: paxhtml::Element) -> paxhtml::Document {
                         </div>
                     </div>
                 </div>
+                <script src="/js/search.js"></script>
             </body>
             </html>
         },
@@ -441,7 +531,10 @@ fn convert_wikitext_to_html(
         let attributes = templates.instantiate(
             pwt_configuration,
             TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                children: attributes.iter().map(|n| empty_spanned(n.clone())).collect(),
+                children: attributes
+                    .iter()
+                    .map(|n| empty_spanned(n.clone()))
+                    .collect(),
             }),
             &[],
             page_context,
@@ -499,16 +592,22 @@ fn convert_wikitext_to_html(
             .unwrap_or_default()
     }
 
-    let convert_children = |templates: &mut Templates, children: &[Spanned<WikitextSimplifiedNode>]| {
-        paxhtml::Element::from_iter(
-            children
-                .iter()
-                .skip_while(|node| matches!(node.value, WSN::ParagraphBreak | WSN::Newline))
-                .map(|node| {
-                    convert_wikitext_to_html(templates, pwt_configuration, &node.value, page_context)
-                }),
-        )
-    };
+    let convert_children =
+        |templates: &mut Templates, children: &[Spanned<WikitextSimplifiedNode>]| {
+            paxhtml::Element::from_iter(
+                children
+                    .iter()
+                    .skip_while(|node| matches!(node.value, WSN::ParagraphBreak | WSN::Newline))
+                    .map(|node| {
+                        convert_wikitext_to_html(
+                            templates,
+                            pwt_configuration,
+                            &node.value,
+                            page_context,
+                        )
+                    }),
+            )
+        };
 
     match node {
         WSN::Fragment { children } => convert_children(templates, children),
@@ -649,7 +748,10 @@ fn convert_wikitext_to_html(
                 let instantiated = templates.instantiate(
                     pwt_configuration,
                     TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                        children: attributes.iter().map(|n| empty_spanned(n.value.clone())).collect(),
+                        children: attributes
+                            .iter()
+                            .map(|n| empty_spanned(n.value.clone()))
+                            .collect(),
                     }),
                     &[],
                     page_context,
@@ -677,7 +779,10 @@ fn convert_wikitext_to_html(
                 }));
             }
 
-            let unwrapped_attributes: Vec<WSN> = modified_attributes.iter().map(|s| s.value.clone()).collect();
+            let unwrapped_attributes: Vec<WSN> = modified_attributes
+                .iter()
+                .map(|s| s.value.clone())
+                .collect();
             let attributes = parse_attributes_from_wsn(
                 templates,
                 pwt_configuration,
@@ -833,4 +938,137 @@ fn redirect(to_url: &str) -> paxhtml::Document {
             </html>
         },
     ])
+}
+
+/// Tokenize text into searchable words
+fn tokenize_text(text: &str) -> Vec<String> {
+    text.to_lowercase()
+        .split(|c: char| !c.is_alphanumeric())
+        .filter(|word| word.len() >= 2) // Skip single characters
+        .map(|word| word.to_string())
+        .collect()
+}
+
+/// Extract plain text and headings from wikitext AST for search indexing
+fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
+    use WikitextSimplifiedNode as WSN;
+
+    let mut text = String::new();
+    let mut headings = Vec::new();
+
+    fn extract_recursive(node: &WSN, text: &mut String, headings: &mut Vec<String>) {
+        match node {
+            WSN::Fragment { children }
+            | WSN::Bold { children }
+            | WSN::Italic { children }
+            | WSN::Blockquote { children }
+            | WSN::Superscript { children }
+            | WSN::Subscript { children }
+            | WSN::Small { children }
+            | WSN::Preformatted { children } => {
+                for child in children {
+                    extract_recursive(&child.value, text, headings);
+                }
+            }
+            WSN::Heading { level: _, children } => {
+                let mut heading_text = String::new();
+                for child in children {
+                    extract_text_only(&child.value, &mut heading_text);
+                }
+                let heading_trimmed = heading_text.trim().to_string();
+                if !heading_trimmed.is_empty() {
+                    headings.push(heading_trimmed.clone());
+                    text.push_str(&heading_trimmed);
+                    text.push(' ');
+                }
+            }
+            WSN::Link {
+                text: link_text,
+                title: _,
+            } => {
+                text.push_str(link_text);
+                text.push(' ');
+            }
+            WSN::ExtLink {
+                link: _,
+                text: link_text,
+            } => {
+                if let Some(t) = link_text {
+                    text.push_str(t);
+                    text.push(' ');
+                }
+            }
+            WSN::Text { text: t } => {
+                text.push_str(t);
+                text.push(' ');
+            }
+            WSN::Tag { children, .. } => {
+                for child in children {
+                    extract_recursive(&child.value, text, headings);
+                }
+            }
+            WSN::Table { captions, rows, .. } => {
+                // Extract text from table captions
+                for caption in captions {
+                    for node in &caption.content {
+                        extract_recursive(&node.value, text, headings);
+                    }
+                }
+                // Extract text from table cells
+                for row in rows {
+                    for cell in &row.cells {
+                        for node in &cell.content {
+                            extract_recursive(&node.value, text, headings);
+                        }
+                    }
+                }
+            }
+            WSN::OrderedList { items } | WSN::UnorderedList { items } => {
+                for item in items {
+                    for node in &item.content {
+                        extract_recursive(&node.value, text, headings);
+                    }
+                }
+            }
+            WSN::DefinitionList { items } => {
+                for item in items {
+                    for node in &item.content {
+                        extract_recursive(&node.value, text, headings);
+                    }
+                }
+            }
+            WSN::Template { .. }
+            | WSN::TemplateParameterUse { .. }
+            | WSN::Redirect { .. }
+            | WSN::HorizontalDivider
+            | WSN::ParagraphBreak
+            | WSN::Newline => {
+                // Skip templates, parameters, and formatting elements
+            }
+        }
+    }
+
+    fn extract_text_only(node: &WSN, text: &mut String) {
+        match node {
+            WSN::Text { text: t } => {
+                text.push_str(t);
+            }
+            WSN::Fragment { children }
+            | WSN::Bold { children }
+            | WSN::Italic { children }
+            | WSN::Heading { children, .. } => {
+                for child in children {
+                    extract_text_only(&child.value, text);
+                }
+            }
+            _ => {}
+        }
+    }
+
+    extract_recursive(node, &mut text, &mut headings);
+
+    // Normalize whitespace
+    let normalized = text.split_whitespace().collect::<Vec<_>>().join(" ");
+
+    (normalized, headings)
 }

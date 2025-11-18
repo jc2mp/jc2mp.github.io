@@ -144,6 +144,7 @@ dependencies = [
  "anyhow",
  "paxhtml",
  "paxhtml_tailwind",
+ "serde",
  "serde_json",
  "syntect",
  "wikitext_simplified",
