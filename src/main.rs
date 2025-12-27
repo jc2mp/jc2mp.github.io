@@ -6,17 +6,15 @@ use std::{
 };
 
 use serde::{Deserialize, Serialize};
-use template::{TemplateToInstantiate, Templates};
-use wikitext_simplified::{Spanned, WikitextSimplifiedNode, wikitext_util::parse_wiki_text_2};
+use wikitext_simplified::{Span, Spanned, WikitextSimplifiedNode};
+use wikitext_simplified_template_eval::{
+    TemplateContext, TemplateEvaluator, TemplateToInstantiate,
+};
 
 mod page_context;
-use page_context::PageContext;
+use page_context::{PageContext, PageTemplateContext};
 
 mod syntax;
-mod template;
-mod util;
-
-use util::empty_spanned;
 
 const WIKI_DIRECTORY: &str = "wiki";
 
@@ -213,9 +211,8 @@ fn generate_index_page(
 fn generate_wiki(src: &Path, dst: &Path) -> anyhow::Result<()> {
     fs::create_dir_all(dst)?;
 
-    let pwt_configuration = wikitext_simplified::wikitext_util::wikipedia_pwt_configuration();
-    let loader = template::FileSystemLoader::new(src)?;
-    let mut templates = Templates::new(loader, &pwt_configuration)?;
+    let context = PageTemplateContext::new(src)?;
+    let mut evaluator = TemplateEvaluator::new(&context);
 
     // Initialize syntax highlighter
     let highlighter = SYNTAX_HIGHLIGHTER.get_or_init(syntax::SyntaxHighlighter::default);
@@ -227,15 +224,7 @@ fn generate_wiki(src: &Path, dst: &Path) -> anyhow::Result<()> {
     fs::write(output_dir.join("style/syntax.css"), syntax_css)?;
 
     let mut generated = GeneratedPages::default();
-    generate_wiki_folder(
-        &mut templates,
-        src,
-        dst,
-        dst,
-        &pwt_configuration,
-        "",
-        &mut generated,
-    )?;
+    generate_wiki_folder(&context, &mut evaluator, src, dst, dst, "", &mut generated)?;
 
     // Generate missing index pages
     generate_missing_index_pages(output_dir, &generated)?;
@@ -251,11 +240,11 @@ fn generate_wiki(src: &Path, dst: &Path) -> anyhow::Result<()> {
 }
 
 fn generate_wiki_folder(
-    templates: &mut Templates,
+    context: &PageTemplateContext,
+    evaluator: &mut TemplateEvaluator<'_>,
     src: &Path,
     dst_root: &Path,
     dst: &Path,
-    pwt_configuration: &parse_wiki_text_2::Configuration,
     relative_path: &str,
     generated: &mut GeneratedPages,
 ) -> anyhow::Result<()> {
@@ -274,11 +263,11 @@ fn generate_wiki_folder(
                 format!("{}/{}", relative_path, dir_name)
             };
             generate_wiki_folder(
-                templates,
+                context,
+                evaluator,
                 &path,
                 dst_root,
                 &dst.join(path.file_name().unwrap()),
-                pwt_configuration,
                 &new_relative_path,
                 generated,
             )?;
@@ -286,14 +275,13 @@ fn generate_wiki_folder(
         }
         let content = fs::read_to_string(&path)?;
         let simplified =
-            wikitext_simplified::parse_and_simplify_wikitext(&content, pwt_configuration).map_err(
-                |e| {
+            wikitext_simplified::parse_and_simplify_wikitext(&content, context.configuration())
+                .map_err(|e| {
                     anyhow::anyhow!(
                         "Failed to parse and simplify wiki file {}: {e:?}",
                         path.display()
                     )
-                },
-            )?;
+                })?;
 
         let output_json = dst.join(path.with_extension("json").file_name().unwrap());
         fs::write(&output_json, serde_json::to_string_pretty(&simplified)?)?;
@@ -314,100 +302,98 @@ fn generate_wiki_folder(
                 .map(|s| s.to_string()),
         );
 
-        let document = if let [node] = simplified.as_slice()
-            && let WikitextSimplifiedNode::Redirect { target } = &node.value
-        {
-            redirect(&page_title_to_route_path(target).url_path())
-        } else {
-            let sub_page_name = path
-                .with_extension("")
-                .file_name()
-                .unwrap()
-                .to_string_lossy()
-                .to_string();
-
-            let page_context = PageContext {
-                input_path: path.clone(),
-                title: output_html_rel
+        let document =
+            if let [node] = simplified.as_slice()
+                && let WikitextSimplifiedNode::Redirect { target } = &node.value
+            {
+                redirect(&page_title_to_route_path(target).url_path())
+            } else {
+                let sub_page_name = path
                     .with_extension("")
-                    .to_str()
-                    .map(|s| s.to_string())
+                    .file_name()
                     .unwrap()
-                    .replace("\\", "/")
-                    .replace("_", " "),
-                route_path: route_path.clone(),
-                sub_page_name,
-            };
+                    .to_string_lossy()
+                    .to_string();
 
-            // Extract search data from the page
-            let mut all_text = String::new();
-            let mut all_headings = Vec::new();
-            for node in &simplified {
-                let (text, headings) = extract_search_data(&node.value);
-                all_text.push_str(&text);
-                all_text.push(' ');
-                all_headings.extend(headings);
-            }
+                // Update the template context with the current page's sub_page_name
+                context.set_sub_page_name(&sub_page_name);
 
-            // Write search text to file
-            let search_text_path = output_html.with_extension("txt");
-            fs::write(&search_text_path, all_text.trim())?;
+                let page_context = PageContext {
+                    input_path: path.clone(),
+                    title: output_html_rel
+                        .with_extension("")
+                        .to_str()
+                        .map(|s| s.to_string())
+                        .unwrap()
+                        .replace("\\", "/")
+                        .replace("_", " "),
+                    route_path: route_path.clone(),
+                };
 
-            // Add page title to search index
-            let page_idx = generated.search_index.pages.len();
-            generated
-                .search_index
-                .pages
-                .push(page_context.title.clone());
-
-            // Build word weight map for this page
-            let mut word_weights: BTreeMap<String, u8> = BTreeMap::new();
-
-            // Index words from content (weight 1)
-            for word in tokenize_text(&all_text) {
-                word_weights.entry(word).or_insert(1);
-            }
-
-            // Index words from headings (weight 3, higher priority)
-            for heading in &all_headings {
-                for word in tokenize_text(heading) {
-                    word_weights
-                        .entry(word)
-                        .and_modify(|w| *w = (*w).max(3))
-                        .or_insert(3);
+                // Extract search data from the page
+                let mut all_text = String::new();
+                let mut all_headings = Vec::new();
+                for node in &simplified {
+                    let (text, headings) = extract_search_data(&node.value);
+                    all_text.push_str(&text);
+                    all_text.push(' ');
+                    all_headings.extend(headings);
                 }
-            }
 
-            // Index words from title (weight 5, highest priority)
-            for word in tokenize_text(&page_context.title) {
-                word_weights
-                    .entry(word)
-                    .and_modify(|w| *w = (*w).max(5))
-                    .or_insert(5);
-            }
+                // Write search text to file
+                let search_text_path = output_html.with_extension("txt");
+                fs::write(&search_text_path, all_text.trim())?;
 
-            // Add to inverted index with weights
-            for (word, weight) in word_weights {
+                // Add page title to search index
+                let page_idx = generated.search_index.pages.len();
                 generated
                     .search_index
-                    .words
-                    .entry(word)
-                    .or_default()
-                    .push((page_idx, weight));
-            }
+                    .pages
+                    .push(page_context.title.clone());
 
-            layout(
-                &page_context.title,
-                paxhtml::Element::from_iter(simplified.iter().map(|node| {
-                    convert_wikitext_to_html(
-                        templates,
-                        pwt_configuration,
-                        &node.value,
-                        &page_context,
-                    )
-                })),
-            )
-        };
+                // Build word weight map for this page
+                let mut word_weights: BTreeMap<String, u8> = BTreeMap::new();
+
+                // Index words from content (weight 1)
+                for word in tokenize_text(&all_text) {
+                    word_weights.entry(word).or_insert(1);
+                }
+
+                // Index words from headings (weight 3, higher priority)
+                for heading in &all_headings {
+                    for word in tokenize_text(heading) {
+                        word_weights
+                            .entry(word)
+                            .and_modify(|w| *w = (*w).max(3))
+                            .or_insert(3);
+                    }
+                }
+
+                // Index words from title (weight 5, highest priority)
+                for word in tokenize_text(&page_context.title) {
+                    word_weights
+                        .entry(word)
+                        .and_modify(|w| *w = (*w).max(5))
+                        .or_insert(5);
+                }
+
+                // Add to inverted index with weights
+                for (word, weight) in word_weights {
+                    generated
+                        .search_index
+                        .words
+                        .entry(word)
+                        .or_default()
+                        .push((page_idx, weight));
+                }
+
+                layout(
+                    &page_context.title,
+                    paxhtml::Element::from_iter(simplified.iter().map(|node| {
+                        convert_wikitext_to_html(evaluator, &node.value, &page_context)
+                    })),
+                )
+            };
 
         document.write_to_route(dst_root, route_path)?;
 
@@ -509,8 +495,7 @@ fn layout(title: &str, inner: paxhtml::Element) -> paxhtml::Document {
 }
 
 fn convert_wikitext_to_html(
-    templates: &mut Templates,
-    pwt_configuration: &parse_wiki_text_2::Configuration,
+    evaluator: &mut TemplateEvaluator<'_>,
     node: &WikitextSimplifiedNode,
     page_context: &PageContext,
 ) -> paxhtml::Element {
@@ -518,26 +503,25 @@ fn convert_wikitext_to_html(
     use paxhtml::html;
 
     fn parse_attributes_from_wsn(
-        templates: &mut Templates,
-        pwt_configuration: &parse_wiki_text_2::Configuration,
-        page_context: &PageContext,
+        evaluator: &mut TemplateEvaluator<'_>,
         attributes_context: &str,
         attributes: &[WSN],
+        page_context: &PageContext,
     ) -> Vec<paxhtml::Attribute> {
         if attributes.is_empty() {
             return vec![];
         }
         // Instantiate the attributes before extracting the text
-        let attributes = templates.instantiate(
-            pwt_configuration,
-            TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                children: attributes
-                    .iter()
-                    .map(|n| empty_spanned(n.clone()))
-                    .collect(),
-            }),
-            &[],
-            page_context,
+        let attributes = pollster::block_on(
+            evaluator.instantiate(
+                TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
+                    children: attributes
+                        .iter()
+                        .map(|n| empty_spanned(n.clone()))
+                        .collect(),
+                }),
+                &[],
+            ),
         );
         let WSN::Fragment {
             children: attributes,
@@ -571,54 +555,37 @@ fn convert_wikitext_to_html(
     }
 
     fn parse_optional_attributes_from_wsn(
-        templates: &mut Templates,
-        pwt_configuration: &parse_wiki_text_2::Configuration,
-        page_context: &PageContext,
+        evaluator: &mut TemplateEvaluator<'_>,
         attributes_context: &str,
         attributes: &Option<Vec<Spanned<WSN>>>,
+        page_context: &PageContext,
     ) -> Vec<paxhtml::Attribute> {
         attributes
             .as_ref()
             .map(|attributes| {
                 let unwrapped: Vec<WSN> = attributes.iter().map(|s| s.value.clone()).collect();
-                parse_attributes_from_wsn(
-                    templates,
-                    pwt_configuration,
-                    page_context,
-                    attributes_context,
-                    &unwrapped,
-                )
+                parse_attributes_from_wsn(evaluator, attributes_context, &unwrapped, page_context)
             })
             .unwrap_or_default()
     }
 
     let convert_children =
-        |templates: &mut Templates, children: &[Spanned<WikitextSimplifiedNode>]| {
+        |evaluator: &mut TemplateEvaluator<'_>, children: &[Spanned<WikitextSimplifiedNode>]| {
             paxhtml::Element::from_iter(
                 children
                     .iter()
                     .skip_while(|node| matches!(node.value, WSN::ParagraphBreak | WSN::Newline))
-                    .map(|node| {
-                        convert_wikitext_to_html(
-                            templates,
-                            pwt_configuration,
-                            &node.value,
-                            page_context,
-                        )
-                    }),
+                    .map(|node| convert_wikitext_to_html(evaluator, &node.value, page_context)),
             )
         };
 
     match node {
-        WSN::Fragment { children } => convert_children(templates, children),
+        WSN::Fragment { children } => convert_children(evaluator, children),
         WSN::Template { name, parameters } => {
-            let template = templates.instantiate(
-                pwt_configuration,
-                TemplateToInstantiate::Name(name),
-                parameters,
-                page_context,
+            let template = pollster::block_on(
+                evaluator.instantiate(TemplateToInstantiate::Name(name), parameters),
             );
-            convert_wikitext_to_html(templates, pwt_configuration, &template, page_context)
+            convert_wikitext_to_html(evaluator, &template, page_context)
         }
         tpu @ WSN::TemplateParameterUse { .. } => {
             html! { <>{tpu.to_wikitext()}</> }
@@ -634,7 +601,7 @@ fn convert_wikitext_to_html(
                 format!("h{level}"),
                 paxhtml::Attribute::parse_from_str(&format!("class=\"{}\"", class)).unwrap(),
                 false,
-            )(convert_children(templates, children))
+            )(convert_children(evaluator, children))
         }
         WSN::Link { text, title } => {
             html! {
@@ -651,25 +618,25 @@ fn convert_wikitext_to_html(
             }
         }
         WSN::Bold { children } => {
-            html! { <strong>{convert_children(templates, children)}</strong> }
+            html! { <strong>{convert_children(evaluator, children)}</strong> }
         }
         WSN::Italic { children } => {
-            html! { <em>{convert_children(templates, children)}</em> }
+            html! { <em>{convert_children(evaluator, children)}</em> }
         }
         WSN::Blockquote { children } => {
-            html! { <blockquote class="border-l-4 border-gray-300 pl-4 py-2 my-4 italic text-gray-700">{convert_children(templates, children)}</blockquote> }
+            html! { <blockquote class="border-l-4 border-gray-300 pl-4 py-2 my-4 italic text-gray-700">{convert_children(evaluator, children)}</blockquote> }
         }
         WSN::Superscript { children } => {
-            html! { <sup>{convert_children(templates, children)}</sup> }
+            html! { <sup>{convert_children(evaluator, children)}</sup> }
         }
         WSN::Subscript { children } => {
-            html! { <sub>{convert_children(templates, children)}</sub> }
+            html! { <sub>{convert_children(evaluator, children)}</sub> }
         }
         WSN::Small { children } => {
-            html! { <small>{convert_children(templates, children)}</small> }
+            html! { <small>{convert_children(evaluator, children)}</small> }
         }
         WSN::Preformatted { children } => {
-            html! { <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4">{convert_children(templates, children)}</pre> }
+            html! { <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4">{convert_children(evaluator, children)}</pre> }
         }
         WSN::Tag {
             name,
@@ -702,7 +669,7 @@ fn convert_wikitext_to_html(
                 } else {
                     // If not simple text, fall back to plain rendering
                     let parsed_attributes = paxhtml::Attribute::parse_from_str(attrs_str).unwrap();
-                    return html! { <pre {parsed_attributes}><code>{convert_children(templates, children)}</code></pre> };
+                    return html! { <pre {parsed_attributes}><code>{convert_children(evaluator, children)}</code></pre> };
                 };
 
                 // Use syntax highlighter
@@ -727,7 +694,7 @@ fn convert_wikitext_to_html(
                 let parsed_attributes =
                     paxhtml::Attribute::parse_from_str(attributes.as_deref().unwrap_or_default())
                         .unwrap();
-                let children = convert_children(templates, children);
+                let children = convert_children(evaluator, children);
                 paxhtml::builder::tag(name.to_string(), parsed_attributes, false)(children)
             }
         }
@@ -745,16 +712,16 @@ fn convert_wikitext_to_html(
             // Add Bootstrap table classes if not already present
             let has_class_attr = if !attributes.is_empty() {
                 // Check if there's already a class attribute by instantiating and checking text
-                let instantiated = templates.instantiate(
-                    pwt_configuration,
-                    TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
-                        children: attributes
-                            .iter()
-                            .map(|n| empty_spanned(n.value.clone()))
-                            .collect(),
-                    }),
-                    &[],
-                    page_context,
+                let instantiated = pollster::block_on(
+                    evaluator.instantiate(
+                        TemplateToInstantiate::Node(WikitextSimplifiedNode::Fragment {
+                            children: attributes
+                                .iter()
+                                .map(|n| empty_spanned(n.value.clone()))
+                                .collect(),
+                        }),
+                        &[],
+                    ),
                 );
                 if let WSN::Fragment { children } = instantiated {
                     if let Some(node) = children.first()
@@ -783,13 +750,8 @@ fn convert_wikitext_to_html(
                 .iter()
                 .map(|s| s.value.clone())
                 .collect();
-            let attributes = parse_attributes_from_wsn(
-                templates,
-                pwt_configuration,
-                page_context,
-                "main",
-                &unwrapped_attributes,
-            );
+            let attributes =
+                parse_attributes_from_wsn(evaluator, "main", &unwrapped_attributes, page_context);
             html! {
                 <table {attributes}>
                     <thead class="bg-gray-800 text-white">
@@ -798,15 +760,14 @@ fn convert_wikitext_to_html(
                                 .iter()
                                 .map(|caption| {
                                     let attributes = parse_optional_attributes_from_wsn(
-                                        templates,
-                                        pwt_configuration,
-                                        page_context,
+                                        evaluator,
                                         "caption",
                                         &caption.attributes,
+                                        page_context,
                                     );
                                     html! {
                                         <th class="px-4 py-2 text-left" {attributes}>
-                                            {convert_children(templates, &caption.content)}
+                                            {convert_children(evaluator, &caption.content)}
                                         </th>
                                     }
                                 })
@@ -820,11 +781,10 @@ fn convert_wikitext_to_html(
                             .map(|(idx, row)| {
                                 let unwrapped_row_attrs: Vec<WSN> = row.attributes.iter().map(|s| s.value.clone()).collect();
                                 let attributes = parse_attributes_from_wsn(
-                                    templates,
-                                    pwt_configuration,
-                                    page_context,
+                                    evaluator,
                                     "row",
                                     &unwrapped_row_attrs,
+                                    page_context,
                                 );
                                 let row_class = if idx % 2 == 0 { "bg-white" } else { "bg-gray-50" };
                                 html! {
@@ -833,15 +793,14 @@ fn convert_wikitext_to_html(
                                             .iter()
                                             .map(|cell| {
                                                 let attributes = parse_optional_attributes_from_wsn(
-                                                    templates,
-                                                    pwt_configuration,
-                                                    page_context,
+                                                    evaluator,
                                                     "cell",
                                                     &cell.attributes,
+                                                    page_context,
                                                 );
                                                 html! {
                                                     <td class="px-4 py-2" {attributes}>
-                                                        {convert_children(templates, &cell.content)}
+                                                        {convert_children(evaluator, &cell.content)}
                                                     </td>
                                                 }
                                             })
@@ -860,7 +819,7 @@ fn convert_wikitext_to_html(
                     #{items
                         .iter()
                         .map(|i| {
-                            html! { <li class="ml-4">{convert_children(templates, &i.content)}</li> }
+                            html! { <li class="ml-4">{convert_children(evaluator, &i.content)}</li> }
                         })
                     }
                 </ol>
@@ -872,7 +831,7 @@ fn convert_wikitext_to_html(
                     #{items
                         .iter()
                         .map(|i| {
-                            html! { <li class="ml-4">{convert_children(templates, &i.content)}</li> }
+                            html! { <li class="ml-4">{convert_children(evaluator, &i.content)}</li> }
                         })
                     }
                 </ul>
@@ -883,7 +842,7 @@ fn convert_wikitext_to_html(
             html! {
                 <dl>
                     #{items.iter().map(|i| {
-                        let children = convert_children(templates, &i.content);
+                        let children = convert_children(evaluator, &i.content);
                         match i.type_ {
                             DefinitionListItemType::Term => html! { <dt class="font-semibold mt-2">{children}</dt> },
                             DefinitionListItemType::Details => html! { <dd class="ml-6 text-gray-700">{children}</dd> },
@@ -1071,4 +1030,12 @@ fn extract_search_data(node: &WikitextSimplifiedNode) -> (String, Vec<String>) {
     let normalized = text.split_whitespace().collect::<Vec<_>>().join(" ");
 
     (normalized, headings)
+}
+
+/// Create a spanned value with an empty span (start: 0, end: 0).
+fn empty_spanned<T>(value: T) -> Spanned<T> {
+    Spanned {
+        value,
+        span: Span { start: 0, end: 0 },
+    }
 }

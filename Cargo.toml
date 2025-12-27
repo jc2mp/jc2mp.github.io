@@ -9,7 +9,10 @@ serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.140"
 wikitext_simplified = { git = "https://github.com/philpax/wikitext_simplified.git" }
 # wikitext_simplified = { path = "../wikitext_simplified/wikitext_simplified" }
+wikitext_simplified_template_eval = { git = "https://github.com/philpax/wikitext_simplified.git" }
+# wikitext_simplified_template_eval = { path = "../wikitext_simplified/wikitext_simplified_template_eval" }
 paxhtml = { git = "https://github.com/philpax/paxhtml.git" }
 # paxhtml = { path = "../paxhtml/paxhtml" }
 paxhtml_tailwind = { git = "https://github.com/philpax/paxhtml.git" }
 syntect = "5.2"
+pollster = "0.4"
