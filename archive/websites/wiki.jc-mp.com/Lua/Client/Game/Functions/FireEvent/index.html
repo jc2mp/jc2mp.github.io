@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8"/><title>Lua/Client/Game/Functions/FireEvent - JC2-MP Documentation</title>
+<meta name="generator" content="MediaWiki 1.22.2"/>
+<script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok8v=02fcfa4f56/"},atok:"18e551c24bf0de1f962f19ce340d4682",petok:"1d43a8946bf272c68d2666f0d37584859fbd7832-1392946540-1800",zone:"jc-mp.com",rocket:"0",apps:{"abetterbrowser":{"ie":"8"}}}];var a=document.createElement("script"),b=document.getElementsByTagName("script")[0];a.async=!0;a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok8v=221574e73d/cloudflare.min.js";b.parentNode.insertBefore(a,b);}}catch(e){};
+//]]>
+</script>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="JC2-MP Documentation (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.jc-mp.com/api.php?action=rsd"/>
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html"/>
+<link rel="alternate" type="application/atom+xml" title="JC2-MP Documentation Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom"/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=ext.geshi.local%7Cmediawiki.legacy.commonPrint%2Cshared&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<link rel="stylesheet" href="/skins/cavendish/print.css?303" media="print"/>
+<link rel="stylesheet" href="/skins/cavendish/cavendish.css?303" media="screen"/>
+<!--[if IE 6]><link rel="stylesheet" href="/skins/cavendish/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/cavendish/IE70Fixes.css?303" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/skins/cavendish/colors/jcmp.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/extensions.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/style.php?303" media="screen"/><meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<style>a:lang(ar),a:lang(ckb),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}</style>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Lua/Client/Game/Functions/FireEvent","wgTitle":"Lua/Client/Game/Functions/FireEvent","wgCurRevisionId":26058,"wgRevisionId":26058,"wgArticleId":1443,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Lua/Client/Game/Functions/FireEvent","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function(){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"cavendish","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"vector-simplesearch":1,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":
+0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function(){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});},{},{});
+/* cache key: wiki:resourceloader:filter:minify-js:7:d6cee38fd88e62c412a64f3888b013b1 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+<style type="text/css">.source-lua{line-height:normal;}.source-lua li,.source-lua pre{line-height:normal;border:0px none white;}.lua.source-lua .de1,.lua.source-lua .de2{font:normal normal 1em/1.2em monospace;margin:0;padding:0;background:none;vertical-align:top;font-family:monospace,monospace;}.lua.source-lua{font-family:monospace;}.lua.source-lua .imp{font-weight:bold;color:red;}.lua.source-lua li,.lua.source-lua .li1{font-weight:normal;vertical-align:top;}.lua.source-lua .ln{width:1px;text-align:right;margin:0;padding:0 2px;vertical-align:top;}.lua.source-lua .li2{font-weight:bold;vertical-align:top;}.lua.source-lua .kw1{color:#aa9900;font-weight:bold;}.lua.source-lua .kw2{color:#aa9900;font-weight:bold;}.lua.source-lua .kw3{color:#0000aa;}.lua.source-lua .kw4{color:#aa9900;}.lua.source-lua .kw5{color:#aa9900;}.lua.source-lua .co1{color:#808080;font-style:italic;}.lua.source-lua .co2{color:#ff0000;}.lua.source-lua .coMULTI{color:#808080;font-style:italic;}.lua.source-lua .es0{color:#000099;font-weight:bold;}.lua.source-lua .es1{color:#000099;font-weight:bold;}.lua.source-lua .es2{color:#000099;font-weight:bold;}.lua.source-lua .br0{color:#66cc66;}.lua.source-lua .sy0{color:#66cc66;}.lua.source-lua .st0{color:#ff6666;}.lua.source-lua .nu0{color:#cc66cc;}.lua.source-lua .me0{color:#aa9900;}.lua.source-lua .ln-xtra,.lua.source-lua li.ln-xtra,.lua.source-lua div.ln-xtra{background-color:#ffc;}.lua.source-lua span.xtra{display:block;}</style></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Lua_Client_Game_Functions_FireEvent skin-cavendish action-view">
+<div id="internal"></div>
+ 
+<div id="globalWrapper" class="view">
+<div id="p-personal" class="portlet">
+<h5>Personal tools</h5>
+<div class="pBody">
+<ul>
+<li id="pt-anonuserpage" class="top-nav-element">
+<span class="top-nav-left">&nbsp;</span>
+<a class="top-nav-mid new" href="/User:204.236.235.245">
+204.236.235.245</a>
+<span class="top-nav-right">&nbsp;</span></li>
+<li id="pt-anontalk" class="top-nav-element">
+<span class="top-nav-left">&nbsp;</span>
+<a class="top-nav-mid new" href="/User_talk:204.236.235.245">
+Talk for this IP address</a>
+<span class="top-nav-right">&nbsp;</span></li>
+<li id="pt-anonlogin" class="top-nav-element">
+<span class="top-nav-left">&nbsp;</span>
+<a class="top-nav-mid " href="/index.php?title=Special:UserLogin&amp;returnto=Lua%2FClient%2FGame%2FFunctions%2FFireEvent">
+Click here to login with your JC2-MP account</a>
+<span class="top-nav-right">&nbsp;</span></li>
+</ul>
+</div>
+</div>
+<div id="header">
+<a name="top" id="contentTop"></a>
+<h6>
+<a href="/Main_Page" title="Main Page">Lua/Client/Game/Functions/FireEvent - JC2-MP Documentation</a></h6>
+<div id="p-cactions" class="portlet"><ul>
+<li id="ca-nstab-main" class="selected"><a href="/Lua/Client/Game/Functions/FireEvent" title="View the content page">Page</a></li>
+<li id="ca-talk"><a href="/Talk:Lua/Client/Game/Functions/FireEvent" title="Discussion about the content page">Discussion</a></li>
+<li id="ca-viewsource"><a href="/index.php?title=Lua/Client/Game/Functions/FireEvent&amp;action=edit" title="This page is protected.&#10;You can view its source">View source</a></li>
+<li id="ca-history"><a href="/index.php?title=Lua/Client/Game/Functions/FireEvent&amp;action=history" title="Past revisions of this page">History</a></li> </ul></div>
+<div id="p-search" class="portlet" role="search">
+<h3><label for="searchInput">Search</label></h3>
+<div id="searchBody" class="pBody">
+<form action="/index.php" id="searchform">
+<input type='hidden' name="title" value="Special:Search"/>
+<input type="search" name="search" placeholder="Search" title="Search JC2-MP Documentation [f]" accesskey="f" id="searchInput"/>
+<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton"/>&#160;
+<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton"/>
+</form>
+</div>
+</div>
+</div>
+<div id="mBody">
+<div id="side">
+<div id="nav">
+<div class="generated-sidebar portlet" id="p-Main" role="navigation">
+<h3>Main</h3>
+<div class='pBody'>
+<ul>
+<li id="n-mainpage-description"><a href="/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+<li id="n-Web-site"><a href="http://www.jc-mp.com" rel="nofollow">Web site</a></li>
+<li id="n-Recent-changes"><a href="/Special:RecentChanges">Recent changes</a></li>
+</ul>
+</div>
+</div>
+<div class="generated-sidebar portlet" id="p-Lua" role="navigation">
+<h3>Lua</h3>
+<div class='pBody'>
+<ul>
+<li id="n-Tutorials"><a href="/Lua/Tutorials">Tutorials</a></li>
+<li id="n-Server"><a href="/Lua/Server">Server</a></li>
+<li id="n-Client"><a href="/Lua/Client">Client</a></li>
+<li id="n-Shared"><a href="/Lua/Shared">Shared</a></li>
+</ul>
+</div>
+</div>
+<div class="portlet" id="p-tb" role="navigation">
+<h3>Tools</h3>
+<div class="pBody">
+<ul>
+<li id="t-whatlinkshere"><a href="/Special:WhatLinksHere/Lua/Client/Game/Functions/FireEvent" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+<li id="t-recentchangeslinked"><a href="/Special:RecentChangesLinked/Lua/Client/Game/Functions/FireEvent" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+<li id="t-print"><a href="/index.php?title=Lua/Client/Game/Functions/FireEvent&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+<li id="t-permalink"><a href="/index.php?title=Lua/Client/Game/Functions/FireEvent&amp;oldid=26058" title="Permanent link to this revision of the page">Permanent link</a></li>
+<li id="t-info"><a href="/index.php?title=Lua/Client/Game/Functions/FireEvent&amp;action=info">Page information</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div> 
+<div id="column-content">
+<div id="content">
+<a id="top"></a>
+<h1 id="firstHeading" class="firstHeading">Lua/Client/Game/Functions/FireEvent</h1>
+<div id="bodyContent">
+<h3 id="siteSub">From JC2-MP Documentation</h3>
+<div id="contentSub"><span class="subpages">&lt; <a href="/Lua" title="Lua">Lua</a>&lrm; | <a href="/Lua/Client" title="Lua/Client">Client</a>&lrm; | <a href="/Lua/Client/Game" title="Lua/Client/Game">Game</a></span></div>
+<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>  
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><p><br/>
+</p>
+<hr/>
+<table>
+<tr>
+<th width="120" align="right"><font size="3">Returns</font> &#160;&#160;
+</th>
+<td><font size="3">none</font>
+</td></tr>
+<tr>
+<th width="120" align="right"><font size="3">Prototype</font> &#160;&#160;
+</th>
+<td><font size="3">Game:FireEvent(string)</font>
+</td></tr>
+<tr>
+<th width="120" align="right"><font size="3">Description</font> &#160;&#160;
+</th>
+<td><font size="3">No description</font>
+</td></tr></table>
+<p><br/>
+</p>
+<h2><span class="mw-headline" id="Description">Description</span></h2>
+<p>This triggers a JC2 event to occur. This is a very powerful function; you can trigger any event in the game, such as the dish doors or stronghold doors opening. There is likely a way to launch the rocket and disable the EMP tower as well.
+</p><p>To find the event names, you must extract them from the game's mission files yourself. This is a complex process and is not explained here.
+</p>
+<h2><span class="mw-headline" id="Examples">Examples</span></h2>
+<h4><span class="mw-headline" id="Hiding_the_crosshair">Hiding the crosshair</span></h4>
+<div dir="ltr" class="mw-geshi mw-code mw-content-ltr"><div class="lua source-lua"><pre class="de1">HideCrosshair <span class="sy0">=</span> <span class="kw1">function</span><span class="br0">&#40;</span><span class="br0">&#41;</span>
+	Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span><span class="st0">&quot;gui.crosshair.hide&quot;</span><span class="br0">&#41;</span>
+<span class="kw1">end</span>
+&#160;
+Events<span class="sy0">:</span>Subscribe<span class="br0">&#40;</span><span class="st0">&quot;Render&quot;</span><span class="sy0">,</span> HideCrosshair<span class="br0">&#41;</span></pre></div></div>
+<h4><span class="mw-headline" id="Opening_stronghold_doors">Opening stronghold doors</span></h4>
+<div dir="ltr" class="mw-geshi mw-code mw-content-ltr"><div class="lua source-lua"><pre class="de1"><span class="kw1">function</span> StrongholdDoors<span class="sy0">:</span>__init<span class="br0">&#40;</span><span class="br0">&#41;</span>
+&#160;
+	self<span class="sy0">.</span>strongholds <span class="sy0">=</span> <span class="br0">&#123;</span>
+		Vector3<span class="br0">&#40;</span> <span class="sy0">-</span><span class="nu0">3000.255</span><span class="sy0">,</span><span class="nu0">245.3961</span><span class="sy0">,</span><span class="nu0">12743.33</span> <span class="br0">&#41;</span><span class="sy0">,</span>
+		Vector3<span class="br0">&#40;</span> <span class="nu0">557.3547</span><span class="sy0">,</span><span class="nu0">1179.563</span><span class="sy0">,-</span><span class="nu0">7246.511</span> <span class="br0">&#41;</span><span class="sy0">,</span>
+		Vector3<span class="br0">&#40;</span> <span class="nu0">11577.3</span><span class="sy0">,</span><span class="nu0">228.0705</span><span class="sy0">,-</span><span class="nu0">9371.375</span> <span class="br0">&#41;</span><span class="sy0">,</span> 
+		Vector3<span class="br0">&#40;</span> <span class="sy0">-</span><span class="nu0">3392.792</span><span class="sy0">,</span><span class="nu0">190.8312</span><span class="sy0">,</span><span class="nu0">8814.813</span> <span class="br0">&#41;</span><span class="sy0">,</span>
+		Vector3<span class="br0">&#40;</span> <span class="sy0">-</span><span class="nu0">10699.12</span><span class="sy0">,</span><span class="nu0">381.8536</span><span class="sy0">,</span><span class="nu0">11071.68</span> <span class="br0">&#41;</span><span class="sy0">,</span>
+		Vector3<span class="br0">&#40;</span> <span class="nu0">9078.66</span><span class="sy0">,</span><span class="nu0">202.9968</span><span class="sy0">,</span><span class="nu0">1485.909</span> <span class="br0">&#41;</span><span class="sy0">,</span>
+		Vector3<span class="br0">&#40;</span> <span class="sy0">-</span><span class="nu0">14871.19</span><span class="sy0">,</span><span class="nu0">196.2978</span><span class="sy0">,-</span><span class="nu0">2944.443</span> <span class="br0">&#41;</span>
+	<span class="br0">&#125;</span>
+&#160;
+	self<span class="sy0">.</span>timer <span class="sy0">=</span> Timer<span class="br0">&#40;</span><span class="br0">&#41;</span>
+&#160;
+	self<span class="sy0">.</span>PTEvent <span class="sy0">=</span> Events<span class="sy0">:</span>Subscribe<span class="br0">&#40;</span> <span class="st0">&quot;PostTick&quot;</span><span class="sy0">,</span> self<span class="sy0">,</span> self<span class="sy0">.</span>PT <span class="br0">&#41;</span>
+&#160;
+<span class="kw1">end</span>
+&#160;
+<span class="kw1">function</span> StrongholdDoors<span class="sy0">:</span>PT<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="kw1">if</span> self<span class="sy0">.</span>timer<span class="sy0">:</span>GetMilliseconds<span class="br0">&#40;</span><span class="br0">&#41;</span> <span class="sy0">&lt;=</span> <span class="nu0">1000</span> <span class="kw1">then</span> <span class="kw1">return</span> <span class="kw1">end</span>
+&#160;
+	self<span class="sy0">.</span>timer<span class="sy0">:</span>Restart<span class="br0">&#40;</span><span class="br0">&#41;</span>
+&#160;
+	<span class="kw1">local</span> lp_pos <span class="sy0">=</span> LocalPlayer<span class="sy0">:</span>GetPosition<span class="br0">&#40;</span><span class="br0">&#41;</span>
+	<span class="kw1">local</span> <span class="kw3">sqrt</span> <span class="sy0">=</span> <span class="kw3">math.sqrt</span>
+&#160;
+	<span class="kw1">for</span> k<span class="sy0">,</span>v <span class="kw2">in</span> <span class="kw3">pairs</span><span class="br0">&#40;</span>self<span class="sy0">.</span>strongholds<span class="br0">&#41;</span> <span class="kw1">do</span>
+		<span class="kw1">local</span> dist <span class="sy0">=</span> lp_pos<span class="sy0">:</span>DistanceSqr<span class="br0">&#40;</span> v <span class="br0">&#41;</span>
+&#160;
+		<span class="kw1">if</span> dist <span class="sy0">&lt;</span> <span class="nu0">250000</span> <span class="kw1">then</span>
+&#160;
+			<span class="kw1">if</span> k <span class="sy0">==</span> <span class="nu0">1</span> <span class="kw1">then</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({967466FA-4C87-422A-ACF5-042B67E922B5})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				<span class="kw1">return</span>
+			<span class="kw1">elseif</span> k <span class="sy0">==</span> <span class="nu0">2</span> <span class="kw1">then</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({9695B812-73C4-4D86-86FF-AEC430816869})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				<span class="kw1">return</span>
+			<span class="kw1">elseif</span> k <span class="sy0">==</span> <span class="nu0">3</span> <span class="kw1">then</span> <span class="co1">-- ular</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({F7CD6FAE-EFCE-4CA4-A1C4-6944D228139F})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				<span class="kw1">return</span>
+			<span class="kw1">elseif</span> k <span class="sy0">==</span> <span class="nu0">4</span> <span class="kw1">then</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({FD92A809-89AC-4D64-BC1C-335FD22F5B83})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				<span class="kw1">return</span>
+			<span class="kw1">elseif</span> k <span class="sy0">==</span> <span class="nu0">5</span> <span class="kw1">then</span> <span class="co1">-- reapers</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({927DC663-1EAA-4D87-810F-36F8581CBE7D})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({8EB05652-74A1-4DA6-B24F-E77803AB4B6B})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				<span class="kw1">return</span>
+			<span class="kw1">elseif</span> k <span class="sy0">==</span> <span class="nu0">6</span> <span class="kw1">then</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({EC54E85D-45ED-46A8-8E31-3B32DEE1D5FC})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				<span class="kw1">return</span>
+			<span class="kw1">else</span>
+				Game<span class="sy0">:</span>FireEvent<span class="br0">&#40;</span> <span class="st0">&quot;t{go500.01({86D114AF-77FD-44CC-B861-5F6C77ED03A0})}::fadeOutGate&quot;</span> <span class="br0">&#41;</span>
+				<span class="kw1">return</span>
+			<span class="kw1">end</span>
+		<span class="kw1">end</span>
+	<span class="kw1">end</span>
+<span class="kw1">end</span>
+&#160;
+SDoors <span class="sy0">=</span> StrongholdDoors<span class="br0">&#40;</span><span class="br0">&#41;</span></pre></div></div>
+<h2><span class="mw-headline" id="Partial_reference">Partial reference</span></h2>
+<ul>
+<li> bm.closemeny
+</li>
+<li> bm.cutscene
+</li>
+<li> bm.disable
+</li>
+<li> bm.enable
+</li>
+<li> bm.enableextractions
+</li>
+<li> bm.extraction.go
+</li>
+<li> bm.giveflare
+</li>
+<li> bm.heavydrop.paid
+</li>
+<li> bm.loadcheckpoint.go
+</li>
+<li> bm.openmeny
+</li>
+<li> bm.savecheckpoint.go
+</li>
+<li> bm.switchvoice
+</li>
+<li> cot.startSequenceMissionComplete
+</li>
+<li> demo.start
+</li>
+<li> dialogmanager.reset
+</li>
+<li> explosive.c4.detonated
+</li>
+<li> game.demolition.killed
+</li>
+<li> game.elite.killed
+</li>
+<li> game.ninja.killed
+</li>
+<li> government.airvehicle.destroyed
+</li>
+<li> government.landvehicle.destroyed
+</li>
+<li> government.seavehicle.destroyed
+</li>
+<li> gsy.activity.type%.02d
+</li>
+<li> gsy.activity.type24
+</li>
+<li> gsy.activity.type25
+</li>
+<li> gsy.activity.type26
+</li>
+<li> gsy.air_limbo.bridge_passed
+</li>
+<li> gsy.chaos.changed
+</li>
+<li> gsy.completion.increased
+</li>
+<li> gsy.dripfeed.disable
+</li>
+<li> gsy.dripfeed.enable
+</li>
+<li> gsy.exit.settlement
+</li>
+<li> gsy.heatChange.combatNone
+</li>
+<li> gsy.heatChange.combatSearch
+</li>
+<li> gsy.heatChange.combatUndetected
+</li>
+<li> gsy.heatChange.noneCombat
+</li>
+<li> gsy.heatChange.noneSearch
+</li>
+<li> gsy.heatChange.noneUndetected
+</li>
+<li> gsy.heatChange.searchCombat
+</li>
+<li> gsy.heatChange.searchNone
+</li>
+<li> gsy.heatChange.searchUndetected
+</li>
+<li> gsy.heatChange.undetectedCombat
+</li>
+<li> gsy.heatChange.undetectedNone
+</li>
+<li> gsy.heatChange.undetectedSearch
+</li>
+<li> gsy.notice41.unlock
+</li>
+<li> gsy.notice69.unlock
+</li>
+<li> gsy.object_destroyed
+</li>
+<li> gsy.playerVelocity
+</li>
+<li> gsy.scorpion.killed
+</li>
+<li> gsy.top_of_the_world.achived
+</li>
+<li> gui.aim.hide
+</li>
+<li> gui.aim.show
+</li>
+<li> gui.anarkevent
+</li>
+<li> gui.benchmark.complete
+</li>
+<li> gui.benchmark.pause
+</li>
+<li> gui.benchmark.show
+</li>
+<li> gui.blackmarket.finished
+</li>
+<li> gui.blackmarket.show
+</li>
+<li> gui.capture.xmb.upload.done
+</li>
+<li> gui.capture.youtube.upload.done
+</li>
+<li> gui.challenge.checkpoint.bonus
+</li>
+<li> gui.challenge.checkpoint.complete
+</li>
+<li> gui.challenge.hide
+</li>
+<li> gui.challenge.info
+</li>
+<li> gui.challenge.show
+</li>
+<li> gui.challenge.started
+</li>
+<li> gui.creditscreen.show
+</li>
+<li> gui.crosshair.hide
+</li>
+<li> gui.crosshair.show
+</li>
+<li> gui.cutscene
+</li>
+<li> gui.cutscene.allowskip
+</li>
+<li> gui.cutscene.loadingscreen
+</li>
+<li> gui.disarm.complete
+</li>
+<li> gui.disarm.fail
+</li>
+<li> gui.disarm.show
+</li>
+<li> gui.endscreen.show
+</li>
+<li> gui.flare.crosshair.hide
+</li>
+<li> gui.flare.crosshair.show
+</li>
+<li> gui.force.show.start.screen
+</li>
+<li> gui.frontend.show
+</li>
+<li> gui.game.completed
+</li>
+<li> gui.gameovermenu.show
+</li>
+<li> gui.hud.hide
+</li>
+<li> gui.hud.hide.force
+</li>
+<li> gui.hud.reset
+</li>
+<li> gui.hud.show
+</li>
+<li> gui.hud.show.force
+</li>
+<li> gui.intelligencefile.show
+</li>
+<li> gui.loadingscreen.show
+</li>
+<li> gui.mainmenu.hide
+</li>
+<li> gui.mainmenu.show
+</li>
+<li> gui.menu.hide
+</li>
+<li> gui.mercenarymode.show
+</li>
+<li> gui.militaryoppression.off
+</li>
+<li> gui.militaryoppression.on
+</li>
+<li> gui.minimap.hide
+</li>
+<li> gui.minimap.show
+</li>
+<li> gui.parachutebutton.close
+</li>
+<li> gui.parachutebutton.open
+</li>
+<li> gui.pausemenu.show
+</li>
+<li> gui.pda.disable
+</li>
+<li> gui.pda.disablemanualopen
+</li>
+<li> gui.pda.enable
+</li>
+<li> gui.pda.forceopen
+</li>
+<li> gui.pda.show
+</li>
+<li> gui.profile.signin.change
+</li>
+<li> gui.quitgamedialogue.show.force
+</li>
+<li> gui.saveload.disable
+</li>
+<li> gui.saveload.enable
+</li>
+<li> gui.savemanager.autosave.saved
+</li>
+<li> gui.savemanager.checkpoint.saved
+</li>
+<li> gui.savemanager.delete.failed
+</li>
+<li> gui.savemanager.insufficientspace
+</li>
+<li> gui.savemanager.load.failed
+</li>
+<li> gui.savemanager.nospaceleft
+</li>
+<li> gui.savemanager.save.failed
+</li>
+<li> gui.savemanager.settingsfile.fail
+</li>
+<li> gui.savemanager.state.changed
+</li>
+<li> gui.savemanager.storage.changed
+</li>
+<li> gui.savemanager.storage.lost
+</li>
+<li> gui.signalstrength.hide
+</li>
+<li> gui.signalstrength.show
+</li>
+<li> gui.sniper.off
+</li>
+<li> gui.sniper.stage1
+</li>
+<li> gui.sniper.stage2
+</li>
+<li> gui.storage.notenoughspaceatboot
+</li>
+<li> gui.storage.warning
+</li>
+<li> gui.subtitle.hide
+</li>
+<li> gui.subtitle.show
+</li>
+<li> gui.transmission.hide
+</li>
+<li> gui.transmission.show
+</li>
+<li> gui.tutorial.hide
+</li>
+<li> gui.tutorial.pause
+</li>
+<li> gui.tutorial.resume
+</li>
+<li> gui.update.dlc.list
+</li>
+<li> gui.weapon.raiseaim
+</li>
+<li> heat.helicopter.spawn
+</li>
+<li> heat.level.0
+</li>
+<li> heat.level.1
+</li>
+<li> heat.level.2
+</li>
+<li> heat.level.3
+</li>
+<li> heat.level.4
+</li>
+<li> heat.level.5
+</li>
+<li> heat.level.increased
+</li>
+<li> km025.tutorial.01
+</li>
+<li> km025.tutorial.01.b.start
+</li>
+<li> km04.ninja.killed
+</li>
+<li> km07.panay.accuracy
+</li>
+<li> metric.settlement.complete
+</li>
+<li> metric.settlement.unlock
+</li>
+<li> msy.challenge.endgui
+</li>
+<li> msy.challenge.startgui
+</li>
+<li> msy.collectblackbox.completed
+</li>
+<li> msy.collectdrugdrop.completed
+</li>
+<li> msy.collectskull.completed
+</li>
+<li> msy.f1.popular
+</li>
+<li> msy.f2.popular
+</li>
+<li> msy.f3.popular
+</li>
+<li> msy.factionmission.completed
+</li>
+<li> msy.factiontask.completed
+</li>
+<li> msy.keymission.completed
+</li>
+<li> msy.km01.completed
+</li>
+<li> msy.km01Obj01.activated
+</li>
+<li> msy.km02.completed
+</li>
+<li> msy.km02Obj08.checkpoint
+</li>
+<li> msy.km03.completed
+</li>
+<li> msy.km04.completed
+</li>
+<li> msy.km04Obj02.checkpoint
+</li>
+<li> msy.km05.completed
+</li>
+<li> msy.km06.completed
+</li>
+<li> msy.km06Obj11.activated
+</li>
+<li> msy.km07.completed
+</li>
+<li> msy.km07Obj02.checkpoint
+</li>
+<li> msy.km07Obj05.activated
+</li>
+<li> msy.mission.abort
+</li>
+<li> msy.mission.aborted
+</li>
+<li> msy.mission.fail
+</li>
+<li> msy.mission.failed
+</li>
+<li> msy.mission.forceabort
+</li>
+<li> msy.mission.startseq
+</li>
+<li> msy.objective.fakecomplete
+</li>
+<li> msy.progress.disable
+</li>
+<li> msy.progress.enable
+</li>
+<li> msy.progress.forceshow
+</li>
+<li> msy.progress.hide
+</li>
+<li> msy.progress.show
+</li>
+<li> msy.stronghold.completed
+</li>
+<li> msy.uniqueChallenge.completed
+</li>
+<li> mus.adaptivetrack.started
+</li>
+<li> mus.heatdialogue.play
+</li>
+<li> mus.trackgroup.shuffle
+</li>
+<li> open.mouth
+</li>
+<li> player.scope.reset
+</li>
+<li> ply.armorpart.acquired
+</li>
+<li> ply.armorpart.add
+</li>
+<li> ply.basejump
+</li>
+<li> ply.basejump.record
+</li>
+<li> ply.blackmarket.item_fully_upgraded
+</li>
+<li> ply.blackmarket.item_ordered
+</li>
+<li> ply.damaged
+</li>
+<li> ply.doubletether.objects
+</li>
+<li> ply.doubletether.vehicles
+</li>
+<li> ply.driverseat_entered
+</li>
+<li> ply.dualwield
+</li>
+<li> ply.enter_vehicle
+</li>
+<li> ply.falling
+</li>
+<li> ply.grappling.disable // Disables grappling hook.
+</li>
+<li> ply.grappling.enable // Enables grappling hook.
+</li>
+<li> ply.grenade.picked_up
+</li>
+<li> ply.health.upgrade
+</li>
+<li> ply.heat.increased
+</li>
+<li> ply.hijack
+</li>
+<li> ply.hit_character_autotarget
+</li>
+<li> ply.hit_character_directtarget
+</li>
+<li> ply.hitbyexplosion
+</li>
+<li> ply.inflictdamage
+</li>
+<li> ply.input.disable
+</li>
+<li> ply.input.enable
+</li>
+<li> ply.inventory.clear
+</li>
+<li> ply.invulnerable // Stops weapons, explosions, and drowning from harming the player. Same thing as ply.makeinvulnerable.
+</li>
+<li> ply.jump
+</li>
+<li> ply.kill.dualhook
+</li>
+<li> ply.killed
+</li>
+<li> ply.killed_civilian
+</li>
+<li> ply.killed_civilian_from_vehicle
+</li>
+<li> ply.killed_enemy
+</li>
+<li> ply.killed_enemy_drag
+</li>
+<li> ply.killed_enemy_fall
+</li>
+<li> ply.killed_enemy_from_foot
+</li>
+<li> ply.killed_enemy_from_vehicle
+</li>
+<li> ply.killed_enemy_headshot
+</li>
+<li> ply.killed_enemy_juggle
+</li>
+<li> ply.killed_enemy_pinata
+</li>
+<li> ply.killed_enemy_suspended
+</li>
+<li> ply.killed_enemy_tetherkill
+</li>
+<li> ply.killed_enemy_with_explosion
+</li>
+<li> ply.killed_enemy_with_kick
+</li>
+<li> ply.killed_enemy_with_minigun
+</li>
+<li> ply.killed_enemy_with_vehicle
+</li>
+<li> ply.killed_enemy_wreckingball
+</li>
+<li> ply.makeinvulnerable // Stops weapons, explosions, and drowning from harming the player.
+</li>
+<li> ply.makevulnerable // Makes things harm the player again.
+</li>
+<li> ply.money.add // Adds a cash stash. ($2500)
+</li>
+<li> ply.money.earned // Nothing.
+</li>
+<li> ply.on_foot // Nothing.
+</li>
+<li> ply.on_reset // Nothing.
+</li>
+<li> ply.open_parachute // Nothing.
+</li>
+<li> ply.parachute.closenow // Makes Rico's parachute disappear when parachuting. Only visual.
+</li>
+<li> ply.parachute.disable // Disables parachute.
+</li>
+<li> ply.parachute.enable // Enables parachute.
+</li>
+<li> ply.parachute_knock // Nothing.
+</li>
+<li> ply.pause // Makes Rico disappear.
+</li>
+<li> ply.predator.awesomeness // Makes Rico go "Yyyyeaaaah!"
+</li>
+<li> ply.ragdoll.getup // Nothing.
+</li>
+<li> ply.reacthitfly // Made Rico go "Gah!" from pain. Only works once, or something.
+</li>
+<li> ply.reacttohit // Nothing.
+</li>
+<li> ply.reeled_in // Nothing.
+</li>
+<li> ply.reelin // Nothing.
+</li>
+<li> ply.reelin_land // Nothing.
+</li>
+<li> ply.rooftop_entered // Nothing.
+</li>
+<li> ply.skydive // Nothing.
+</li>
+<li> ply.slingshot // Nothing.
+</li>
+<li> ply.stunt_jump_to_vehicle // Crash.
+</li>
+<li> ply.tireshot // Nothing.
+</li>
+<li> ply.unpause // Makes Rico reappear after calling ply.pause
+</li>
+<li> ply.valkyrie.awesomeness // Makes Rico hum Ride of the Valkyries.
+</li>
+<li> ply.vehicle.burn // Sets your car on fire. It will explode like normal.
+</li>
+<li> ply.vehiclepart.acquired // Adds to statistic but otherwise doesn't work.
+</li>
+<li> ply.vehiclepart.add // Adds a vehicle part.
+</li>
+<li> ply.vulnerable // Makes things harm the player again. Same thing as ply.makevulnerable.
+</li>
+<li> ply.weapon.picked_up // "That'll come in handy"
+</li>
+<li> ply.weaponpart.acquired // Adds to statistic but otherwise doesn't work.
+</li>
+<li> ply.weaponpart.add // Adds a weapon part.
+</li>
+<li> savemanager.save.remove
+</li>
+<li> savemanager.save.validate
+</li>
+<li> snd.helicopter.departing
+</li>
+<li> sht.start.count.01
+</li>
+<li> sht.start.count.02
+</li>
+<li> tel.cutscene.end
+</li>
+<li> tel.cutscene.start
+</li>
+<li> tut.explosives.ammo
+</li>
+<li> tut.explosives.noammo
+</li>
+<li> tut.heli.cling
+</li>
+<li> tut.hijack.driver
+</li>
+<li> tut.hijack.guards
+</li>
+<li> tut.settlement.enter
+</li>
+<li> tut.triggered.explode
+</li>
+<li> tut.triggered.place
+</li>
+<li> tut.triggered.throw
+</li>
+<li> tut.weapon.ammo
+</li>
+<li> tut.weapon.dualwield
+</li>
+<li> tut.weapon.noammo
+</li>
+<li> tut.weapon.picked
+</li>
+<li> video.capture.cancel
+</li>
+<li> video.capture.pause
+</li>
+<li> video.capture.resume
+</li>
+<li> video.capture.start
+</li>
+<li> video.capture.stop
+</li>
+<li> video.xmb.upload
+</li>
+<li> video.youtube.upload
+</li>
+</ul>
+ 
+ 
+</div><div class="printfooter">
+Retrieved from "<a href="http://wiki.jc-mp.com/index.php?title=Lua/Client/Game/Functions/FireEvent&amp;oldid=26058">http://wiki.jc-mp.com/index.php?title=Lua/Client/Game/Functions/FireEvent&amp;oldid=26058</a>"</div>
+<div id='catlinks' class='catlinks catlinks-allhidden'></div>  
+</div>
+</div> 
+</div>
+</div> 
+<div class="visualClear"></div>
+<div id="footer">
+<table>
+<tr>
+<td rowspan="2" class="f-iconsection">
+<div id="f-copyrightico"><a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.3 or later" width="88" height="31"/></a></div> </td>
+<td align="center">
+<ul id="f-list">
+<li id="f-lastmod"> This page was last modified on 18 February 2014, at 08:40.</li>
+<li id="f-viewcount">This page has been accessed 933 times.</li>
+<li id="f-copyright">Content is available under <a class="external" rel="nofollow" href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+<li id="f-privacy"><a href="/Project:Privacy_policy" title="Project:Privacy policy">Privacy policy</a></li>
+<li id="f-about"><a href="/Project:About" title="Project:About">About JC2-MP Documentation</a></li>
+<li id="f-disclaimer"><a href="/Project:General_disclaimer" title="Project:General disclaimer">Disclaimers</a></li>
+</ul></td>
+<td rowspan="2" class="f-iconsection">
+<div id="f-poweredbyico"><a href="//www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"/></a></div>
+</td>
+</tr>
+<tr>
+<td><div id="skin-info">
+Mozilla Cavendish Theme based on Cavendish style by Gabriel Wicke modified by <a href="http://www.dasch-tour.de" title="DaSch-Tour Blog" target="_blank">DaSch</a> for the <a href="http://www.wecowi.de/" title="Web Community Wiki">Web Community Wiki</a><br/>
+<a href="https://github.com/DaSchTour/Cavendish" title="github projectpage">github Projectpage</a> &ndash; <a href="https://github.com/DaSchTour/Cavendish/issues" title="Bug reporting at github">Report Bug</a> &ndash; Skin-Version: 2.3.2 </div></td>
+</tr>
+</table>
+</div> 
+</div> 
+ 
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+ </body></html>

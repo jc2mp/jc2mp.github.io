@@ -1,0 +1,1 @@
+mw.loader.state({"jquery%2Cmediawiki":"missing"});

@@ -1,0 +1,1 @@
+mw.loader.state({"skins.vector":"ready"});

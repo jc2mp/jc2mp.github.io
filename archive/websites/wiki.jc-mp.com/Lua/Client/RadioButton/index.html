@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<title>Lua/Client/RadioButton - JC2-MP Documentation</title>
+<meta charset="UTF-8"/>
+<meta name="generator" content="MediaWiki 1.21.3"/>
+<script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) { var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/acv=4125811108/"},atok:"c6c441432fe0decd6c23e218286e1c0a",petok:"9b6319a17aee3d1ed73735d8bdbde5ab-1385507545-1800",zone:"jc-mp.com",rocket:"0",apps:{}}];CloudFlare.push({"apps":{"ape":"74c7b3806702124b47cb200935c2bebe"}});var a=document.createElement("script"),b=document.getElementsByTagName("script")[0];a.async=!0;a.src="//ajax.cloudflare.com/cdn-cgi/nexp/acv=616370821/cloudflare.min.js";b.parentNode.insertBefore(a,b);}}catch(e){};
+//]]>
+</script>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="JC2-MP Documentation (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.jc-mp.com/api.php?action=rsd"/>
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html"/>
+<link rel="alternate" type="application/atom+xml" title="JC2-MP Documentation Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom"/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared%7Cskins.vector&amp;only=styles&amp;skin=vector&amp;*"/>
+<meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=vector&amp;*"/>
+<style>a:lang(ar),a:lang(ckb),a:lang(fa),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}</style>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=vector&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Lua/Client/RadioButton","wgTitle":"Lua/Client/RadioButton","wgCurRevisionId":8673,"wgArticleId":332,"wgIsArticle":true,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Lua/Client/RadioButton","wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function(){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"externaldiff":0,"externaleditor":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"quickbar":5,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"showjumplinks":1,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"vector","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,
+"watchlisthideanons":0,"watchlisthidebots":0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"variant":"en","language":"en","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false});;},{},{});mw.loader.implement("user.tokens",function(){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});;},{},{});
+/* cache key: wiki:resourceloader:filter:minify-js:7:5e9d6f662546365d82558dd92b2a2224 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+<script type="text/javascript">window.tamBaseUrl='/extensions/TreeAndMenu'</script>
+<script type="text/javascript" src="/extensions/TreeAndMenu/dtree.js"></script>
+<!--[if lt IE 7]><style type="text/css">body{behavior:url("/skins/vector/csshover.min.htc")}</style><![endif]--></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Lua_Client_RadioButton skin-vector action-view vector-animateLayout">
+<div id="mw-page-base" class="noprint"></div>
+<div id="mw-head-base" class="noprint"></div>
+ 
+<div id="content" class="mw-body" role="main">
+<a id="top"></a>
+<div id="mw-js-message" style="display:none;"></div>
+ 
+<h1 id="firstHeading" class="firstHeading" lang="en"><span dir="auto">Lua/Client/RadioButton</span></h1>
+ 
+ 
+<div id="bodyContent">
+ 
+<div id="siteSub">From JC2-MP Documentation</div>
+ 
+ 
+<div id="contentSub"><span class="subpages">&lt; <a href="/Lua" title="Lua">Lua</a>&lrm; | <a href="/Lua/Client" title="Lua/Client">Client</a></span></div>
+ 
+ 
+<div id="jump-to-nav" class="mw-jump">
+Jump to: <a href="#mw-navigation">navigation</a>, <a href="#p-search">search</a>
+</div>
+ 
+ 
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><table id="toc" class="toc"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#Static_functions"><span class="tocnumber">1</span> <span class="toctext">Static functions</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Functions"><span class="tocnumber">2</span> <span class="toctext">Functions</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#Functions_inherited_from_CheckBox"><span class="tocnumber">2.1</span> <span class="toctext">Functions inherited from CheckBox</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#Functions_inherited_from_Button"><span class="tocnumber">2.2</span> <span class="toctext">Functions inherited from Button</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Functions_inherited_from_Label"><span class="tocnumber">2.3</span> <span class="toctext">Functions inherited from Label</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#Functions_inherited_from_BaseWindow"><span class="tocnumber">2.4</span> <span class="toctext">Functions inherited from BaseWindow</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table>
+<h2> <span class="mw-headline" id="Static_functions">Static functions</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr>
+<tr>
+<td align="right"> RadioButton
+</td>
+<td align="left"> RadioButton.<a href="/index.php?title=Lua/Client/RadioButton/Static_Functions/Create&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Static Functions/Create (page does not exist)">Create</a>(<a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a>, string)
+</td></tr>
+<tr>
+<td align="right"> RadioButton
+</td>
+<td align="left"> RadioButton.<a href="/index.php?title=Lua/Client/RadioButton/Static_Functions/Create&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Static Functions/Create (page does not exist)">Create</a>(string)
+</td></tr>
+<tr>
+<td align="right"> RadioButton
+</td>
+<td align="left"> RadioButton.<a href="/index.php?title=Lua/Client/RadioButton/Static_Functions/Create&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Static Functions/Create (page does not exist)">Create</a>(<a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a>)
+</td></tr>
+<tr>
+<td align="right"> RadioButton
+</td>
+<td align="left"> RadioButton.<a href="/index.php?title=Lua/Client/RadioButton/Static_Functions/Create&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Static Functions/Create (page does not exist)">Create</a>()
+</td></tr></table> </font>
+<h2> <span class="mw-headline" id="Functions">Functions</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr></table> </font>
+<h3> <span class="mw-headline" id="Functions_inherited_from_CheckBox">Functions inherited from <a href="/Lua/Client/CheckBox" title="Lua/Client/CheckBox">CheckBox</a></span></h3>
+<p><font size="3">
+</p>
+<table class="wikitable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetChecked&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetChecked (page does not exist)">GetChecked</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetChecked&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetChecked (page does not exist)">SetChecked</a>(boolean)
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Shared/Event" title="Lua/Shared/Event">Event</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Subscribe&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Subscribe (page does not exist)">Subscribe</a>(string, object, object)
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Shared/Event" title="Lua/Shared/Event">Event</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Subscribe&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Subscribe (page does not exist)">Subscribe</a>(string, object)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Toggle&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Toggle (page does not exist)">Toggle</a>()
+</td></tr></table> </font>
+<h3> <span class="mw-headline" id="Functions_inherited_from_Button">Functions inherited from <a href="/Lua/Client/Button" title="Lua/Client/Button">Button</a></span></h3>
+<p><font size="3">
+</p>
+<table class="wikitable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetPressed&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetPressed (page does not exist)">GetPressed</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetToggleState&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetToggleState (page does not exist)">GetToggleState</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetToggleable&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetToggleable (page does not exist)">GetToggleable</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetPressed&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetPressed (page does not exist)">SetPressed</a>(boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetToggleState&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetToggleState (page does not exist)">SetToggleState</a>(boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetToggleable&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetToggleable (page does not exist)">SetToggleable</a>(boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SizeToContents&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SizeToContents (page does not exist)">SizeToContents</a>()
+</td></tr></table> </font>
+<h3> <span class="mw-headline" id="Functions_inherited_from_Label">Functions inherited from <a href="/Lua/Client/Label" title="Lua/Client/Label">Label</a></span></h3>
+<p><font size="3">
+</p>
+<table class="wikitable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr>
+<tr>
+<td align="right"> number
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetAlignment&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetAlignment (page does not exist)">GetAlignment</a>()
+</td></tr>
+<tr>
+<td align="right"> string
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetText&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetText (page does not exist)">GetText</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Shared/Color" title="Lua/Shared/Color">Color</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetTextColor&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetTextColor (page does not exist)">GetTextColor</a>()
+</td></tr>
+<tr>
+<td align="right"> number
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetTextHeight&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetTextHeight (page does not exist)">GetTextHeight</a>()
+</td></tr>
+<tr>
+<td align="right"> number
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetTextLength&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetTextLength (page does not exist)">GetTextLength</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetTextPadding&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetTextPadding (page does not exist)">GetTextPadding</a>()
+</td></tr>
+<tr>
+<td align="right"> number
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetTextWidth&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetTextWidth (page does not exist)">GetTextWidth</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetWrap&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetWrap (page does not exist)">GetWrap</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetAlignment&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetAlignment (page does not exist)">SetAlignment</a>(number)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetColorBright&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetColorBright (page does not exist)">SetColorBright</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetColorDark&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetColorDark (page does not exist)">SetColorDark</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetColorHighlight&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetColorHighlight (page does not exist)">SetColorHighlight</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetColorNormal&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetColorNormal (page does not exist)">SetColorNormal</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetText&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetText (page does not exist)">SetText</a>(string)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetText&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetText (page does not exist)">SetText</a>(string, boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetTextColor&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetTextColor (page does not exist)">SetTextColor</a>(<a href="/Lua/Shared/Color" title="Lua/Shared/Color">Color</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetTextPadding&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetTextPadding (page does not exist)">SetTextPadding</a>(<a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>, <a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetWrap&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetWrap (page does not exist)">SetWrap</a>(boolean)
+</td></tr></table> </font>
+<h3> <span class="mw-headline" id="Functions_inherited_from_BaseWindow">Functions inherited from <a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a></span></h3>
+<p><font size="3">
+</p>
+<table class="wikitable">
+<tr>
+<th width="135"> Returns
+</th>
+<th width="450"> Prototype
+</th></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Blur&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Blur (page does not exist)">Blur</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/BringToFront&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/BringToFront (page does not exist)">BringToFront</a>()
+</td></tr>
+<tr>
+<td align="right"> Base
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/FindChildByName&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/FindChildByName (page does not exist)">FindChildByName</a>(string)
+</td></tr>
+<tr>
+<td align="right"> Base
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/FindChildByName&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/FindChildByName (page does not exist)">FindChildByName</a>(string, boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Focus&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Focus (page does not exist)">Focus</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetBackgroundVisible&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetBackgroundVisible (page does not exist)">GetBackgroundVisible</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetChild&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetChild (page does not exist)">GetChild</a>(number)
+</td></tr>
+<tr>
+<td align="right"> object
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetChildren&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetChildren (page does not exist)">GetChildren</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetDataBool&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetDataBool (page does not exist)">GetDataBool</a>(string)
+</td></tr>
+<tr>
+<td align="right"> number
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetDataNumber&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetDataNumber (page does not exist)">GetDataNumber</a>(string)
+</td></tr>
+<tr>
+<td align="right"> object
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetDataObject&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetDataObject (page does not exist)">GetDataObject</a>(string)
+</td></tr>
+<tr>
+<td align="right"> string
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetDataString&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetDataString (page does not exist)">GetDataString</a>(string)
+</td></tr>
+<tr>
+<td align="right"> number
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetDock&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetDock (page does not exist)">GetDock</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetEnabled&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetEnabled (page does not exist)">GetEnabled</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetFocused&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetFocused (page does not exist)">GetFocused</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetHovered&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetHovered (page does not exist)">GetHovered</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetMargin&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetMargin (page does not exist)">GetMargin</a>()
+</td></tr>
+<tr>
+<td align="right"> string
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetName&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetName (page does not exist)">GetName</a>()
+</td></tr>
+<tr>
+<td align="right"> number
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetNumChildren&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetNumChildren (page does not exist)">GetNumChildren</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetOnTop&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetOnTop (page does not exist)">GetOnTop</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetPadding&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetPadding (page does not exist)">GetPadding</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetParent&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetParent (page does not exist)">GetParent</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetPosition&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetPosition (page does not exist)">GetPosition</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetPositionRel&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetPositionRel (page does not exist)">GetPositionRel</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetSize&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetSize (page does not exist)">GetSize</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetSizeRel&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetSizeRel (page does not exist)">GetSizeRel</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetTabNavigation&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetTabNavigation (page does not exist)">GetTabNavigation</a>()
+</td></tr>
+<tr>
+<td align="right"> <a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a>
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetToolTip&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetToolTip (page does not exist)">GetToolTip</a>()
+</td></tr>
+<tr>
+<td align="right"> string
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetType&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetType (page does not exist)">GetType</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/GetVisible&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/GetVisible (page does not exist)">GetVisible</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Hide&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Hide (page does not exist)">Hide</a>()
+</td></tr>
+<tr>
+<td align="right"> boolean
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/IsChild&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/IsChild (page does not exist)">IsChild</a>(<a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Remove&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Remove (page does not exist)">Remove</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/RemoveAllChildren&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/RemoveAllChildren (page does not exist)">RemoveAllChildren</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SendToBack&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SendToBack (page does not exist)">SendToBack</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetBackgroundVisible&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetBackgroundVisible (page does not exist)">SetBackgroundVisible</a>(boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetDataBool&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetDataBool (page does not exist)">SetDataBool</a>(string, boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetDataNumber&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetDataNumber (page does not exist)">SetDataNumber</a>(string, number)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetDataObject&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetDataObject (page does not exist)">SetDataObject</a>(string, object)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetDataString&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetDataString (page does not exist)">SetDataString</a>(string, string)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetDock&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetDock (page does not exist)">SetDock</a>(number)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetEnabled&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetEnabled (page does not exist)">SetEnabled</a>(boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetMargin&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetMargin (page does not exist)">SetMargin</a>(<a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>, <a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetName&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetName (page does not exist)">SetName</a>(string)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetPadding&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetPadding (page does not exist)">SetPadding</a>(<a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>, <a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetParent&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetParent (page does not exist)">SetParent</a>(<a href="/Lua/Client/BaseWindow" title="Lua/Client/BaseWindow">BaseWindow</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetPosition&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetPosition (page does not exist)">SetPosition</a>(<a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetPositionRel&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetPositionRel (page does not exist)">SetPositionRel</a>(<a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetSize&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetSize (page does not exist)">SetSize</a>(<a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetSizeRel&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetSizeRel (page does not exist)">SetSizeRel</a>(<a href="/Lua/Shared/Vector2" title="Lua/Shared/Vector2">Vector2</a>)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetTabNavigation&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetTabNavigation (page does not exist)">SetTabNavigation</a>(boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetToolTip&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetToolTip (page does not exist)">SetToolTip</a>(string)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/SetVisible&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/SetVisible (page does not exist)">SetVisible</a>(boolean)
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Show&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Show (page does not exist)">Show</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Touch&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Touch (page does not exist)">Touch</a>()
+</td></tr>
+<tr>
+<td align="right">
+</td>
+<td align="left"> RadioButton:<a href="/index.php?title=Lua/Client/RadioButton/Functions/Unsubscribe&amp;action=edit&amp;redlink=1" class="new" title="Lua/Client/RadioButton/Functions/Unsubscribe (page does not exist)">Unsubscribe</a>(<a href="/Lua/Shared/Event" title="Lua/Shared/Event">Event</a>)
+</td></tr></table> </font>
+ 
+ 
+</div>  
+ 
+<div class="printfooter">
+Retrieved from "<a href="http://wiki.jc-mp.com/index.php?title=Lua/Client/RadioButton&amp;oldid=8673">http://wiki.jc-mp.com/index.php?title=Lua/Client/RadioButton&amp;oldid=8673</a>" </div>
+ 
+ 
+<div id='catlinks' class='catlinks catlinks-allhidden'></div>  
+<div class="visualClear"></div>
+ 
+ 
+</div>
+ 
+</div>
+ 
+<div id="mw-navigation">
+<h2>Navigation menu</h2>
+ 
+<div id="mw-head">
+ 
+<div id="p-personal" role="navigation" class="">
+<h3>Personal tools</h3>
+<ul>
+<li id="pt-login"><a href="/index.php?title=Special:UserLogin&amp;returnto=Lua%2FClient%2FRadioButton" title="You are encouraged to log in; however, it is not mandatory [o]" accesskey="o">Log in</a></li> </ul>
+</div>
+ 
+<div id="left-navigation">
+ 
+<div id="p-namespaces" role="navigation" class="vectorTabs">
+<h3>Namespaces</h3>
+<ul>
+<li id="ca-nstab-main" class="selected"><span><a href="/Lua/Client/RadioButton" title="View the content page [c]" accesskey="c">Page</a></span></li>
+<li id="ca-talk" class="new"><span><a href="/index.php?title=Talk:Lua/Client/RadioButton&amp;action=edit&amp;redlink=1" title="Discussion about the content page [t]" accesskey="t">Discussion</a></span></li>
+</ul>
+</div>
+ 
+ 
+<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet">
+<h3 id="mw-vector-current-variant">
+</h3>
+<h3><span>Variants</span><a href="#"></a></h3>
+<div class="menu">
+<ul>
+</ul>
+</div>
+</div>
+ 
+</div>
+<div id="right-navigation">
+ 
+<div id="p-views" role="navigation" class="vectorTabs">
+<h3>Views</h3>
+<ul>
+<li id="ca-view" class="selected"><span><a href="/Lua/Client/RadioButton">Read</a></span></li>
+<li id="ca-viewsource"><span><a href="/index.php?title=Lua/Client/RadioButton&amp;action=edit" title="This page is protected.&#10;You can view its source [e]" accesskey="e">View source</a></span></li>
+<li id="ca-history" class="collapsible"><span><a href="/index.php?title=Lua/Client/RadioButton&amp;action=history" title="Past revisions of this page [h]" accesskey="h">View history</a></span></li>
+</ul>
+</div>
+ 
+ 
+<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet">
+<h3><span>Actions</span><a href="#"></a></h3>
+<div class="menu">
+<ul>
+</ul>
+</div>
+</div>
+ 
+ 
+<div id="p-search" role="search">
+<h3><label for="searchInput">Search</label></h3>
+<form action="/index.php" id="searchform">
+<div>
+<input type="search" name="search" title="Search JC2-MP Documentation [f]" accesskey="f" id="searchInput"/> <input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton"/> <input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton"/> <input type='hidden' name="title" value="Special:Search"/>
+</div>
+</form>
+</div>
+ 
+</div>
+</div>
+ 
+ 
+<div id="mw-panel">
+ 
+<div id="p-logo" role="banner"><a style="background-image: url(/skins/common/images/logo.png);" href="/Main_Page" title="Visit the main page"></a></div>
+ 
+ 
+<div class="portal" role="navigation" id='p-navigation'>
+<h3>Navigation</h3>
+<div class="body">
+<ul>
+<li id="n-mainpage-description"><a href="/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+<li id="n-Web-site"><a href="http://www.jc-mp.com" rel="nofollow">Web site</a></li>
+<li id="n-Recent-changes"><a href="/Special:RecentChanges">Recent changes</a></li>
+</ul>
+</div>
+</div>
+ 
+ 
+<div class="portal" role="navigation" id='p-tb'>
+<h3>Tools</h3>
+<div class="body">
+<ul>
+<li id="t-whatlinkshere"><a href="/Special:WhatLinksHere/Lua/Client/RadioButton" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+<li id="t-recentchangeslinked"><a href="/Special:RecentChangesLinked/Lua/Client/RadioButton" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+<li id="t-print"><a href="/index.php?title=Lua/Client/RadioButton&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+<li id="t-permalink"><a href="/index.php?title=Lua/Client/RadioButton&amp;oldid=8673" title="Permanent link to this revision of the page">Permanent link</a></li>
+<li id="t-info"><a href="/index.php?title=Lua/Client/RadioButton&amp;action=info">Page information</a></li>
+</ul>
+</div>
+</div>
+ 
+ 
+ 
+ 
+ 
+</div>
+ 
+</div>
+ 
+<div id="footer" role="contentinfo">
+<ul id="footer-info">
+<li id="footer-info-lastmod"> This page was last modified on 25 November 2013, at 11:04.</li>
+<li id="footer-info-viewcount">This page has been accessed 309 times.</li>
+<li id="footer-info-copyright">Content is available under <a class="external" rel="nofollow" href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+</ul>
+<ul id="footer-places">
+<li id="footer-places-privacy"><a href="/Project:Privacy_policy" title="Project:Privacy policy">Privacy policy</a></li>
+<li id="footer-places-about"><a href="/Project:About" title="Project:About">About JC2-MP Documentation</a></li>
+<li id="footer-places-disclaimer"><a href="/Project:General_disclaimer" title="Project:General disclaimer">Disclaimers</a></li>
+</ul>
+<ul id="footer-icons" class="noprint">
+<li id="footer-copyrightico">
+<a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.3 or later" width="88" height="31"/></a>
+</li>
+<li id="footer-poweredbyico">
+<a href="//www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"/></a>
+</li>
+</ul>
+<div style="clear:both"></div>
+</div>
+ 
+<script>if(window.mw){
+mw.loader.state({"site":"loading","user":"missing","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["ext.treeandmenu","mediawiki.action.view.postEdit","mediawiki.user","mediawiki.page.ready","mediawiki.searchSuggest","mediawiki.hidpi","skins.vector.js"], null, true);
+}</script>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=vector&amp;*"></script>
+ 
+</body>
+</html>

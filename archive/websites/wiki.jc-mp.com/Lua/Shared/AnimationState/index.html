@@ -1,0 +1,2591 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="client-nojs">
+<head>
+<meta charset="UTF-8"/><title>Lua/Shared/AnimationState - JC2-MP Documentation</title>
+<meta name="generator" content="MediaWiki 1.22.2"/>
+<script type="text/javascript">
+//<![CDATA[
+try{if (!window.CloudFlare) {var CloudFlare=[{verbose:0,p:0,byc:0,owlid:"cf",bag2:1,mirage2:0,oracle:0,paths:{cloudflare:"/cdn-cgi/nexp/dok8v=02fcfa4f56/"},atok:"18e551c24bf0de1f962f19ce340d4682",petok:"012e635fb2ea58cd72113643d246f93442a62716-1392940920-1800",zone:"jc-mp.com",rocket:"0",apps:{"abetterbrowser":{"ie":"8"}}}];var a=document.createElement("script"),b=document.getElementsByTagName("script")[0];a.async=!0;a.src="//ajax.cloudflare.com/cdn-cgi/nexp/dok8v=221574e73d/cloudflare.min.js";b.parentNode.insertBefore(a,b);}}catch(e){};
+//]]>
+</script>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="JC2-MP Documentation (en)"/>
+<link rel="EditURI" type="application/rsd+xml" href="http://wiki.jc-mp.com/api.php?action=rsd"/>
+<link rel="copyright" href="http://www.gnu.org/copyleft/fdl.html"/>
+<link rel="alternate" type="application/atom+xml" title="JC2-MP Documentation Atom feed" href="/index.php?title=Special:RecentChanges&amp;feed=atom"/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=mediawiki.legacy.commonPrint%2Cshared&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<link rel="stylesheet" href="/skins/cavendish/print.css?303" media="print"/>
+<link rel="stylesheet" href="/skins/cavendish/cavendish.css?303" media="screen"/>
+<!--[if IE 6]><link rel="stylesheet" href="/skins/cavendish/IE60Fixes.css?303" media="screen" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="/skins/cavendish/IE70Fixes.css?303" media="screen" /><![endif]-->
+<link rel="stylesheet" href="/skins/cavendish/colors/jcmp.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/extensions.css?303" media="screen"/>
+<link rel="stylesheet" href="/skins/cavendish/style.php?303" media="screen"/><meta name="ResourceLoaderDynamicStyles" content=""/>
+<link rel="stylesheet" href="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=styles&amp;skin=cavendish&amp;*"/>
+<style>a:lang(ar),a:lang(ckb),a:lang(kk-arab),a:lang(mzn),a:lang(ps),a:lang(ur){text-decoration:none}</style>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=startup&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+<script>if(window.mw){
+mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"Lua/Shared/AnimationState","wgTitle":"Lua/Shared/AnimationState","wgCurRevisionId":24458,"wgRevisionId":24458,"wgArticleId":3711,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"Lua/Shared/AnimationState","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[]});
+}</script><script>if(window.mw){
+mw.loader.implement("user.options",function(){mw.user.options.set({"ccmeonemails":0,"cols":80,"date":"default","diffonly":0,"disablemail":0,"disablesuggest":0,"editfont":"default","editondblclick":0,"editsection":1,"editsectiononrightclick":0,"enotifminoredits":0,"enotifrevealaddr":0,"enotifusertalkpages":1,"enotifwatchlistpages":0,"extendwatchlist":0,"fancysig":0,"forceeditsummary":0,"gender":"unknown","hideminor":0,"hidepatrolled":0,"imagesize":2,"justify":0,"math":1,"minordefault":0,"newpageshidepatrolled":0,"nocache":0,"noconvertlink":0,"norollbackdiff":0,"numberheadings":0,"previewonfirst":0,"previewontop":1,"rcdays":7,"rclimit":50,"rememberpassword":0,"rows":25,"searchlimit":20,"showhiddencats":0,"shownumberswatching":1,"showtoc":1,"showtoolbar":1,"skin":"cavendish","stubthreshold":0,"thumbsize":2,"underline":2,"uselivepreview":0,"usenewrc":0,"vector-simplesearch":1,"watchcreations":0,"watchdefault":0,"watchdeletion":0,"watchlistdays":3,"watchlisthideanons":0,"watchlisthidebots":
+0,"watchlisthideliu":0,"watchlisthideminor":0,"watchlisthideown":0,"watchlisthidepatrolled":0,"watchmoves":0,"wllimit":250,"useeditwarning":1,"prefershttps":1,"language":"en","variant-gan":"gan","variant-iu":"iu","variant-kk":"kk","variant-ku":"ku","variant-shi":"shi","variant-sr":"sr","variant-tg":"tg","variant-uz":"uz","variant-zh":"zh","searchNs0":true,"searchNs1":false,"searchNs2":false,"searchNs3":false,"searchNs4":false,"searchNs5":false,"searchNs6":false,"searchNs7":false,"searchNs8":false,"searchNs9":false,"searchNs10":false,"searchNs11":false,"searchNs12":false,"searchNs13":false,"searchNs14":false,"searchNs15":false,"variant":"en"});},{},{});mw.loader.implement("user.tokens",function(){mw.user.tokens.set({"editToken":"+\\","patrolToken":false,"watchToken":false});},{},{});
+/* cache key: wiki:resourceloader:filter:minify-js:7:d6cee38fd88e62c412a64f3888b013b1 */
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.page.startup","mediawiki.legacy.wikibits","mediawiki.legacy.ajax"]);
+}</script>
+</head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-Lua_Shared_AnimationState skin-cavendish action-view">
+<div id="internal"></div>
+ 
+<div id="globalWrapper" class="view">
+<div id="p-personal" class="portlet">
+<h5>Personal tools</h5>
+<div class="pBody">
+<ul>
+<li id="pt-login" class="top-nav-element">
+<span class="top-nav-left">&nbsp;</span>
+<a class="top-nav-mid " href="/index.php?title=Special:UserLogin&amp;returnto=Lua%2FShared%2FAnimationState">
+Click here to login with your JC2-MP account</a>
+<span class="top-nav-right">&nbsp;</span></li>
+</ul>
+</div>
+</div>
+<div id="header">
+<a name="top" id="contentTop"></a>
+<h6>
+<a href="/Main_Page" title="Main Page">Lua/Shared/AnimationState - JC2-MP Documentation</a></h6>
+<div id="p-cactions" class="portlet"><ul>
+<li id="ca-nstab-main" class="selected"><a href="/Lua/Shared/AnimationState" title="View the content page">Page</a></li>
+<li id="ca-talk" class="new"><a href="/index.php?title=Talk:Lua/Shared/AnimationState&amp;action=edit&amp;redlink=1" title="Discussion about the content page">Discussion</a></li>
+<li id="ca-viewsource"><a href="/index.php?title=Lua/Shared/AnimationState&amp;action=edit" title="This page is protected.&#10;You can view its source">View source</a></li>
+<li id="ca-history"><a href="/index.php?title=Lua/Shared/AnimationState&amp;action=history" title="Past revisions of this page">History</a></li> </ul></div>
+<div id="p-search" class="portlet" role="search">
+<h3><label for="searchInput">Search</label></h3>
+<div id="searchBody" class="pBody">
+<form action="/index.php" id="searchform">
+<input type='hidden' name="title" value="Special:Search"/>
+<input type="search" name="search" placeholder="Search" title="Search JC2-MP Documentation [f]" accesskey="f" id="searchInput"/>
+<input type="submit" name="go" value="Go" title="Go to a page with this exact name if exists" id="searchGoButton" class="searchButton"/>&#160;
+<input type="submit" name="fulltext" value="Search" title="Search the pages for this text" id="mw-searchButton" class="searchButton"/>
+</form>
+</div>
+</div>
+</div>
+<div id="mBody">
+<div id="side">
+<div id="nav">
+<div class="generated-sidebar portlet" id="p-Main" role="navigation">
+<h3>Main</h3>
+<div class='pBody'>
+<ul>
+<li id="n-mainpage-description"><a href="/Main_Page" title="Visit the main page [z]" accesskey="z">Main page</a></li>
+<li id="n-Web-site"><a href="http://www.jc-mp.com" rel="nofollow">Web site</a></li>
+<li id="n-Recent-changes"><a href="/Special:RecentChanges">Recent changes</a></li>
+</ul>
+</div>
+</div>
+<div class="generated-sidebar portlet" id="p-Lua" role="navigation">
+<h3>Lua</h3>
+<div class='pBody'>
+<ul>
+<li id="n-Tutorials"><a href="/Lua/Tutorials">Tutorials</a></li>
+<li id="n-Server"><a href="/Lua/Server">Server</a></li>
+<li id="n-Client"><a href="/Lua/Client">Client</a></li>
+<li id="n-Shared"><a href="/Lua/Shared">Shared</a></li>
+</ul>
+</div>
+</div>
+<div class="portlet" id="p-tb" role="navigation">
+<h3>Tools</h3>
+<div class="pBody">
+<ul>
+<li id="t-whatlinkshere"><a href="/Special:WhatLinksHere/Lua/Shared/AnimationState" title="A list of all wiki pages that link here [j]" accesskey="j">What links here</a></li>
+<li id="t-recentchangeslinked"><a href="/Special:RecentChangesLinked/Lua/Shared/AnimationState" title="Recent changes in pages linked from this page [k]" accesskey="k">Related changes</a></li>
+<li id="t-specialpages"><a href="/Special:SpecialPages" title="A list of all special pages [q]" accesskey="q">Special pages</a></li>
+<li id="t-print"><a href="/index.php?title=Lua/Shared/AnimationState&amp;printable=yes" rel="alternate" title="Printable version of this page [p]" accesskey="p">Printable version</a></li>
+<li id="t-permalink"><a href="/index.php?title=Lua/Shared/AnimationState&amp;oldid=24458" title="Permanent link to this revision of the page">Permanent link</a></li>
+<li id="t-info"><a href="/index.php?title=Lua/Shared/AnimationState&amp;action=info">Page information</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div> 
+<div id="column-content">
+<div id="content">
+<a id="top"></a>
+<h1 id="firstHeading" class="firstHeading">Lua/Shared/AnimationState</h1>
+<div id="bodyContent">
+<h3 id="siteSub">From JC2-MP Documentation</h3>
+<div id="contentSub"><span class="subpages">&lt; <a href="/Lua" title="Lua">Lua</a>&lrm; | <a href="/Lua/Shared" title="Lua/Shared">Shared</a></span></div>
+<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>  
+<div id="mw-content-text" lang="en" dir="ltr" class="mw-content-ltr"><h2><span class="mw-headline" id="Statics">Statics</span></h2>
+<p><font size="3">
+</p>
+<table class="wikitable sortable">
+<tr>
+<th width="200"> Name
+</th>
+<th width="40"> Value
+</th></tr>
+<tr>
+<td align="left"> LaSAbortRecoil
+</td>
+<td align="left"> 481
+</td></tr>
+<tr>
+<td align="left"> LaSAiming
+</td>
+<td align="left"> 392
+</td></tr>
+<tr>
+<td align="left"> LaSBeaconAim
+</td>
+<td align="left"> 395
+</td></tr>
+<tr>
+<td align="left"> LaSBeaconEquip
+</td>
+<td align="left"> 396
+</td></tr>
+<tr>
+<td align="left"> LaSBeaconUnequip
+</td>
+<td align="left"> 397
+</td></tr>
+<tr>
+<td align="left"> LaSDropWeapon
+</td>
+<td align="left"> 473
+</td></tr>
+<tr>
+<td align="left"> LaSDualGrapple
+</td>
+<td align="left"> 404
+</td></tr>
+<tr>
+<td align="left"> LaSDualGrappleReturn
+</td>
+<td align="left"> 405
+</td></tr>
+<tr>
+<td align="left"> LaSEquipGrenade
+</td>
+<td align="left"> 385
+</td></tr>
+<tr>
+<td align="left"> LaSGrapple
+</td>
+<td align="left"> 399
+</td></tr>
+<tr>
+<td align="left"> LaSGrappleDetach
+</td>
+<td align="left"> 401
+</td></tr>
+<tr>
+<td align="left"> LaSGrapplePull
+</td>
+<td align="left"> 398
+</td></tr>
+<tr>
+<td align="left"> LaSGrappleReelIn
+</td>
+<td align="left"> 410
+</td></tr>
+<tr>
+<td align="left"> LaSGrappleReelOut
+</td>
+<td align="left"> 409
+</td></tr>
+<tr>
+<td align="left"> LaSGrappleToIdle
+</td>
+<td align="left"> 400
+</td></tr>
+<tr>
+<td align="left"> LaSGrenadeWait
+</td>
+<td align="left"> 454
+</td></tr>
+<tr>
+<td align="left"> LaSHookHit
+</td>
+<td align="left"> 408
+</td></tr>
+<tr>
+<td align="left"> LaSHookMissed
+</td>
+<td align="left"> 407
+</td></tr>
+<tr>
+<td align="left"> LaSIdle
+</td>
+<td align="left"> 384
+</td></tr>
+<tr>
+<td align="left"> LaSOverThrowGrenade
+</td>
+<td align="left"> 388
+</td></tr>
+<tr>
+<td align="left"> LaSPlaceExplosives
+</td>
+<td align="left"> 390
+</td></tr>
+<tr>
+<td align="left"> LaSPlaceTriggeredExplosive
+</td>
+<td align="left"> 389
+</td></tr>
+<tr>
+<td align="left"> LaSRaiseGrapple
+</td>
+<td align="left"> 402
+</td></tr>
+<tr>
+<td align="left"> LaSRaiseGrappleSo
+</td>
+<td align="left"> 403
+</td></tr>
+<tr>
+<td align="left"> LaSRecoilFinishedLh
+</td>
+<td align="left"> 480
+</td></tr>
+<tr>
+<td align="left"> LaSRecoilLh
+</td>
+<td align="left"> 479
+</td></tr>
+<tr>
+<td align="left"> LaSReload
+</td>
+<td align="left"> 394
+</td></tr>
+<tr>
+<td align="left"> LaSThrowGrenade
+</td>
+<td align="left"> 478
+</td></tr>
+<tr>
+<td align="left"> LaSThrowTriggeredExplosive
+</td>
+<td align="left"> 391
+</td></tr>
+<tr>
+<td align="left"> LaSThrowTriggeredExplosiveAi
+</td>
+<td align="left"> 453
+</td></tr>
+<tr>
+<td align="left"> LaSTriggerBoom
+</td>
+<td align="left"> 452
+</td></tr>
+<tr>
+<td align="left"> LaSUnderThrowGrenade
+</td>
+<td align="left"> 387
+</td></tr>
+<tr>
+<td align="left"> LaSWaitingForHook
+</td>
+<td align="left"> 406
+</td></tr>
+<tr>
+<td align="left"> LaSWieldGrenade
+</td>
+<td align="left"> 386
+</td></tr>
+<tr>
+<td align="left"> LaSWielding
+</td>
+<td align="left"> 393
+</td></tr>
+<tr>
+<td align="left"> PcsClosed
+</td>
+<td align="left"> 2
+</td></tr>
+<tr>
+<td align="left"> PcsClosing
+</td>
+<td align="left"> 5
+</td></tr>
+<tr>
+<td align="left"> PcsOpen
+</td>
+<td align="left"> 1
+</td></tr>
+<tr>
+<td align="left"> PcsOpeningHorizontal
+</td>
+<td align="left"> 4
+</td></tr>
+<tr>
+<td align="left"> PcsOpeningVertical
+</td>
+<td align="left"> 3
+</td></tr>
+<tr>
+<td align="left"> RaSIdle
+</td>
+<td align="left"> 383
+</td></tr>
+<tr>
+<td align="left"> SAiBasicNavigation
+</td>
+<td align="left"> 259
+</td></tr>
+<tr>
+<td align="left"> SAiUprightStrafe
+</td>
+<td align="left"> 258
+</td></tr>
+<tr>
+<td align="left"> SAiUprightStrafeBackward
+</td>
+<td align="left"> 447
+</td></tr>
+<tr>
+<td align="left"> SAiUprightStrafeForward
+</td>
+<td align="left"> 443
+</td></tr>
+<tr>
+<td align="left"> SAiUprightStrafeLeft
+</td>
+<td align="left"> 444
+</td></tr>
+<tr>
+<td align="left"> SAiUprightStrafeRight
+</td>
+<td align="left"> 446
+</td></tr>
+<tr>
+<td align="left"> SAimMg
+</td>
+<td align="left"> 193
+</td></tr>
+<tr>
+<td align="left"> SAirborneRagdoll
+</td>
+<td align="left"> 253
+</td></tr>
+<tr>
+<td align="left"> SAnnoyed
+</td>
+<td align="left"> 482
+</td></tr>
+<tr>
+<td align="left"> SBabyStunned
+</td>
+<td align="left"> 445
+</td></tr>
+<tr>
+<td align="left"> SBellyToFall
+</td>
+<td align="left"> 425
+</td></tr>
+<tr>
+<td align="left"> SBellyToSkydive
+</td>
+<td align="left"> 423
+</td></tr>
+<tr>
+<td align="left"> SBlendToSwimIdle
+</td>
+<td align="left"> 135
+</td></tr>
+<tr>
+<td align="left"> SCartwheel
+</td>
+<td align="left"> 320
+</td></tr>
+<tr>
+<td align="left"> SCartwheelInterupt
+</td>
+<td align="left"> 322
+</td></tr>
+<tr>
+<td align="left"> SCivSoAnnoyed
+</td>
+<td align="left"> 483
+</td></tr>
+<tr>
+<td align="left"> SCivSoEnter
+</td>
+<td align="left"> 342
+</td></tr>
+<tr>
+<td align="left"> SCivSoExclamation
+</td>
+<td align="left"> 345
+</td></tr>
+<tr>
+<td align="left"> SCivSoExit
+</td>
+<td align="left"> 344
+</td></tr>
+<tr>
+<td align="left"> SCivSoIdle
+</td>
+<td align="left"> 343
+</td></tr>
+<tr>
+<td align="left"> SClimbDownFromMg
+</td>
+<td align="left"> 206
+</td></tr>
+<tr>
+<td align="left"> SClimbIntoMgPt1
+</td>
+<td align="left"> 203
+</td></tr>
+<tr>
+<td align="left"> SClimbIntoMgPt2
+</td>
+<td align="left"> 204
+</td></tr>
+<tr>
+<td align="left"> SClimbLadderDown
+</td>
+<td align="left"> 130
+</td></tr>
+<tr>
+<td align="left"> SClimbLadderIdle
+</td>
+<td align="left"> 128
+</td></tr>
+<tr>
+<td align="left"> SClimbLadderIdleAtBottom
+</td>
+<td align="left"> 126
+</td></tr>
+<tr>
+<td align="left"> SClimbLadderIdleAtTop
+</td>
+<td align="left"> 127
+</td></tr>
+<tr>
+<td align="left"> SClimbLadderStarting
+</td>
+<td align="left"> 125
+</td></tr>
+<tr>
+<td align="left"> SClimbLadderUp
+</td>
+<td align="left"> 129
+</td></tr>
+<tr>
+<td align="left"> SClimbOutofMgPt1
+</td>
+<td align="left"> 432
+</td></tr>
+<tr>
+<td align="left"> SClimbOutofMgPt2
+</td>
+<td align="left"> 205
+</td></tr>
+<tr>
+<td align="left"> SClimbUpIntoMg
+</td>
+<td align="left"> 202
+</td></tr>
+<tr>
+<td align="left"> SClingDownToIdlePart1
+</td>
+<td align="left"> 102
+</td></tr>
+<tr>
+<td align="left"> SClingDownToIdlePart2
+</td>
+<td align="left"> 103
+</td></tr>
+<tr>
+<td align="left"> SClingDownToLeftPart1
+</td>
+<td align="left"> 96
+</td></tr>
+<tr>
+<td align="left"> SClingDownToRightPart1
+</td>
+<td align="left"> 97
+</td></tr>
+<tr>
+<td align="left"> SClingLeanDown
+</td>
+<td align="left"> 87
+</td></tr>
+<tr>
+<td align="left"> SClingLeanLeft
+</td>
+<td align="left"> 86
+</td></tr>
+<tr>
+<td align="left"> SClingLeanRight
+</td>
+<td align="left"> 85
+</td></tr>
+<tr>
+<td align="left"> SClingLeftToDownPart1
+</td>
+<td align="left"> 94
+</td></tr>
+<tr>
+<td align="left"> SClingLeftToIdlePart1
+</td>
+<td align="left"> 100
+</td></tr>
+<tr>
+<td align="left"> SClingLeftToIdlePart2
+</td>
+<td align="left"> 101
+</td></tr>
+<tr>
+<td align="left"> SClingLeftToRight
+</td>
+<td align="left"> 92
+</td></tr>
+<tr>
+<td align="left"> SClingLftToRoof
+</td>
+<td align="left"> 106
+</td></tr>
+<tr>
+<td align="left"> SClingLftToRoofInterupt
+</td>
+<td align="left"> 107
+</td></tr>
+<tr>
+<td align="left"> SClingMidToDownPart1
+</td>
+<td align="left"> 91
+</td></tr>
+<tr>
+<td align="left"> SClingMidToLeftPart1
+</td>
+<td align="left"> 90
+</td></tr>
+<tr>
+<td align="left"> SClingMidToRightPart1
+</td>
+<td align="left"> 89
+</td></tr>
+<tr>
+<td align="left"> SClingMidToRoof
+</td>
+<td align="left"> 104
+</td></tr>
+<tr>
+<td align="left"> SClingMidToRoofInterupt
+</td>
+<td align="left"> 105
+</td></tr>
+<tr>
+<td align="left"> SClingRgtToRoof
+</td>
+<td align="left"> 108
+</td></tr>
+<tr>
+<td align="left"> SClingRgtToRoofInterupt
+</td>
+<td align="left"> 109
+</td></tr>
+<tr>
+<td align="left"> SClingRightToDownPart1
+</td>
+<td align="left"> 95
+</td></tr>
+<tr>
+<td align="left"> SClingRightToIdlePart1
+</td>
+<td align="left"> 98
+</td></tr>
+<tr>
+<td align="left"> SClingRightToIdlePart2
+</td>
+<td align="left"> 99
+</td></tr>
+<tr>
+<td align="left"> SClingRightToLeft
+</td>
+<td align="left"> 93
+</td></tr>
+<tr>
+<td align="left"> SClingStuntpositionIdle
+</td>
+<td align="left"> 84
+</td></tr>
+<tr>
+<td align="left"> SClingToNeutral
+</td>
+<td align="left"> 456
+</td></tr>
+<tr>
+<td align="left"> SClingToRoof
+</td>
+<td align="left"> 318
+</td></tr>
+<tr>
+<td align="left"> SClingToUnfoldparachute
+</td>
+<td align="left"> 462
+</td></tr>
+<tr>
+<td align="left"> SCloseCombatKick
+</td>
+<td align="left"> 311
+</td></tr>
+<tr>
+<td align="left"> SCloseCombatRunningKick
+</td>
+<td align="left"> 312
+</td></tr>
+<tr>
+<td align="left"> SCloseLeftDoorFromInside
+</td>
+<td align="left"> 59
+</td></tr>
+<tr>
+<td align="left"> SCloseRightDoorFromInside
+</td>
+<td align="left"> 62
+</td></tr>
+<tr>
+<td align="left"> SCoverEntering
+</td>
+<td align="left"> 168
+</td></tr>
+<tr>
+<td align="left"> SCoverEnteringAttack
+</td>
+<td align="left"> 169
+</td></tr>
+<tr>
+<td align="left"> SCoverHead
+</td>
+<td align="left"> 340
+</td></tr>
+<tr>
+<td align="left"> SCoverHeadEnter
+</td>
+<td align="left"> 339
+</td></tr>
+<tr>
+<td align="left"> SCoverHidden
+</td>
+<td align="left"> 170
+</td></tr>
+<tr>
+<td align="left"> SCoverHiding
+</td>
+<td align="left"> 179
+</td></tr>
+<tr>
+<td align="left"> SCoverHidingLeft
+</td>
+<td align="left"> 171
+</td></tr>
+<tr>
+<td align="left"> SCoverHidingRight
+</td>
+<td align="left"> 175
+</td></tr>
+<tr>
+<td align="left"> SCoverIdleAttack
+</td>
+<td align="left"> 180
+</td></tr>
+<tr>
+<td align="left"> SCoverIdleAttackLeft
+</td>
+<td align="left"> 172
+</td></tr>
+<tr>
+<td align="left"> SCoverIdleAttackRight
+</td>
+<td align="left"> 176
+</td></tr>
+<tr>
+<td align="left"> SCoverLeaving
+</td>
+<td align="left"> 183
+</td></tr>
+<tr>
+<td align="left"> SCoverUnhiding
+</td>
+<td align="left"> 181
+</td></tr>
+<tr>
+<td align="left"> SCoverUnhidingAim
+</td>
+<td align="left"> 182
+</td></tr>
+<tr>
+<td align="left"> SCoverUnhidingLeft
+</td>
+<td align="left"> 173
+</td></tr>
+<tr>
+<td align="left"> SCoverUnhidingLeftAim
+</td>
+<td align="left"> 174
+</td></tr>
+<tr>
+<td align="left"> SCoverUnhidingRight
+</td>
+<td align="left"> 177
+</td></tr>
+<tr>
+<td align="left"> SCoverUnhidingRightAim
+</td>
+<td align="left"> 178
+</td></tr>
+<tr>
+<td align="left"> SCrouch
+</td>
+<td align="left"> 15
+</td></tr>
+<tr>
+<td align="left"> SCrouchWalk
+</td>
+<td align="left"> 18
+</td></tr>
+<tr>
+<td align="left"> SCrouching
+</td>
+<td align="left"> 338
+</td></tr>
+<tr>
+<td align="left"> SCustomTimeVariableTeleportState
+</td>
+<td align="left"> 276
+</td></tr>
+<tr>
+<td align="left"> SDash
+</td>
+<td align="left"> 19
+</td></tr>
+<tr>
+<td align="left"> SDashStop
+</td>
+<td align="left"> 458
+</td></tr>
+<tr>
+<td align="left"> SDashTurn180
+</td>
+<td align="left"> 20
+</td></tr>
+<tr>
+<td align="left"> SDead
+</td>
+<td align="left"> 56
+</td></tr>
+<tr>
+<td align="left"> SDefaultStuntpositionIdle
+</td>
+<td align="left"> 88
+</td></tr>
+<tr>
+<td align="left"> SDefaultStuntpositionRotate180Ccw
+</td>
+<td align="left"> 152
+</td></tr>
+<tr>
+<td align="left"> SDefaultStuntpositionRotate180Cw
+</td>
+<td align="left"> 151
+</td></tr>
+<tr>
+<td align="left"> SDefaultStuntpositionRotate90Ccw
+</td>
+<td align="left"> 461
+</td></tr>
+<tr>
+<td align="left"> SDefaultStuntpositionRotate90Cw
+</td>
+<td align="left"> 459
+</td></tr>
+<tr>
+<td align="left"> SDefaultToNeutral
+</td>
+<td align="left"> 327
+</td></tr>
+<tr>
+<td align="left"> SDiveFromBoat
+</td>
+<td align="left"> 341
+</td></tr>
+<tr>
+<td align="left"> SDownToCrouch
+</td>
+<td align="left"> 16
+</td></tr>
+<tr>
+<td align="left"> SDriverHideInVehicle
+</td>
+<td align="left"> 79
+</td></tr>
+<tr>
+<td align="left"> SDriverToNeutral
+</td>
+<td align="left"> 330
+</td></tr>
+<tr>
+<td align="left"> SDriverToPassenger
+</td>
+<td align="left"> 77
+</td></tr>
+<tr>
+<td align="left"> SDriverToVictim
+</td>
+<td align="left"> 263
+</td></tr>
+<tr>
+<td align="left"> SDying
+</td>
+<td align="left"> 55
+</td></tr>
+<tr>
+<td align="left"> SDyingAirbound
+</td>
+<td align="left"> 51
+</td></tr>
+<tr>
+<td align="left"> SDyingBlendin
+</td>
+<td align="left"> 54
+</td></tr>
+<tr>
+<td align="left"> SDyingPosematching
+</td>
+<td align="left"> 52
+</td></tr>
+<tr>
+<td align="left"> SDyingPosematchingNonfancy
+</td>
+<td align="left"> 53
+</td></tr>
+<tr>
+<td align="left"> SEjectFromVehicleAlive
+</td>
+<td align="left"> 334
+</td></tr>
+<tr>
+<td align="left"> SEjectFromVehicleDead
+</td>
+<td align="left"> 333
+</td></tr>
+<tr>
+<td align="left"> SEnterFmg
+</td>
+<td align="left"> 434
+</td></tr>
+<tr>
+<td align="left"> SEnterMc
+</td>
+<td align="left"> 115
+</td></tr>
+<tr>
+<td align="left"> SEnterMg
+</td>
+<td align="left"> 200
+</td></tr>
+<tr>
+<td align="left"> SEnterMgWithMg
+</td>
+<td align="left"> 201
+</td></tr>
+<tr>
+<td align="left"> SEnterOccupiedMcPt1
+</td>
+<td align="left"> 117
+</td></tr>
+<tr>
+<td align="left"> SEnterOccupiedMcPt2
+</td>
+<td align="left"> 118
+</td></tr>
+<tr>
+<td align="left"> SEnterOccupiedMcStart
+</td>
+<td align="left"> 116
+</td></tr>
+<tr>
+<td align="left"> SEnteringVehicle
+</td>
+<td align="left"> 64
+</td></tr>
+<tr>
+<td align="left"> SEnteringVehicleRight
+</td>
+<td align="left"> 70
+</td></tr>
+<tr>
+<td align="left"> SEvade
+</td>
+<td align="left"> 21
+</td></tr>
+<tr>
+<td align="left"> SEvadeInterrupt
+</td>
+<td align="left"> 22
+</td></tr>
+<tr>
+<td align="left"> SExitFmg
+</td>
+<td align="left"> 426
+</td></tr>
+<tr>
+<td align="left"> SExitMg
+</td>
+<td align="left"> 439
+</td></tr>
+<tr>
+<td align="left"> SExitMgWithMg
+</td>
+<td align="left"> 421
+</td></tr>
+<tr>
+<td align="left"> SExitStuntposition
+</td>
+<td align="left"> 464
+</td></tr>
+<tr>
+<td align="left"> SExitingVehicle
+</td>
+<td align="left"> 66
+</td></tr>
+<tr>
+<td align="left"> SExitingVehicleFromHide
+</td>
+<td align="left"> 65
+</td></tr>
+<tr>
+<td align="left"> SExitingVehicleGameVelocity
+</td>
+<td align="left"> 68
+</td></tr>
+<tr>
+<td align="left"> SExitingVehicleGameVelocityInterrupt
+</td>
+<td align="left"> 69
+</td></tr>
+<tr>
+<td align="left"> SExitingVehicleInterupt
+</td>
+<td align="left"> 67
+</td></tr>
+<tr>
+<td align="left"> SExitingVehicleRight
+</td>
+<td align="left"> 71
+</td></tr>
+<tr>
+<td align="left"> SFall
+</td>
+<td align="left"> 34
+</td></tr>
+<tr>
+<td align="left"> SFallMg
+</td>
+<td align="left"> 440
+</td></tr>
+<tr>
+<td align="left"> SFallToSkydive
+</td>
+<td align="left"> 323
+</td></tr>
+<tr>
+<td align="left"> SFromSkydiveDash
+</td>
+<td align="left"> 190
+</td></tr>
+<tr>
+<td align="left"> SGrappleSmashLeft
+</td>
+<td align="left"> 296
+</td></tr>
+<tr>
+<td align="left"> SGrappleSmashRight
+</td>
+<td align="left"> 295
+</td></tr>
+<tr>
+<td align="left"> SGrappled
+</td>
+<td align="left"> 291
+</td></tr>
+<tr>
+<td align="left"> SGroundToNeutral
+</td>
+<td align="left"> 111
+</td></tr>
+<tr>
+<td align="left"> SHangFireHook
+</td>
+<td align="left"> 223
+</td></tr>
+<tr>
+<td align="left"> SHangToFall
+</td>
+<td align="left"> 215
+</td></tr>
+<tr>
+<td align="left"> SHanged
+</td>
+<td align="left"> 57
+</td></tr>
+<tr>
+<td align="left"> SHangstuntIdle
+</td>
+<td align="left"> 110
+</td></tr>
+<tr>
+<td align="left"> SHijackEnterRight
+</td>
+<td align="left"> 226
+</td></tr>
+<tr>
+<td align="left"> SHijackEnterRightFromHide
+</td>
+<td align="left"> 230
+</td></tr>
+<tr>
+<td align="left"> SHijackExitRight
+</td>
+<td align="left"> 224
+</td></tr>
+<tr>
+<td align="left"> SHijackHideRight
+</td>
+<td align="left"> 227
+</td></tr>
+<tr>
+<td align="left"> SHijackHideTransitionRight
+</td>
+<td align="left"> 228
+</td></tr>
+<tr>
+<td align="left"> SHijackShootRight
+</td>
+<td align="left"> 225
+</td></tr>
+<tr>
+<td align="left"> SHijackShootTransitionRight
+</td>
+<td align="left"> 229
+</td></tr>
+<tr>
+<td align="left"> SHijackStumbleBackward
+</td>
+<td align="left"> 232
+</td></tr>
+<tr>
+<td align="left"> SHijackStumbleForward
+</td>
+<td align="left"> 231
+</td></tr>
+<tr>
+<td align="left"> SHitByGrapplinghook
+</td>
+<td align="left"> 290
+</td></tr>
+<tr>
+<td align="left"> SHitreactGetUp
+</td>
+<td align="left"> 257
+</td></tr>
+<tr>
+<td align="left"> SHitreactGetUpBlendin
+</td>
+<td align="left"> 256
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleBackward
+</td>
+<td align="left"> 236
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleBackwardPart2
+</td>
+<td align="left"> 237
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleBackwardSplitter
+</td>
+<td align="left"> 463
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleForward
+</td>
+<td align="left"> 234
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleForwardPart2
+</td>
+<td align="left"> 235
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleHead
+</td>
+<td align="left"> 246
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleHeadPart2
+</td>
+<td align="left"> 247
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleLeft
+</td>
+<td align="left"> 238
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleLeftLeg
+</td>
+<td align="left"> 242
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleLeftLegPart2
+</td>
+<td align="left"> 243
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleLeftPart2
+</td>
+<td align="left"> 239
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleRandomized
+</td>
+<td align="left"> 233
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleRight
+</td>
+<td align="left"> 240
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleRightLeg
+</td>
+<td align="left"> 244
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleRightLegPart2
+</td>
+<td align="left"> 245
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleRightPart2
+</td>
+<td align="left"> 241
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleShake
+</td>
+<td align="left"> 248
+</td></tr>
+<tr>
+<td align="left"> SHitreactStumbleShakeEnd
+</td>
+<td align="left"> 249
+</td></tr>
+<tr>
+<td align="left"> SHitreactUncontrolledFlight
+</td>
+<td align="left"> 250
+</td></tr>
+<tr>
+<td align="left"> SHitreactUncontrolledFlightPosematching
+</td>
+<td align="left"> 251
+</td></tr>
+<tr>
+<td align="left"> SIdleFixedMg
+</td>
+<td align="left"> 196
+</td></tr>
+<tr>
+<td align="left"> SIdleFmg
+</td>
+<td align="left"> 199
+</td></tr>
+<tr>
+<td align="left"> SIdleMg
+</td>
+<td align="left"> 194
+</td></tr>
+<tr>
+<td align="left"> SIdlePassengerVehicle
+</td>
+<td align="left"> 75
+</td></tr>
+<tr>
+<td align="left"> SIdleVehicle
+</td>
+<td align="left"> 73
+</td></tr>
+<tr>
+<td align="left"> SIdleVehicleMg
+</td>
+<td align="left"> 195
+</td></tr>
+<tr>
+<td align="left"> SInstantDash
+</td>
+<td align="left"> 184
+</td></tr>
+<tr>
+<td align="left"> SJumpFallingToSkydive
+</td>
+<td align="left"> 167
+</td></tr>
+<tr>
+<td align="left"> SJumpFlightSprintForward
+</td>
+<td align="left"> 30
+</td></tr>
+<tr>
+<td align="left"> SJumpFlightStanding
+</td>
+<td align="left"> 29
+</td></tr>
+<tr>
+<td align="left"> SJumpFromSoFlightA
+</td>
+<td align="left"> 261
+</td></tr>
+<tr>
+<td align="left"> SJumpFromSoFlightB
+</td>
+<td align="left"> 262
+</td></tr>
+<tr>
+<td align="left"> SJumpFromSoLand
+</td>
+<td align="left"> 466
+</td></tr>
+<tr>
+<td align="left"> SJumpFromSoStart
+</td>
+<td align="left"> 260
+</td></tr>
+<tr>
+<td align="left"> SJumpLand
+</td>
+<td align="left"> 315
+</td></tr>
+<tr>
+<td align="left"> SJumpLandHeavy
+</td>
+<td align="left"> 166
+</td></tr>
+<tr>
+<td align="left"> SJumpLandIdle
+</td>
+<td align="left"> 31
+</td></tr>
+<tr>
+<td align="left"> SJumpLandInterrupt
+</td>
+<td align="left"> 316
+</td></tr>
+<tr>
+<td align="left"> SJumpLandSprintForward
+</td>
+<td align="left"> 32
+</td></tr>
+<tr>
+<td align="left"> SJumpLandSprintForwardStop
+</td>
+<td align="left"> 33
+</td></tr>
+<tr>
+<td align="left"> SJumpRuningLand
+</td>
+<td align="left"> 314
+</td></tr>
+<tr>
+<td align="left"> SJumpRunningLand
+</td>
+<td align="left"> 186
+</td></tr>
+<tr>
+<td align="left"> SJumpRunningLandInterrupt
+</td>
+<td align="left"> 317
+</td></tr>
+<tr>
+<td align="left"> SJumpStartSprintForward
+</td>
+<td align="left"> 27
+</td></tr>
+<tr>
+<td align="left"> SJumpStartStanding
+</td>
+<td align="left"> 26
+</td></tr>
+<tr>
+<td align="left"> SJumpToFall
+</td>
+<td align="left"> 148
+</td></tr>
+<tr>
+<td align="left"> SJumpToFallTransition
+</td>
+<td align="left"> 28
+</td></tr>
+<tr>
+<td align="left"> SJumpToSkydive
+</td>
+<td align="left"> 188
+</td></tr>
+<tr>
+<td align="left"> SJumpToSkysuit
+</td>
+<td align="left"> 147
+</td></tr>
+<tr>
+<td align="left"> SLadderClimbDown
+</td>
+<td align="left"> 304
+</td></tr>
+<tr>
+<td align="left"> SLadderClimbDownLoop
+</td>
+<td align="left"> 305
+</td></tr>
+<tr>
+<td align="left"> SLadderClimbUp
+</td>
+<td align="left"> 302
+</td></tr>
+<tr>
+<td align="left"> SLadderClimbUpLoop
+</td>
+<td align="left"> 303
+</td></tr>
+<tr>
+<td align="left"> SLadderDropToFall
+</td>
+<td align="left"> 310
+</td></tr>
+<tr>
+<td align="left"> SLadderDropToSkydive
+</td>
+<td align="left"> 309
+</td></tr>
+<tr>
+<td align="left"> SLadderEnterAtTop
+</td>
+<td align="left"> 133
+</td></tr>
+<tr>
+<td align="left"> SLadderEnterBottom
+</td>
+<td align="left"> 298
+</td></tr>
+<tr>
+<td align="left"> SLadderEnterTop
+</td>
+<td align="left"> 297
+</td></tr>
+<tr>
+<td align="left"> SLadderExitAtTop
+</td>
+<td align="left"> 132
+</td></tr>
+<tr>
+<td align="left"> SLadderExitBottom
+</td>
+<td align="left"> 300
+</td></tr>
+<tr>
+<td align="left"> SLadderExitTop
+</td>
+<td align="left"> 299
+</td></tr>
+<tr>
+<td align="left"> SLadderIdle
+</td>
+<td align="left"> 301
+</td></tr>
+<tr>
+<td align="left"> SLadderJumpDown
+</td>
+<td align="left"> 131
+</td></tr>
+<tr>
+<td align="left"> SLadderJumpToLadder
+</td>
+<td align="left"> 308
+</td></tr>
+<tr>
+<td align="left"> SLadderParachuteToLadder
+</td>
+<td align="left"> 306
+</td></tr>
+<tr>
+<td align="left"> SLadderReelToLadder
+</td>
+<td align="left"> 307
+</td></tr>
+<tr>
+<td align="left"> SLand
+</td>
+<td align="left"> 35
+</td></tr>
+<tr>
+<td align="left"> SLandFast
+</td>
+<td align="left"> 37
+</td></tr>
+<tr>
+<td align="left"> SLandHard
+</td>
+<td align="left"> 36
+</td></tr>
+<tr>
+<td align="left"> SLandingHard
+</td>
+<td align="left"> 422
+</td></tr>
+<tr>
+<td align="left"> SLandingMg
+</td>
+<td align="left"> 424
+</td></tr>
+<tr>
+<td align="left"> SLandingRoll
+</td>
+<td align="left"> 428
+</td></tr>
+<tr>
+<td align="left"> SLessUncontrolledSkydive
+</td>
+<td align="left"> 255
+</td></tr>
+<tr>
+<td align="left"> SLiftMcFinish
+</td>
+<td align="left"> 332
+</td></tr>
+<tr>
+<td align="left"> SLiftMcStart
+</td>
+<td align="left"> 331
+</td></tr>
+<tr>
+<td align="left"> SMgAimToIdle
+</td>
+<td align="left"> 197
+</td></tr>
+<tr>
+<td align="left"> SMgIdleToAim
+</td>
+<td align="left"> 198
+</td></tr>
+<tr>
+<td align="left"> SNeutralToDefault
+</td>
+<td align="left"> 112
+</td></tr>
+<tr>
+<td align="left"> SNeutralToDefaultInterupt
+</td>
+<td align="left"> 329
+</td></tr>
+<tr>
+<td align="left"> SNeutralToDriver
+</td>
+<td align="left"> 328
+</td></tr>
+<tr>
+<td align="left"> SNeutralToMcDriver
+</td>
+<td align="left"> 465
+</td></tr>
+<tr>
+<td align="left"> SNeutralToStruggle
+</td>
+<td align="left"> 289
+</td></tr>
+<tr>
+<td align="left"> SNpcTacticalNavigation
+</td>
+<td align="left"> 475
+</td></tr>
+<tr>
+<td align="left"> SOpenLeftDoorFromInside
+</td>
+<td align="left"> 60
+</td></tr>
+<tr>
+<td align="left"> SOpenLeftDoorFromOutside
+</td>
+<td align="left"> 58
+</td></tr>
+<tr>
+<td align="left"> SOpenRightDoorFromInside
+</td>
+<td align="left"> 63
+</td></tr>
+<tr>
+<td align="left"> SOpenRightDoorFromOutside
+</td>
+<td align="left"> 61
+</td></tr>
+<tr>
+<td align="left"> SPanicExitVehicleMg
+</td>
+<td align="left"> 433
+</td></tr>
+<tr>
+<td align="left"> SParachute
+</td>
+<td align="left"> 45
+</td></tr>
+<tr>
+<td align="left"> SParachuteDetachToFreefall
+</td>
+<td align="left"> 47
+</td></tr>
+<tr>
+<td align="left"> SParachuteFromDriver
+</td>
+<td align="left"> 44
+</td></tr>
+<tr>
+<td align="left"> SParachuteLandFast
+</td>
+<td align="left"> 49
+</td></tr>
+<tr>
+<td align="left"> SParachuteLandSlow
+</td>
+<td align="left"> 48
+</td></tr>
+<tr>
+<td align="left"> SParachuteLanding
+</td>
+<td align="left"> 46
+</td></tr>
+<tr>
+<td align="left"> SParachuteToSoLand
+</td>
+<td align="left"> 50
+</td></tr>
+<tr>
+<td align="left"> SParachuteToSoStart
+</td>
+<td align="left"> 468
+</td></tr>
+<tr>
+<td align="left"> SParachuteUnfolding
+</td>
+<td align="left"> 40
+</td></tr>
+<tr>
+<td align="left"> SParachuteUnfoldingGhost
+</td>
+<td align="left"> 438
+</td></tr>
+<tr>
+<td align="left"> SPassHideInVehicle
+</td>
+<td align="left"> 78
+</td></tr>
+<tr>
+<td align="left"> SPassengerToDriver
+</td>
+<td align="left"> 76
+</td></tr>
+<tr>
+<td align="left"> SPerformingStunt
+</td>
+<td align="left"> 158
+</td></tr>
+<tr>
+<td align="left"> SPickup
+</td>
+<td align="left"> 187
+</td></tr>
+<tr>
+<td align="left"> SPlayingCustomAnimation
+</td>
+<td align="left"> 121
+</td></tr>
+<tr>
+<td align="left"> SPlayingCustomAnimationCrouched
+</td>
+<td align="left"> 123
+</td></tr>
+<tr>
+<td align="left"> SPlayingUninterruptableCustomAnimation
+</td>
+<td align="left"> 122
+</td></tr>
+<tr>
+<td align="left"> SPlayingUninterruptableCustomAnimationCrouched
+</td>
+<td align="left"> 124
+</td></tr>
+<tr>
+<td align="left"> SPlunge
+</td>
+<td align="left"> 25
+</td></tr>
+<tr>
+<td align="left"> SPullInAirFlight
+</td>
+<td align="left"> 455
+</td></tr>
+<tr>
+<td align="left"> SPullOpenParachuteVertical
+</td>
+<td align="left"> 43
+</td></tr>
+<tr>
+<td align="left"> SReelEndLand
+</td>
+<td align="left"> 216
+</td></tr>
+<tr>
+<td align="left"> SReelFlight
+</td>
+<td align="left"> 208
+</td></tr>
+<tr>
+<td align="left"> SReelImpact
+</td>
+<td align="left"> 415
+</td></tr>
+<tr>
+<td align="left"> SReelImpactHorizontal
+</td>
+<td align="left"> 211
+</td></tr>
+<tr>
+<td align="left"> SReelImpactHorizontalEnd
+</td>
+<td align="left"> 474
+</td></tr>
+<tr>
+<td align="left"> SReelImpactVertical
+</td>
+<td align="left"> 209
+</td></tr>
+<tr>
+<td align="left"> SReelImpactVerticalInterrupt
+</td>
+<td align="left"> 210
+</td></tr>
+<tr>
+<td align="left"> SReelInToArveTeleport
+</td>
+<td align="left"> 427
+</td></tr>
+<tr>
+<td align="left"> SReelStart
+</td>
+<td align="left"> 207
+</td></tr>
+<tr>
+<td align="left"> SReelToSo
+</td>
+<td align="left"> 324
+</td></tr>
+<tr>
+<td align="left"> SReelToSoImpact
+</td>
+<td align="left"> 221
+</td></tr>
+<tr>
+<td align="left"> SReelToSoLand
+</td>
+<td align="left"> 325
+</td></tr>
+<tr>
+<td align="left"> SReeledFireHook
+</td>
+<td align="left"> 219
+</td></tr>
+<tr>
+<td align="left"> SReeledInIdle
+</td>
+<td align="left"> 212
+</td></tr>
+<tr>
+<td align="left"> SReeledInIdleEnd
+</td>
+<td align="left"> 414
+</td></tr>
+<tr>
+<td align="left"> SReeledInJump
+</td>
+<td align="left"> 213
+</td></tr>
+<tr>
+<td align="left"> SReeledInRelease
+</td>
+<td align="left"> 217
+</td></tr>
+<tr>
+<td align="left"> SReeledInReleaseDrop
+</td>
+<td align="left"> 214
+</td></tr>
+<tr>
+<td align="left"> SReeledInSpinjump
+</td>
+<td align="left"> 326
+</td></tr>
+<tr>
+<td align="left"> SReeledInToFall
+</td>
+<td align="left"> 429
+</td></tr>
+<tr>
+<td align="left"> SReeledInToHang
+</td>
+<td align="left"> 222
+</td></tr>
+<tr>
+<td align="left"> SReeledReleaseToFall
+</td>
+<td align="left"> 218
+</td></tr>
+<tr>
+<td align="left"> SReeledToSkydive
+</td>
+<td align="left"> 418
+</td></tr>
+<tr>
+<td align="left"> SReeledWaitForHook
+</td>
+<td align="left"> 220
+</td></tr>
+<tr>
+<td align="left"> SRemoveGrapplinghook
+</td>
+<td align="left"> 294
+</td></tr>
+<tr>
+<td align="left"> SReverseMc
+</td>
+<td align="left"> 120
+</td></tr>
+<tr>
+<td align="left"> SRidingMc
+</td>
+<td align="left"> 119
+</td></tr>
+<tr>
+<td align="left"> SRocketBabyIdle
+</td>
+<td align="left"> 14
+</td></tr>
+<tr>
+<td align="left"> SRollLeft
+</td>
+<td align="left"> 23
+</td></tr>
+<tr>
+<td align="left"> SRollOutLeft
+</td>
+<td align="left"> 153
+</td></tr>
+<tr>
+<td align="left"> SRollRight
+</td>
+<td align="left"> 24
+</td></tr>
+<tr>
+<td align="left"> SRoofToCling
+</td>
+<td align="left"> 319
+</td></tr>
+<tr>
+<td align="left"> SRoofToClingInterupt
+</td>
+<td align="left"> 321
+</td></tr>
+<tr>
+<td align="left"> SRunStrafeLeftTurn
+</td>
+<td align="left"> 160
+</td></tr>
+<tr>
+<td align="left"> SRunStrafeLeftTurnInterrupt
+</td>
+<td align="left"> 162
+</td></tr>
+<tr>
+<td align="left"> SRunStrafeRightTurn
+</td>
+<td align="left"> 161
+</td></tr>
+<tr>
+<td align="left"> SRunStrafeRightTurnInterrupt
+</td>
+<td align="left"> 163
+</td></tr>
+<tr>
+<td align="left"> SSideJumpPart1
+</td>
+<td align="left"> 335
+</td></tr>
+<tr>
+<td align="left"> SSideJumpPart2
+</td>
+<td align="left"> 336
+</td></tr>
+<tr>
+<td align="left"> SSidestep
+</td>
+<td align="left"> 313
+</td></tr>
+<tr>
+<td align="left"> SSkydive
+</td>
+<td align="left"> 38
+</td></tr>
+<tr>
+<td align="left"> SSkydiveDash
+</td>
+<td align="left"> 191
+</td></tr>
+<tr>
+<td align="left"> SSkydivePullchord
+</td>
+<td align="left"> 39
+</td></tr>
+<tr>
+<td align="left"> SStepBackward
+</td>
+<td align="left"> 13
+</td></tr>
+<tr>
+<td align="left"> SStrafeStopCcw
+</td>
+<td align="left"> 165
+</td></tr>
+<tr>
+<td align="left"> SStrafeStopCw
+</td>
+<td align="left"> 164
+</td></tr>
+<tr>
+<td align="left"> SStruggleAttack1
+</td>
+<td align="left"> 284
+</td></tr>
+<tr>
+<td align="left"> SStruggleAttack2
+</td>
+<td align="left"> 285
+</td></tr>
+<tr>
+<td align="left"> SStruggleAttack3
+</td>
+<td align="left"> 286
+</td></tr>
+<tr>
+<td align="left"> SStruggleAttack4
+</td>
+<td align="left"> 287
+</td></tr>
+<tr>
+<td align="left"> SStruggleCountered
+</td>
+<td align="left"> 278
+</td></tr>
+<tr>
+<td align="left"> SStruggleHitreact
+</td>
+<td align="left"> 288
+</td></tr>
+<tr>
+<td align="left"> SStruggleIdle
+</td>
+<td align="left"> 277
+</td></tr>
+<tr>
+<td align="left"> SStruggleMiss1
+</td>
+<td align="left"> 279
+</td></tr>
+<tr>
+<td align="left"> SStruggleMiss2
+</td>
+<td align="left"> 280
+</td></tr>
+<tr>
+<td align="left"> SStruggleMiss3
+</td>
+<td align="left"> 281
+</td></tr>
+<tr>
+<td align="left"> SStruggleMiss4
+</td>
+<td align="left"> 282
+</td></tr>
+<tr>
+<td align="left"> SStruggleThrowOut
+</td>
+<td align="left"> 283
+</td></tr>
+<tr>
+<td align="left"> SStruggleToNeutral
+</td>
+<td align="left"> 430
+</td></tr>
+<tr>
+<td align="left"> SStumble
+</td>
+<td align="left"> 337
+</td></tr>
+<tr>
+<td align="left"> SStuntFall
+</td>
+<td align="left"> 159
+</td></tr>
+<tr>
+<td align="left"> SStuntJumpFlight
+</td>
+<td align="left"> 82
+</td></tr>
+<tr>
+<td align="left"> SStuntJumpLand
+</td>
+<td align="left"> 83
+</td></tr>
+<tr>
+<td align="left"> SStuntJumpStart
+</td>
+<td align="left"> 81
+</td></tr>
+<tr>
+<td align="left"> SStuntJumping
+</td>
+<td align="left"> 80
+</td></tr>
+<tr>
+<td align="left"> SStuntReelFlight
+</td>
+<td align="left"> 275
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpFlight
+</td>
+<td align="left"> 272
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpLand
+</td>
+<td align="left"> 273
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpLandInterupt
+</td>
+<td align="left"> 274
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpLandMc
+</td>
+<td align="left"> 457
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpLandMg
+</td>
+<td align="left"> 467
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpStart
+</td>
+<td align="left"> 270
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpStartMg
+</td>
+<td align="left"> 460
+</td></tr>
+<tr>
+<td align="left"> SSuperStuntJumpStartSwim
+</td>
+<td align="left"> 271
+</td></tr>
+<tr>
+<td align="left"> SSwimDie
+</td>
+<td align="left"> 139
+</td></tr>
+<tr>
+<td align="left"> SSwimDiveDie
+</td>
+<td align="left"> 146
+</td></tr>
+<tr>
+<td align="left"> SSwimDiveIdle
+</td>
+<td align="left"> 142
+</td></tr>
+<tr>
+<td align="left"> SSwimDiveNavigation
+</td>
+<td align="left"> 143
+</td></tr>
+<tr>
+<td align="left"> SSwimDiveRotateCcw
+</td>
+<td align="left"> 145
+</td></tr>
+<tr>
+<td align="left"> SSwimDiveRotateCw
+</td>
+<td align="left"> 144
+</td></tr>
+<tr>
+<td align="left"> SSwimIdle
+</td>
+<td align="left"> 134
+</td></tr>
+<tr>
+<td align="left"> SSwimNavigation
+</td>
+<td align="left"> 136
+</td></tr>
+<tr>
+<td align="left"> SSwimRotateCcw
+</td>
+<td align="left"> 138
+</td></tr>
+<tr>
+<td align="left"> SSwimRotateCw
+</td>
+<td align="left"> 137
+</td></tr>
+<tr>
+<td align="left"> SSwimRunToSwim
+</td>
+<td align="left"> 140
+</td></tr>
+<tr>
+<td align="left"> SSwimSubmerge
+</td>
+<td align="left"> 141
+</td></tr>
+<tr>
+<td align="left"> SSwimSwimToRun
+</td>
+<td align="left"> 417
+</td></tr>
+<tr>
+<td align="left"> SSwitchDrivingDirection
+</td>
+<td align="left"> 74
+</td></tr>
+<tr>
+<td align="left"> SSwitchingSeatToDriver
+</td>
+<td align="left"> 72
+</td></tr>
+<tr>
+<td align="left"> SToSkydiveDash
+</td>
+<td align="left"> 189
+</td></tr>
+<tr>
+<td align="left"> STurningLeft
+</td>
+<td align="left"> 149
+</td></tr>
+<tr>
+<td align="left"> STurningRight
+</td>
+<td align="left"> 150
+</td></tr>
+<tr>
+<td align="left"> SUncontrolledFlightProtect
+</td>
+<td align="left"> 252
+</td></tr>
+<tr>
+<td align="left"> SUncontrolledSkydive
+</td>
+<td align="left"> 254
+</td></tr>
+<tr>
+<td align="left"> SUnfoldParachuteHorizontal
+</td>
+<td align="left"> 41
+</td></tr>
+<tr>
+<td align="left"> SUnfoldParachuteVertical
+</td>
+<td align="left"> 42
+</td></tr>
+<tr>
+<td align="left"> SUpFromCrouch
+</td>
+<td align="left"> 17
+</td></tr>
+<tr>
+<td align="left"> SUprightBasicNavigation
+</td>
+<td align="left"> 7
+</td></tr>
+<tr>
+<td align="left"> SUprightGrappledRotateCcw
+</td>
+<td align="left"> 293
+</td></tr>
+<tr>
+<td align="left"> SUprightGrappledRotateCw
+</td>
+<td align="left"> 292
+</td></tr>
+<tr>
+<td align="left"> SUprightIdle
+</td>
+<td align="left"> 6
+</td></tr>
+<tr>
+<td align="left"> SUprightIdleVaried
+</td>
+<td align="left"> 185
+</td></tr>
+<tr>
+<td align="left"> SUprightRotateCcw
+</td>
+<td align="left"> 155
+</td></tr>
+<tr>
+<td align="left"> SUprightRotateCcwInterupt
+</td>
+<td align="left"> 157
+</td></tr>
+<tr>
+<td align="left"> SUprightRotateCw
+</td>
+<td align="left"> 154
+</td></tr>
+<tr>
+<td align="left"> SUprightRotateCwInterupt
+</td>
+<td align="left"> 156
+</td></tr>
+<tr>
+<td align="left"> SUprightSprintForwardStop
+</td>
+<td align="left"> 11
+</td></tr>
+<tr>
+<td align="left"> SUprightStart
+</td>
+<td align="left"> 10
+</td></tr>
+<tr>
+<td align="left"> SUprightStop
+</td>
+<td align="left"> 9
+</td></tr>
+<tr>
+<td align="left"> SUprightStrafe
+</td>
+<td align="left"> 12
+</td></tr>
+<tr>
+<td align="left"> SUprightTurn180
+</td>
+<td align="left"> 8
+</td></tr>
+<tr>
+<td align="left"> SUprightVehicleFromBottom
+</td>
+<td align="left"> 114
+</td></tr>
+<tr>
+<td align="left"> SUprightVehicleFromTop
+</td>
+<td align="left"> 113
+</td></tr>
+<tr>
+<td align="left"> SVictimAttack
+</td>
+<td align="left"> 413
+</td></tr>
+<tr>
+<td align="left"> SVictimBlock1
+</td>
+<td align="left"> 416
+</td></tr>
+<tr>
+<td align="left"> SVictimBlock2
+</td>
+<td align="left"> 435
+</td></tr>
+<tr>
+<td align="left"> SVictimBlock3
+</td>
+<td align="left"> 420
+</td></tr>
+<tr>
+<td align="left"> SVictimBlock4
+</td>
+<td align="left"> 419
+</td></tr>
+<tr>
+<td align="left"> SVictimCounterAttack
+</td>
+<td align="left"> 436
+</td></tr>
+<tr>
+<td align="left"> SVictimHitreact1
+</td>
+<td align="left"> 431
+</td></tr>
+<tr>
+<td align="left"> SVictimHitreact2
+</td>
+<td align="left"> 442
+</td></tr>
+<tr>
+<td align="left"> SVictimHitreact3
+</td>
+<td align="left"> 441
+</td></tr>
+<tr>
+<td align="left"> SVictimHitreact4
+</td>
+<td align="left"> 412
+</td></tr>
+<tr>
+<td align="left"> SVictimIdle
+</td>
+<td align="left"> 269
+</td></tr>
+<tr>
+<td align="left"> SVictimPulledOut
+</td>
+<td align="left"> 437
+</td></tr>
+<tr>
+<td align="left"> SVictimThrownOutFlight
+</td>
+<td align="left"> 268
+</td></tr>
+<tr>
+<td align="left"> SVictimThrownOutStart
+</td>
+<td align="left"> 264
+</td></tr>
+<tr>
+<td align="left"> SVictimThrownOutStartAtv
+</td>
+<td align="left"> 267
+</td></tr>
+<tr>
+<td align="left"> SVictimThrownOutStartPt1
+</td>
+<td align="left"> 265
+</td></tr>
+<tr>
+<td align="left"> SVictimThrownOutStartPt2
+</td>
+<td align="left"> 266
+</td></tr>
+<tr>
+<td align="left"> SWalk
+</td>
+<td align="left"> 411
+</td></tr>
+<tr>
+<td align="left"> SWalkMg
+</td>
+<td align="left"> 192
+</td></tr>
+<tr>
+<td align="left"> UbS2hIk
+</td>
+<td align="left"> 451
+</td></tr>
+<tr>
+<td align="left"> UbSAiAimIn
+</td>
+<td align="left"> 470
+</td></tr>
+<tr>
+<td align="left"> UbSAiAimOut
+</td>
+<td align="left"> 469
+</td></tr>
+<tr>
+<td align="left"> UbSAiming
+</td>
+<td align="left"> 347
+</td></tr>
+<tr>
+<td align="left"> UbSAltRecoilFinishedRh
+</td>
+<td align="left"> 476
+</td></tr>
+<tr>
+<td align="left"> UbSAltRecoilRh
+</td>
+<td align="left"> 477
+</td></tr>
+<tr>
+<td align="left"> UbSAlternativeAiming
+</td>
+<td align="left"> 348
+</td></tr>
+<tr>
+<td align="left"> UbSCloseCombat
+</td>
+<td align="left"> 358
+</td></tr>
+<tr>
+<td align="left"> UbSCombatantSo
+</td>
+<td align="left"> 382
+</td></tr>
+<tr>
+<td align="left"> UbSDash
+</td>
+<td align="left"> 356
+</td></tr>
+<tr>
+<td align="left"> UbSFall
+</td>
+<td align="left"> 472
+</td></tr>
+<tr>
+<td align="left"> UbSFireing
+</td>
+<td align="left"> 349
+</td></tr>
+<tr>
+<td align="left"> UbSGrappled
+</td>
+<td align="left"> 448
+</td></tr>
+<tr>
+<td align="left"> UbSIdle
+</td>
+<td align="left"> 346
+</td></tr>
+<tr>
+<td align="left"> UbSJumpLand
+</td>
+<td align="left"> 378
+</td></tr>
+<tr>
+<td align="left"> UbSJumpLandInterrupt
+</td>
+<td align="left"> 380
+</td></tr>
+<tr>
+<td align="left"> UbSJumpLandRun
+</td>
+<td align="left"> 379
+</td></tr>
+<tr>
+<td align="left"> UbSJumpLandRunInterrupt
+</td>
+<td align="left"> 381
+</td></tr>
+<tr>
+<td align="left"> UbSJumpStart
+</td>
+<td align="left"> 376
+</td></tr>
+<tr>
+<td align="left"> UbSJumpToFall
+</td>
+<td align="left"> 377
+</td></tr>
+<tr>
+<td align="left"> UbSReactHitLight
+</td>
+<td align="left"> 359
+</td></tr>
+<tr>
+<td align="left"> UbSReloadRh
+</td>
+<td align="left"> 371
+</td></tr>
+<tr>
+<td align="left"> UbSReloadSecondaryEnd
+</td>
+<td align="left"> 374
+</td></tr>
+<tr>
+<td align="left"> UbSReloadSecondaryLoop
+</td>
+<td align="left"> 372
+</td></tr>
+<tr>
+<td align="left"> UbSReloadSecondaryStart
+</td>
+<td align="left"> 373
+</td></tr>
+<tr>
+<td align="left"> UbSReloading
+</td>
+<td align="left"> 350
+</td></tr>
+<tr>
+<td align="left"> UbSRemoveGrapplinghook
+</td>
+<td align="left"> 449
+</td></tr>
+<tr>
+<td align="left"> UbSStartReaction
+</td>
+<td align="left"> 375
+</td></tr>
+<tr>
+<td align="left"> UbSThrowGrenade
+</td>
+<td align="left"> 360
+</td></tr>
+<tr>
+<td align="left"> UbSThrowGrenadeAim
+</td>
+<td align="left"> 362
+</td></tr>
+<tr>
+<td align="left"> UbSThrowGrenadeWield
+</td>
+<td align="left"> 361
+</td></tr>
+<tr>
+<td align="left"> UbSUnwielding
+</td>
+<td align="left"> 357
+</td></tr>
+<tr>
+<td align="left"> UbSWieldWaitLa
+</td>
+<td align="left"> 352
+</td></tr>
+<tr>
+<td align="left"> UbSWieldWaitMb
+</td>
+<td align="left"> 351
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingChangeWeaponPart1
+</td>
+<td align="left"> 365
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingChangeWeaponPart2
+</td>
+<td align="left"> 450
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingChangeWeaponSecondary
+</td>
+<td align="left"> 471
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingDown
+</td>
+<td align="left"> 364
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingIdle
+</td>
+<td align="left"> 353
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingNavigation
+</td>
+<td align="left"> 354
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingStop
+</td>
+<td align="left"> 355
+</td></tr>
+<tr>
+<td align="left"> UbSWieldingUp
+</td>
+<td align="left"> 363
+</td></tr>
+<tr>
+<td align="left"> UbVirtualSAimHig
+</td>
+<td align="left"> 366
+</td></tr>
+<tr>
+<td align="left"> UbVirtualSAimLow
+</td>
+<td align="left"> 368
+</td></tr>
+<tr>
+<td align="left"> UbVirtualSAimMid
+</td>
+<td align="left"> 367
+</td></tr>
+<tr>
+<td align="left"> UbVirtualSFireingAdditive
+</td>
+<td align="left"> 369
+</td></tr>
+<tr>
+<td align="left"> UbVirtualSFireingOffhandAdditive
+</td>
+<td align="left"> 370
+</td></tr></table> </font>
+ 
+ 
+</div><div class="printfooter">
+Retrieved from "<a href="http://wiki.jc-mp.com/index.php?title=Lua/Shared/AnimationState&amp;oldid=24458">http://wiki.jc-mp.com/index.php?title=Lua/Shared/AnimationState&amp;oldid=24458</a>"</div>
+<div id='catlinks' class='catlinks catlinks-allhidden'></div>  
+</div>
+</div> 
+</div>
+</div> 
+<div class="visualClear"></div>
+<div id="footer">
+<table>
+<tr>
+<td rowspan="2" class="f-iconsection">
+<div id="f-copyrightico"><a href="http://www.gnu.org/copyleft/fdl.html"><img src="/skins/common/images/gnu-fdl.png" alt="GNU Free Documentation License 1.3 or later" width="88" height="31"/></a></div> </td>
+<td align="center">
+<ul id="f-list">
+<li id="f-lastmod"> This page was last modified on 15 December 2013, at 15:14.</li>
+<li id="f-viewcount">This page has been accessed 442 times.</li>
+<li id="f-copyright">Content is available under <a class="external" rel="nofollow" href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License 1.3 or later</a> unless otherwise noted.</li>
+<li id="f-privacy"><a href="/Project:Privacy_policy" title="Project:Privacy policy">Privacy policy</a></li>
+<li id="f-about"><a href="/Project:About" title="Project:About">About JC2-MP Documentation</a></li>
+<li id="f-disclaimer"><a href="/Project:General_disclaimer" title="Project:General disclaimer">Disclaimers</a></li>
+</ul></td>
+<td rowspan="2" class="f-iconsection">
+<div id="f-poweredbyico"><a href="//www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" width="88" height="31"/></a></div>
+</td>
+</tr>
+<tr>
+<td><div id="skin-info">
+Mozilla Cavendish Theme based on Cavendish style by Gabriel Wicke modified by <a href="http://www.dasch-tour.de" title="DaSch-Tour Blog" target="_blank">DaSch</a> for the <a href="http://www.wecowi.de/" title="Web Community Wiki">Web Community Wiki</a><br/>
+<a href="https://github.com/DaSchTour/Cavendish" title="github projectpage">github Projectpage</a> &ndash; <a href="https://github.com/DaSchTour/Cavendish/issues" title="Bug reporting at github">Report Bug</a> &ndash; Skin-Version: 2.3.2 </div></td>
+</tr>
+</table>
+</div> 
+</div> 
+ 
+<script>/*<![CDATA[*/window.jQuery && jQuery.ready();/*]]>*/</script><script>if(window.mw){
+mw.loader.state({"site":"loading","user":"ready","user.groups":"ready"});
+}</script>
+<script>if(window.mw){
+mw.loader.load(["mediawiki.action.view.postEdit","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest"],null,true);
+}</script>
+<script src="http://wiki.jc-mp.com/load.php?debug=false&amp;lang=en&amp;modules=site&amp;only=scripts&amp;skin=cavendish&amp;*"></script>
+ </body></html>
