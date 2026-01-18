@@ -5,6 +5,8 @@ use std::{
     sync::OnceLock,
 };
 
+use paxhtml::bumpalo::{self, Bump};
+
 use serde::{Deserialize, Serialize};
 use wikitext_simplified::{Span, Spanned, WikitextSimplifiedNode};
 use wikitext_simplified_template_eval::{
@@ -52,7 +54,12 @@ fn main() -> anyhow::Result<()> {
     fs::write(output_dir.join("style/tailwind.css"), tailwind_css)?;
 
     // Generate wiki
-    generate_wiki(Path::new(WIKI_DIRECTORY), &output_dir.join(WIKI_DIRECTORY))?;
+    let bump = Bump::new();
+    generate_wiki(
+        &bump,
+        Path::new(WIKI_DIRECTORY),
+        &output_dir.join(WIKI_DIRECTORY),
+    )?;
 
     Ok(())
 }
@@ -74,7 +81,11 @@ fn copy_files_recursively(src: &Path, dst: &Path) -> std::io::Result<()> {
     Ok(())
 }
 
-fn generate_missing_index_pages(dst_root: &Path, generated: &GeneratedPages) -> anyhow::Result<()> {
+fn generate_missing_index_pages(
+    bump: &Bump,
+    dst_root: &Path,
+    generated: &GeneratedPages,
+) -> anyhow::Result<()> {
     // Collect all directory paths that need index pages
     let mut dirs_needing_index = BTreeSet::new();
 
@@ -116,13 +127,14 @@ fn generate_missing_index_pages(dst_root: &Path, generated: &GeneratedPages) -> 
             parts[..parts.len() - 1].join("/")
         };
 
-        generate_index_page(dst_root, &parent_path, dir_name, generated)?;
+        generate_index_page(bump, dst_root, &parent_path, dir_name, generated)?;
     }
 
     Ok(())
 }
 
 fn generate_index_page(
+    bump: &Bump,
     dst_root: &Path,
     parent_path: &str,
     dir_name: &str,
@@ -173,7 +185,7 @@ fn generate_index_page(
     for child in all_children {
         let display_name = child.replace('_', " ");
         let link_path = format!("{}/{}", full_path, child);
-        items.push(paxhtml::html! {
+        items.push(paxhtml::html! { in bump;
             <li class="ml-4">
                 <a class="text-blue-600 hover:text-blue-800 hover:underline" href={page_title_to_route_path(&link_path).url_path()}>
                     {display_name}
@@ -182,11 +194,11 @@ fn generate_index_page(
         });
     }
 
-    let content = paxhtml::html! {
+    let content = paxhtml::html! { in bump;
         <ul class="list-disc list-inside">#{items}</ul>
     };
 
-    let document = layout(&title, content);
+    let document = layout(bump, &title, content);
 
     // Write the document
     let route_path = page_title_to_route_path(&full_path);
@@ -194,7 +206,7 @@ fn generate_index_page(
 
     // Also create a redirect from full_path/index.html to full_path.html
     // This allows both /category and /category/ to work
-    let redirect_doc = redirect(&route_path.url_path());
+    let redirect_doc = redirect(bump, &route_path.url_path());
     let redirect_route = paxhtml::RoutePath::new(
         route_path
             .url_path()
@@ -208,7 +220,7 @@ fn generate_index_page(
     Ok(())
 }
 
-fn generate_wiki(src: &Path, dst: &Path) -> anyhow::Result<()> {
+fn generate_wiki(bump: &Bump, src: &Path, dst: &Path) -> anyhow::Result<()> {
     fs::create_dir_all(dst)?;
 
     let context = PageTemplateContext::new(src)?;
@@ -224,22 +236,33 @@ fn generate_wiki(src: &Path, dst: &Path) -> anyhow::Result<()> {
     fs::write(output_dir.join("style/syntax.css"), syntax_css)?;
 
     let mut generated = GeneratedPages::default();
-    generate_wiki_folder(&context, &mut evaluator, src, dst, dst, "", &mut generated)?;
+    generate_wiki_folder(
+        bump,
+        &context,
+        &mut evaluator,
+        src,
+        dst,
+        dst,
+        "",
+        &mut generated,
+    )?;
 
     // Generate missing index pages
-    generate_missing_index_pages(output_dir, &generated)?;
+    generate_missing_index_pages(bump, output_dir, &generated)?;
 
     // Write search index
     let search_index_json = serde_json::to_string(&generated.search_index)?;
     fs::write(output_dir.join("search-index.json"), search_index_json)?;
 
-    redirect(&page_title_to_route_path("Main_Page").url_path())
+    redirect(bump, &page_title_to_route_path("Main_Page").url_path())
         .write_to_route(dst, paxhtml::RoutePath::new([], "index.html".to_string()))?;
 
     Ok(())
 }
 
+#[allow(clippy::too_many_arguments)]
 fn generate_wiki_folder(
+    bump: &Bump,
     context: &PageTemplateContext,
     evaluator: &mut TemplateEvaluator<'_>,
     src: &Path,
@@ -263,6 +286,7 @@ fn generate_wiki_folder(
                 format!("{}/{}", relative_path, dir_name)
             };
             generate_wiki_folder(
+                bump,
                 context,
                 evaluator,
                 &path,
@@ -302,98 +326,101 @@ fn generate_wiki_folder(
                 .map(|s| s.to_string()),
         );
 
-        let document =
-            if let [node] = simplified.as_slice()
-                && let WikitextSimplifiedNode::Redirect { target } = &node.value
-            {
-                redirect(&page_title_to_route_path(target).url_path())
-            } else {
-                let sub_page_name = path
+        let document = if let [node] = simplified.as_slice()
+            && let WikitextSimplifiedNode::Redirect { target } = &node.value
+        {
+            redirect(bump, &page_title_to_route_path(target).url_path())
+        } else {
+            let sub_page_name = path
+                .with_extension("")
+                .file_name()
+                .unwrap()
+                .to_string_lossy()
+                .to_string();
+
+            // Update the template context with the current page's sub_page_name
+            context.set_sub_page_name(&sub_page_name);
+
+            let page_context = PageContext {
+                input_path: path.clone(),
+                title: output_html_rel
                     .with_extension("")
-                    .file_name()
+                    .to_str()
+                    .map(|s| s.to_string())
                     .unwrap()
-                    .to_string_lossy()
-                    .to_string();
+                    .replace("\\", "/")
+                    .replace("_", " "),
+                route_path: route_path.clone(),
+            };
 
-                // Update the template context with the current page's sub_page_name
-                context.set_sub_page_name(&sub_page_name);
+            // Extract search data from the page
+            let mut all_text = String::new();
+            let mut all_headings = Vec::new();
+            for node in &simplified {
+                let (text, headings) = extract_search_data(&node.value);
+                all_text.push_str(&text);
+                all_text.push(' ');
+                all_headings.extend(headings);
+            }
 
-                let page_context = PageContext {
-                    input_path: path.clone(),
-                    title: output_html_rel
-                        .with_extension("")
-                        .to_str()
-                        .map(|s| s.to_string())
-                        .unwrap()
-                        .replace("\\", "/")
-                        .replace("_", " "),
-                    route_path: route_path.clone(),
-                };
+            // Write search text to file
+            let search_text_path = output_html.with_extension("txt");
+            fs::write(&search_text_path, all_text.trim())?;
 
-                // Extract search data from the page
-                let mut all_text = String::new();
-                let mut all_headings = Vec::new();
-                for node in &simplified {
-                    let (text, headings) = extract_search_data(&node.value);
-                    all_text.push_str(&text);
-                    all_text.push(' ');
-                    all_headings.extend(headings);
-                }
+            // Add page title to search index
+            let page_idx = generated.search_index.pages.len();
+            generated
+                .search_index
+                .pages
+                .push(page_context.title.clone());
 
-                // Write search text to file
-                let search_text_path = output_html.with_extension("txt");
-                fs::write(&search_text_path, all_text.trim())?;
+            // Build word weight map for this page
+            let mut word_weights: BTreeMap<String, u8> = BTreeMap::new();
 
-                // Add page title to search index
-                let page_idx = generated.search_index.pages.len();
-                generated
-                    .search_index
-                    .pages
-                    .push(page_context.title.clone());
+            // Index words from content (weight 1)
+            for word in tokenize_text(&all_text) {
+                word_weights.entry(word).or_insert(1);
+            }
 
-                // Build word weight map for this page
-                let mut word_weights: BTreeMap<String, u8> = BTreeMap::new();
-
-                // Index words from content (weight 1)
-                for word in tokenize_text(&all_text) {
-                    word_weights.entry(word).or_insert(1);
-                }
-
-                // Index words from headings (weight 3, higher priority)
-                for heading in &all_headings {
-                    for word in tokenize_text(heading) {
-                        word_weights
-                            .entry(word)
-                            .and_modify(|w| *w = (*w).max(3))
-                            .or_insert(3);
-                    }
-                }
-
-                // Index words from title (weight 5, highest priority)
-                for word in tokenize_text(&page_context.title) {
+            // Index words from headings (weight 3, higher priority)
+            for heading in &all_headings {
+                for word in tokenize_text(heading) {
                     word_weights
                         .entry(word)
-                        .and_modify(|w| *w = (*w).max(5))
-                        .or_insert(5);
+                        .and_modify(|w| *w = (*w).max(3))
+                        .or_insert(3);
                 }
+            }
 
-                // Add to inverted index with weights
-                for (word, weight) in word_weights {
-                    generated
-                        .search_index
-                        .words
-                        .entry(word)
-                        .or_default()
-                        .push((page_idx, weight));
-                }
+            // Index words from title (weight 5, highest priority)
+            for word in tokenize_text(&page_context.title) {
+                word_weights
+                    .entry(word)
+                    .and_modify(|w| *w = (*w).max(5))
+                    .or_insert(5);
+            }
 
-                layout(
-                    &page_context.title,
-                    paxhtml::Element::from_iter(simplified.iter().map(|node| {
-                        convert_wikitext_to_html(evaluator, &node.value, &page_context)
-                    })),
-                )
-            };
+            // Add to inverted index with weights
+            for (word, weight) in word_weights {
+                generated
+                    .search_index
+                    .words
+                    .entry(word)
+                    .or_default()
+                    .push((page_idx, weight));
+            }
+
+            layout(
+                bump,
+                &page_context.title,
+                paxhtml::Element::from_iter(
+                    bump,
+                    simplified.iter().map(|node| {
+                        convert_wikitext_to_html(bump, evaluator, &node.value, &page_context)
+                    }),
+                ),
+            )
+        };
 
         document.write_to_route(dst_root, route_path)?;
 
@@ -414,7 +441,13 @@ fn generate_wiki_folder(
     Ok(())
 }
 
-fn layout(title: &str, inner: paxhtml::Element) -> paxhtml::Document {
+fn layout<'bump>(
+    bump: &'bump Bump,
+    title: &str,
+    inner: paxhtml::Element<'bump>,
+) -> paxhtml::Document<'bump> {
+    let b = paxhtml::builder::Builder::new(bump);
+
     let mut links = vec![(
         "Home",
         paxhtml::RoutePath::new(
@@ -438,78 +471,82 @@ fn layout(title: &str, inner: paxhtml::Element) -> paxhtml::Document {
     let mut breadcrumbs = vec![];
     for (idx, (component, route_path)) in links.into_iter().enumerate() {
         if idx > 0 {
-            breadcrumbs.push(paxhtml::html! { <span class="text-gray-400">" / "</span> });
+            breadcrumbs.push(paxhtml::html! { in bump; <span class="text-gray-400">" / "</span> });
         }
-        breadcrumbs.push(paxhtml::html! { <a class="text-blue-600 hover:text-blue-800 hover:underline" href={route_path.url_path()}>{component}</a> });
+        breadcrumbs.push(paxhtml::html! { in bump; <a class="text-blue-600 hover:text-blue-800 hover:underline" href={route_path.url_path()}>{component}</a> });
     }
 
-    paxhtml::Document::new([
-        paxhtml::builder::doctype(["html".into()]),
-        paxhtml::html! {
-            <html lang="en">
-            <head>
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>{format!("JC2-MP Documentation - {title}")}</title>
-                <link href="/style/tailwind.css" rel="stylesheet" />
-                <link href="/style/syntax.css" rel="stylesheet" />
-            </head>
-            <body class="bg-gray-100">
-                <nav class="bg-gray-900 text-white mb-4">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                        <div class="flex items-center justify-between h-16">
-                            <div class="flex items-center">
-                                <a class="text-xl font-semibold" href="/wiki">"Just Cause 2: Multiplayer"</a>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="relative">
-                                    <input
-                                        r#type="text"
-                                        id="wiki-search-input"
-                                        placeholder="Search documentation..."
-                                        class="w-64 px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    />
-                                    <div
-                                        id="wiki-search-results"
-                                        class="hidden absolute top-full mt-2 w-96 bg-white text-gray-900 rounded-lg shadow-xl max-h-96 overflow-y-auto z-50"
-                                    ></div>
+    paxhtml::Document::new(
+        bump,
+        [
+            b.doctype([b.attr("html")]),
+            paxhtml::html! { in bump;
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+                    <title>{format!("JC2-MP Documentation - {title}")}</title>
+                    <link href="/style/tailwind.css" rel="stylesheet" />
+                    <link href="/style/syntax.css" rel="stylesheet" />
+                </head>
+                <body class="bg-gray-100">
+                    <nav class="bg-gray-900 text-white mb-4">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="flex items-center justify-between h-16">
+                                <div class="flex items-center">
+                                    <a class="text-xl font-semibold" href="/wiki">"Just Cause 2: Multiplayer"</a>
                                 </div>
-                                <a class="text-gray-300 hover:text-white px-3 py-2" href="/">"Website"</a>
+                                <div class="flex items-center gap-4">
+                                    <div class="relative">
+                                        <input
+                                            r#type="text"
+                                            id="wiki-search-input"
+                                            placeholder="Search documentation..."
+                                            class="w-64 px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        />
+                                        <div
+                                            id="wiki-search-results"
+                                            class="hidden absolute top-full mt-2 w-96 bg-white text-gray-900 rounded-lg shadow-xl max-h-96 overflow-y-auto z-50"
+                                        ></div>
+                                    </div>
+                                    <a class="text-gray-300 hover:text-white px-3 py-2" href="/">"Website"</a>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="bg-white p-8 rounded-lg shadow-sm">
+                            <h1 class="text-3xl font-bold border-b-2 border-gray-300 pb-2 mb-6">#{breadcrumbs}</h1>
+                            <div class="space-y-4">
+                                {inner}
                             </div>
                         </div>
                     </div>
-                </nav>
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="bg-white p-8 rounded-lg shadow-sm">
-                        <h1 class="text-3xl font-bold border-b-2 border-gray-300 pb-2 mb-6">#{breadcrumbs}</h1>
-                        <div class="space-y-4">
-                            {inner}
-                        </div>
-                    </div>
-                </div>
-                <script src="/js/search.js"></script>
-            </body>
-            </html>
-        },
-    ])
+                    <script src="/js/search.js"></script>
+                </body>
+                </html>
+            },
+        ],
+    )
 }
 
-fn convert_wikitext_to_html(
+fn convert_wikitext_to_html<'bump>(
+    bump: &'bump Bump,
     evaluator: &mut TemplateEvaluator<'_>,
     node: &WikitextSimplifiedNode,
     page_context: &PageContext,
-) -> paxhtml::Element {
+) -> paxhtml::Element<'bump> {
     use WikitextSimplifiedNode as WSN;
-    use paxhtml::html;
 
-    fn parse_attributes_from_wsn(
+    fn parse_attributes_from_wsn<'b>(
+        bump: &'b Bump,
         evaluator: &mut TemplateEvaluator<'_>,
         attributes_context: &str,
         attributes: &[WSN],
         page_context: &PageContext,
-    ) -> Vec<paxhtml::Attribute> {
+    ) -> bumpalo::collections::Vec<'b, paxhtml::Attribute<'b>> {
         if attributes.is_empty() {
-            return vec![];
+            return bumpalo::collections::Vec::new_in(bump);
         }
         // Instantiate the attributes before extracting the text
         let attributes = pollster::block_on(
@@ -551,31 +588,43 @@ fn convert_wikitext_to_html(
             );
         }
 
-        paxhtml::Attribute::parse_from_str(&merged_text).unwrap()
+        paxhtml::Attribute::parse_from_str(bump, &merged_text).unwrap()
     }
 
-    fn parse_optional_attributes_from_wsn(
+    fn parse_optional_attributes_from_wsn<'b>(
+        bump: &'b Bump,
         evaluator: &mut TemplateEvaluator<'_>,
         attributes_context: &str,
         attributes: &Option<Vec<Spanned<WSN>>>,
         page_context: &PageContext,
-    ) -> Vec<paxhtml::Attribute> {
+    ) -> bumpalo::collections::Vec<'b, paxhtml::Attribute<'b>> {
         attributes
             .as_ref()
             .map(|attributes| {
                 let unwrapped: Vec<WSN> = attributes.iter().map(|s| s.value.clone()).collect();
-                parse_attributes_from_wsn(evaluator, attributes_context, &unwrapped, page_context)
+                parse_attributes_from_wsn(
+                    bump,
+                    evaluator,
+                    attributes_context,
+                    &unwrapped,
+                    page_context,
+                )
             })
-            .unwrap_or_default()
+            .unwrap_or_else(|| bumpalo::collections::Vec::new_in(bump))
     }
+
+    let b = paxhtml::builder::Builder::new(bump);
 
     let convert_children =
         |evaluator: &mut TemplateEvaluator<'_>, children: &[Spanned<WikitextSimplifiedNode>]| {
             paxhtml::Element::from_iter(
+                bump,
                 children
                     .iter()
                     .skip_while(|node| matches!(node.value, WSN::ParagraphBreak | WSN::Newline))
-                    .map(|node| convert_wikitext_to_html(evaluator, &node.value, page_context)),
+                    .map(|node| {
+                        convert_wikitext_to_html(bump, evaluator, &node.value, page_context)
+                    }),
             )
         };
 
@@ -585,10 +634,10 @@ fn convert_wikitext_to_html(
             let template = pollster::block_on(
                 evaluator.instantiate(TemplateToInstantiate::Name(name), parameters),
             );
-            convert_wikitext_to_html(evaluator, &template, page_context)
+            convert_wikitext_to_html(bump, evaluator, &template, page_context)
         }
         tpu @ WSN::TemplateParameterUse { .. } => {
-            html! { <>{tpu.to_wikitext()}</> }
+            paxhtml::html! { in bump; <>{tpu.to_wikitext()}</> }
         }
         WSN::Heading { level, children } => {
             let class = match level {
@@ -597,46 +646,47 @@ fn convert_wikitext_to_html(
                 4 => "text-lg font-semibold mt-4 mb-2",
                 _ => "font-semibold mt-4 mb-2",
             };
-            paxhtml::builder::tag(
-                format!("h{level}"),
-                paxhtml::Attribute::parse_from_str(&format!("class=\"{}\"", class)).unwrap(),
+            let tag_name = format!("h{level}");
+            b.tag(
+                &tag_name,
+                paxhtml::Attribute::parse_from_str(bump, &format!("class=\"{}\"", class)).unwrap(),
                 false,
             )(convert_children(evaluator, children))
         }
         WSN::Link { text, title } => {
-            html! {
+            paxhtml::html! { in bump;
                 <a class="text-blue-600 hover:text-blue-800 hover:underline" href={page_title_to_route_path(title).url_path()}>
-                    {paxhtml::Element::Raw { html: text.to_string() }}
+                    {b.raw(text)}
                 </a>
             }
         }
         WSN::ExtLink { link, text } => {
-            html! {
+            paxhtml::html! { in bump;
                 <a class="text-blue-600 hover:text-blue-800 hover:underline" href={link}>
-                    {paxhtml::Element::Raw { html: text.as_ref().unwrap_or(link).to_string() }}
+                    {b.raw(text.as_ref().unwrap_or(link))}
                 </a>
             }
         }
         WSN::Bold { children } => {
-            html! { <strong>{convert_children(evaluator, children)}</strong> }
+            paxhtml::html! { in bump; <strong>{convert_children(evaluator, children)}</strong> }
         }
         WSN::Italic { children } => {
-            html! { <em>{convert_children(evaluator, children)}</em> }
+            paxhtml::html! { in bump; <em>{convert_children(evaluator, children)}</em> }
         }
         WSN::Blockquote { children } => {
-            html! { <blockquote class="border-l-4 border-gray-300 pl-4 py-2 my-4 italic text-gray-700">{convert_children(evaluator, children)}</blockquote> }
+            paxhtml::html! { in bump; <blockquote class="border-l-4 border-gray-300 pl-4 py-2 my-4 italic text-gray-700">{convert_children(evaluator, children)}</blockquote> }
         }
         WSN::Superscript { children } => {
-            html! { <sup>{convert_children(evaluator, children)}</sup> }
+            paxhtml::html! { in bump; <sup>{convert_children(evaluator, children)}</sup> }
         }
         WSN::Subscript { children } => {
-            html! { <sub>{convert_children(evaluator, children)}</sub> }
+            paxhtml::html! { in bump; <sub>{convert_children(evaluator, children)}</sub> }
         }
         WSN::Small { children } => {
-            html! { <small>{convert_children(evaluator, children)}</small> }
+            paxhtml::html! { in bump; <small>{convert_children(evaluator, children)}</small> }
         }
         WSN::Preformatted { children } => {
-            html! { <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4">{convert_children(evaluator, children)}</pre> }
+            paxhtml::html! { in bump; <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4">{convert_children(evaluator, children)}</pre> }
         }
         WSN::Tag {
             name,
@@ -668,39 +718,41 @@ fn convert_wikitext_to_html(
                     text.trim()
                 } else {
                     // If not simple text, fall back to plain rendering
-                    let parsed_attributes = paxhtml::Attribute::parse_from_str(attrs_str).unwrap();
-                    return html! { <pre {parsed_attributes}><code>{convert_children(evaluator, children)}</code></pre> };
+                    let parsed_attributes =
+                        paxhtml::Attribute::parse_from_str(bump, attrs_str).unwrap();
+                    return paxhtml::html! { in bump; <pre {parsed_attributes}><code>{convert_children(evaluator, children)}</code></pre> };
                 };
 
                 // Use syntax highlighter
                 if let Some(highlighter) = SYNTAX_HIGHLIGHTER.get() {
-                    match highlighter.highlight_code(lang, code) {
+                    match highlighter.highlight_code(bump, lang, code) {
                         Ok(highlighted) => {
-                            html! { <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4"><code>{highlighted}</code></pre> }
+                            paxhtml::html! { in bump; <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4"><code>{highlighted}</code></pre> }
                         }
                         Err(_) => {
                             // Fallback to plain text if highlighting fails
                             let parsed_attributes =
-                                paxhtml::Attribute::parse_from_str(attrs_str).unwrap();
-                            html! { <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4" {parsed_attributes}><code>{code}</code></pre> }
+                                paxhtml::Attribute::parse_from_str(bump, attrs_str).unwrap();
+                            paxhtml::html! { in bump; <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4" {parsed_attributes}><code>{code}</code></pre> }
                         }
                     }
                 } else {
                     // Fallback if highlighter not initialized
-                    let parsed_attributes = paxhtml::Attribute::parse_from_str(attrs_str).unwrap();
-                    html! { <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4" {parsed_attributes}><code>{code}</code></pre> }
+                    let parsed_attributes =
+                        paxhtml::Attribute::parse_from_str(bump, attrs_str).unwrap();
+                    paxhtml::html! { in bump; <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-4" {parsed_attributes}><code>{code}</code></pre> }
                 }
             } else {
-                let parsed_attributes =
-                    paxhtml::Attribute::parse_from_str(attributes.as_deref().unwrap_or_default())
-                        .unwrap();
+                let parsed_attributes = paxhtml::Attribute::parse_from_str(
+                    bump,
+                    attributes.as_deref().unwrap_or_default(),
+                )
+                .unwrap();
                 let children = convert_children(evaluator, children);
-                paxhtml::builder::tag(name.to_string(), parsed_attributes, false)(children)
+                b.tag(name, parsed_attributes, false)(children)
             }
         }
-        WSN::Text { text } => paxhtml::Element::Raw {
-            html: text.to_string(),
-        },
+        WSN::Text { text } => b.raw(text),
         WSN::Table {
             attributes,
             captions,
@@ -750,9 +802,14 @@ fn convert_wikitext_to_html(
                 .iter()
                 .map(|s| s.value.clone())
                 .collect();
-            let attributes =
-                parse_attributes_from_wsn(evaluator, "main", &unwrapped_attributes, page_context);
-            html! {
+            let attributes = parse_attributes_from_wsn(
+                bump,
+                evaluator,
+                "main",
+                &unwrapped_attributes,
+                page_context,
+            );
+            paxhtml::html! { in bump;
                 <table {attributes}>
                     <thead class="bg-gray-800 text-white">
                         <tr>
@@ -760,12 +817,13 @@ fn convert_wikitext_to_html(
                                 .iter()
                                 .map(|caption| {
                                     let attributes = parse_optional_attributes_from_wsn(
+                                        bump,
                                         evaluator,
                                         "caption",
                                         &caption.attributes,
                                         page_context,
                                     );
-                                    html! {
+                                    paxhtml::html! { in bump;
                                         <th class="px-4 py-2 text-left" {attributes}>
                                             {convert_children(evaluator, &caption.content)}
                                         </th>
@@ -781,24 +839,26 @@ fn convert_wikitext_to_html(
                             .map(|(idx, row)| {
                                 let unwrapped_row_attrs: Vec<WSN> = row.attributes.iter().map(|s| s.value.clone()).collect();
                                 let attributes = parse_attributes_from_wsn(
+                                    bump,
                                     evaluator,
                                     "row",
                                     &unwrapped_row_attrs,
                                     page_context,
                                 );
                                 let row_class = if idx % 2 == 0 { "bg-white" } else { "bg-gray-50" };
-                                html! {
+                                paxhtml::html! { in bump;
                                     <tr class={format!("{} hover:bg-gray-100", row_class)} {attributes}>
                                         #{row.cells
                                             .iter()
                                             .map(|cell| {
                                                 let attributes = parse_optional_attributes_from_wsn(
+                                                    bump,
                                                     evaluator,
                                                     "cell",
                                                     &cell.attributes,
                                                     page_context,
                                                 );
-                                                html! {
+                                                paxhtml::html! { in bump;
                                                     <td class="px-4 py-2" {attributes}>
                                                         {convert_children(evaluator, &cell.content)}
                                                     </td>
@@ -814,24 +874,24 @@ fn convert_wikitext_to_html(
             }
         }
         WSN::OrderedList { items } => {
-            html! {
+            paxhtml::html! { in bump;
                 <ol class="list-decimal list-inside">
                     #{items
                         .iter()
                         .map(|i| {
-                            html! { <li class="ml-4">{convert_children(evaluator, &i.content)}</li> }
+                            paxhtml::html! { in bump; <li class="ml-4">{convert_children(evaluator, &i.content)}</li> }
                         })
                     }
                 </ol>
             }
         }
         WSN::UnorderedList { items } => {
-            html! {
+            paxhtml::html! { in bump;
                 <ul class="list-disc list-inside">
                     #{items
                         .iter()
                         .map(|i| {
-                            html! { <li class="ml-4">{convert_children(evaluator, &i.content)}</li> }
+                            paxhtml::html! { in bump; <li class="ml-4">{convert_children(evaluator, &i.content)}</li> }
                         })
                     }
                 </ul>
@@ -839,26 +899,28 @@ fn convert_wikitext_to_html(
         }
         WSN::DefinitionList { items } => {
             use wikitext_simplified::DefinitionListItemType;
-            html! {
+            paxhtml::html! { in bump;
                 <dl>
                     #{items.iter().map(|i| {
                         let children = convert_children(evaluator, &i.content);
                         match i.type_ {
-                            DefinitionListItemType::Term => html! { <dt class="font-semibold mt-2">{children}</dt> },
-                            DefinitionListItemType::Details => html! { <dd class="ml-6 text-gray-700">{children}</dd> },
+                            DefinitionListItemType::Term => paxhtml::html! { in bump; <dt class="font-semibold mt-2">{children}</dt> },
+                            DefinitionListItemType::Details => paxhtml::html! { in bump; <dd class="ml-6 text-gray-700">{children}</dd> },
                         }
                     })}
                 </dl>
             }
         }
-        WSN::Redirect { target } => html! {
+        WSN::Redirect { target } => paxhtml::html! { in bump;
             <a class="text-blue-600 hover:text-blue-800 hover:underline" href={page_title_to_route_path(target).url_path()}>
                 "REDIRECT: "{target}
             </a>
         },
-        WSN::HorizontalDivider => html! { <hr class="my-6 border-t-2 border-gray-300" /> },
-        WSN::ParagraphBreak => html! { <br /> },
-        WSN::Newline => html! { <br /> },
+        WSN::HorizontalDivider => {
+            paxhtml::html! { in bump; <hr class="my-6 border-t-2 border-gray-300" /> }
+        }
+        WSN::ParagraphBreak => paxhtml::html! { in bump; <br /> },
+        WSN::Newline => paxhtml::html! { in bump; <br /> },
     }
 }
 
@@ -873,30 +935,34 @@ fn page_title_to_route_path(title: &str) -> paxhtml::RoutePath {
     )
 }
 
-fn redirect(to_url: &str) -> paxhtml::Document {
-    paxhtml::Document::new([
-        paxhtml::builder::doctype(["html".into()]),
-        paxhtml::html! {
-            <html>
-                <head>
-                    <title>"Redirecting..."</title>
-                    <meta charset="utf-8" />
-                    <meta httpEquiv="refresh" content={format!("0; url={to_url}")} />
-                    <link href="/style/tailwind.css" rel="stylesheet" />
-                </head>
-                <body class="bg-gray-100 flex items-center justify-center min-h-screen">
-                    <div class="text-center">
-                        <p class="text-xl mb-4">"Redirecting..."</p>
-                        <p>
-                            <a class="text-blue-600 hover:text-blue-800 hover:underline" href={to_url} title="Click here if you are not redirected">
-                                "Click here if you are not redirected"
-                            </a>
-                        </p>
-                    </div>
-                </body>
-            </html>
-        },
-    ])
+fn redirect<'bump>(bump: &'bump Bump, to_url: &str) -> paxhtml::Document<'bump> {
+    let b = paxhtml::builder::Builder::new(bump);
+    paxhtml::Document::new(
+        bump,
+        [
+            b.doctype([b.attr("html")]),
+            paxhtml::html! { in bump;
+                <html>
+                    <head>
+                        <title>"Redirecting..."</title>
+                        <meta charset="utf-8" />
+                        <meta httpEquiv="refresh" content={format!("0; url={to_url}")} />
+                        <link href="/style/tailwind.css" rel="stylesheet" />
+                    </head>
+                    <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+                        <div class="text-center">
+                            <p class="text-xl mb-4">"Redirecting..."</p>
+                            <p>
+                                <a class="text-blue-600 hover:text-blue-800 hover:underline" href={to_url} title="Click here if you are not redirected">
+                                    "Click here if you are not redirected"
+                                </a>
+                            </p>
+                        </div>
+                    </body>
+                </html>
+            },
+        ],
+    )
 }
 
 /// Tokenize text into searchable words

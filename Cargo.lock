@@ -47,6 +47,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "812e12b5285cc515a9c72a5c1d3b6d46a19dac5acfef5265968c166106e31dd3"
 
 [[package]]
+name = "bumpalo"
+version = "3.19.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5dd9dc738b7a8311c7ade152424974d8115f2cdad61e8dab8dac9f2362298510"
+
+[[package]]
 name = "cc"
 version = "1.2.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -233,16 +239,30 @@ source = "git+https://github.com/philpax/parse-wiki-text-2.git?branch=wasm-suppo
 [[package]]
 name = "paxhtml"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#26d0785acbb290ab96a70f7b39cef2ad7a18c388"
+source = "git+https://github.com/philpax/paxhtml.git#a5342664a071bdf31f1b6b5432f325c03c9df6a0"
 dependencies = [
+ "bumpalo",
  "html-escape",
  "paxhtml_macro",
+ "paxhtml_parser",
 ]
 
 [[package]]
 name = "paxhtml_macro"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#26d0785acbb290ab96a70f7b39cef2ad7a18c388"
+source = "git+https://github.com/philpax/paxhtml.git#a5342664a071bdf31f1b6b5432f325c03c9df6a0"
+dependencies = [
+ "convert_case",
+ "paxhtml_parser",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "paxhtml_parser"
+version = "0.1.0"
+source = "git+https://github.com/philpax/paxhtml.git#a5342664a071bdf31f1b6b5432f325c03c9df6a0"
 dependencies = [
  "convert_case",
  "proc-macro2",
@@ -253,7 +273,7 @@ dependencies = [
 [[package]]
 name = "paxhtml_tailwind"
 version = "0.1.0"
-source = "git+https://github.com/philpax/paxhtml.git#26d0785acbb290ab96a70f7b39cef2ad7a18c388"
+source = "git+https://github.com/philpax/paxhtml.git#a5342664a071bdf31f1b6b5432f325c03c9df6a0"
 
 [[package]]
 name = "pkg-config"
